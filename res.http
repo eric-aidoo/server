@@ -1,0 +1,40 @@
+
+curl -X GET \
+  http://localhost:3000/ \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+
+### User signup endpoint
+curl -X POST \
+  http://localhost:3000/v1/auth/user/signup \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  -d '{
+    "email": "eric@gmail.com",
+    "password": "Kwame2000*1",
+    "username": "eric",
+    "first_name": Eric",
+    "last_name": "Okyere",
+    "country_of_residence": "US"
+  }'
+
+
+
+### Make payment endpoint
+curl -X POST \
+  https://api.credetpay.com/v1/transfer-money \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  -d '{
+    "recipient": "@dev_nanakay",
+    "amount": "300",
+    "note": "for testing",
+  }'
+
+
+### Undefined routes
+curl -X GET \
+  http://localhost:3000/v1/undefined-route \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+ 

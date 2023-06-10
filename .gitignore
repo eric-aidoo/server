@@ -1,0 +1,8 @@
+node_modules
+/.env
+/.prettierrc
+/.prettierignore
+/.babelrc
+design.txt
+backup.js
+rest.http

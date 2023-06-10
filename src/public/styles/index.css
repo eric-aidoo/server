@@ -1,0 +1,83 @@
+@font-face {
+  font-family: 'Museo Sans Regular';
+  src: url('../fonts/MuseoSans-Regular.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Museo Sans Medium';
+  src: url('../fonts/MuseoSans-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Museo Sans Bold';
+  src: url('../fonts/MuseoSans-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Museo Sans Light';
+  src: url('../fonts/MuseoSans-Light.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+:root {
+  --primary-body-text-color: #393c41;
+  --small-texts-color: #717182;
+  --primary-body-text-hover-color: #171a20;
+  --primary-body-heading-color: #171a20;
+  --navlink-color: #393c41;
+  --footer-background-color: radial-gradient(
+    94% 58.3% at 50.3% 82.6%,
+    #2a2541 0%,
+    rgba(17, 16, 19, 1),
+    rgb(17, 16, 19) 100%
+  );
+  --deep-purple-color: radial-gradient(
+    94% 58.3% at 50.3% 82.6%,
+    #2a2541 0%,
+    rgba(17, 16, 19, 1),
+    rgb(17, 16, 19) 100%
+  );
+  --navlink-hover-color: #5c5e62;
+  --small-body-text-on-purple-background: rgba(240, 240, 240, 0.71);
+  --primary-body-font-size: 16px;
+  --secondary-body-font-size: 17px;
+  --navlink-font-size: 16px;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--primary-body-text-color);
+  margin: 0;
+  padding: 0;
+  font-family: 'Museo Sans Regular', sans-serif !important;
+  background-color: white;
+  min-height: 100vh;
+  overflow-x: hidden !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.error-page {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+}
+
+.error-page .error-code {
+  padding-top: 16rem;
+  font-size: 40px;
+  font-family: 'Museo Sans Medium', sans-serif !important;
+}
+
+.error-page .error-message {
+  font-size: 20px;
+}
