@@ -41,7 +41,7 @@ const databaseConnection = async () => {
   const query = async (sql, values) => {
     const connection = await getConnection();
     try {
-      const results = await connection.query(sql, values);
+      const [results] = await connection.query(sql, values);
       connection.release();
       return [results];
     } catch (error) {

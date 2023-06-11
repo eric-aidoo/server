@@ -32,10 +32,10 @@ SELECT u.type,
           'back_image_of_document', u.back_image_of_document,
           'selfie', u.selfie
        ) AS kyc_documents,
+       u.tos_acceptance,
        u.created_at, 
-       u.updated_at,
-       u.tos_acceptance
+       u.updated_at
 FROM users AS u 
-  LEFT JOIN users_billing_address AS a ON u.username = a.username
+  LEFT JOIN users_address AS a ON u.username = a.username
 WHERE 
     u.username = ? OR u.email = ? 

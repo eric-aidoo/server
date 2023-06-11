@@ -12,6 +12,8 @@ import initializeDatabaseTables from './database/mysql/tables';
 import libraries from './utils/libraries';
 import asyncHandler from './middleware/async-handler';
 import EmailService from './integrations/email/email-service';
+import userAuthenticationRoutes from './api/v1/user/routes/authentication';
+import UserRepository from './database/mysql/repositories/user-repository';
 
 export default async function createExpressApp() {
   const app = libraries.expressFramework();
@@ -78,6 +80,20 @@ export default async function createExpressApp() {
       });
     }),
   );
+
+  app.get(
+    '/get-user',
+    asyncHandler(async (req, res) => {
+      const { username } = req.query;
+      const user = await UserRepository.findUser(username);
+      res.status(200).json({
+        success: true,
+        data: user,
+      });
+    }),
+  );
+
+  await userAuthenticationRoutes.register(app);
 
   // Register individual user authentication routes
 

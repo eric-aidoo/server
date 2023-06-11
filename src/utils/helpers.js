@@ -257,9 +257,9 @@ export function generatePasswordResetLink({ email, username, password }) {
   }
 }
 
-export function verifyPasswordResetJwt({ userPassword, extractedToken }) {
+export function verifyPasswordResetLinkToken({ password, extractedToken }) {
   try {
-    const secret = config.oAuth.passwordResetLinkSecret + userPassword;
+    const secret = config.oAuth.passwordResetLinkSecret + password;
     // const payload = libraries.jwt.verify(extractedToken, secret);
     // const id = payload.id;
     // return id;

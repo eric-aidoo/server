@@ -1,9 +1,8 @@
 import {
+  capitalize,
   determineIdentityDocumentIssuer,
   determineIdentityDocumentType,
-  encrypt,
   generateHash,
-  generateRefreshToken,
   generateToken,
   sanitize,
   standardizeDate,
@@ -32,13 +31,12 @@ export default class UserEntity {
     const sanitizedPassword = sanitize(password);
 
     return Object.freeze({
-      id: `user_${generateToken({ lengthOfToken: 22 })}`,
       type: 'person',
       role: 'basic',
       status: 'active',
       is_verified: false,
       first_name: capitalize(first_name.trim()),
-      middle_name: capitalize(middle_name.trim()) ?? null,
+      middle_name: capitalize(middle_name) ?? null,
       last_name: capitalize(last_name.trim()),
       email: email.trim().toLowerCase(),
       password: generateHash(sanitizedPassword),

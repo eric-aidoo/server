@@ -1,5 +1,4 @@
 INSERT INTO users (
-    id,
     type,
     role,
     status,
@@ -8,12 +7,12 @@ INSERT INTO users (
     middle_name,
     last_name,
     email,
-    passwpord,
+    password,
     username,
     country_of_residence,
     created_at,
     updated_at,
     tos_acceptance
 )
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 
