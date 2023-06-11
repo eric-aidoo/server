@@ -10,8 +10,8 @@ import initializeRedisClient from './utils/redis-client';
 import { deactivateDebuggingInProductionMode, generateOtpCode } from './utils/helpers';
 import initializeDatabaseTables from './database/mysql/tables';
 import libraries from './utils/libraries';
-import emailService from './integrations/email/email-service';
 import asyncHandler from './middleware/async-handler';
+import EmailService from './integrations/email/email-service';
 
 export default async function createExpressApp() {
   const app = libraries.expressFramework();
@@ -62,22 +62,22 @@ export default async function createExpressApp() {
     res.status(200).json({ message: 'Welcome to Credet auth server' });
   });
 
-  // app.get(
-  //   '/send-email',
-  //   asyncHandler(async (req, res) => {
-  //     const EmailService = emailService();
-  //     const email = 'lifeoferic1@gmail.com'; // obuobijnr45@hotmail.com
-  //     const verifyEmailTemplate = 'integrations/email/templates';
-  //     const sentEmail = await EmailService.sendEmail({
-  //       emailAddress: email,
-  //       templateFolder: verifyEmailTemplate,
-  //     });
-  //     res.status(200).json({
-  //       success: true,
-  //       message: sentEmail.response,
-  //     });
-  //   }),
-  // );
+  app.get(
+    '/send-email',
+    asyncHandler(async (req, res) => {
+      const emailService = EmailService();
+      const email = 'lifeoferic1@gmail.com'; // obuobijnr45@hotmail.com
+      const sentEmail = await emailService.sendPasswordResetInstructionsEmail({
+        emailAddress: email,
+        firstName: 'Elon',
+        passwordResetLink: 'https://example.com',
+      });
+      res.status(200).json({
+        success: true,
+        message: 'Email sent successfully',
+      });
+    }),
+  );
 
   // Register individual user authentication routes
 

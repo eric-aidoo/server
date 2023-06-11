@@ -30,8 +30,9 @@ const config = {
   oAuth: {
     refreshTokenSecret: process.env.JWT_REFRESH_TOKEN_SECRET,
     accessTokenSecret: process.env.JWT_ACCESS_TOKEN_SECRET,
+    passwordResetLinkSecret: process.env.JWT_PASSWORD_RESET_SECRET,
     accessTokenExpiration: '30s', // 15m
-    refreshTokenExpiration: '1m', // 90d
+    refreshTokenExpiration: '1m', // 90d or 3 months
     cookieMaxAge: ONE_DAY,
   },
   encryption: {

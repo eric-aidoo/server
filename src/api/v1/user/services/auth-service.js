@@ -8,12 +8,15 @@ import {
 } from '../../../../utils/error-responses';
 import {
   compareHash,
+  decrypt,
   encrypt,
   generateAccessToken,
   generateHash,
   generateOtpCode,
+  generatePasswordResetLink,
   generateRefreshToken,
   sanitize,
+  verifyPasswordResetJwt,
   verifyRefreshToken,
 } from '../../../../utils/helpers';
 import UserEntity from '../entities/user';
@@ -76,7 +79,7 @@ export default function UserAuthenticationService() {
       const currentTime = new Date();
       const verificationCodeHasExpired = currentTime >= new Date(user.email_verification_code_expiration);
       if (verificationCodeHasExpired) {
-        throw new UnauthorizedError('Invalid verification code');
+        throw new UnauthorizedError('Your verification code has expired or is no longer valid');
       }
       const verificationCodeIsValid = verificationCode === user.email_verification_code;
       if (!verificationCodeIsValid) {
@@ -195,6 +198,59 @@ export default function UserAuthenticationService() {
     }
   };
 
+  // This is the first step in a password reset event
+  const requestPasswordResetLink = async (username) => {
+    try {
+      if (!username) {
+        throw new MissingFieldError('Username is required');
+      }
+      const user = await userRepository.findUser(username);
+      if (!user) {
+        throw new NotFoundError(`Hm. We couldn't find an account with that identity`);
+      }
+      // Create a one-time password reset link (expires in 10 minutes)
+      const passwordResetLink = generatePasswordResetLink({
+        email: user.email,
+        username,
+        password: user.password,
+      });
+
+      await emailService.sendPasswordResetInstructionsEmail({
+        emailAddress: user.email,
+        firstName: user.first_name,
+        passwordResetLink,
+      });
+      const successMessage =
+        'If we find an account that matches the information you submitted, we will send password reset instructions to your email address';
+      return { successMessage };
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const verifyPasswordResetLink = async (passwordResetLink) => {
+    try {
+      if (!passwordResetLink) {
+        throw new MissingFieldError('Password reset link is required');
+      }
+      const id = passwordResetLink.split('/')[2];
+      const token = passwordResetLink.split('/')[3];
+
+      // Check if user is registered
+      const decryptedUsername = decrypt(id);
+      const user = await userRepository.findUser(decryptedUsername);
+      if (!user) {
+        throw new UnauthorizedError('Invalid password reset link');
+      }
+      verifyPasswordResetJwt({ userPassword: user.password, extractedToken: token });
+      return {
+        email: user.email,
+      };
+    } catch (error) {
+      throw error;
+    }
+  };
+
   // For security reasons, users will not be allowed to reset password while logged in
   const resetPassword = async ({ username, newPassword }) => {
     try {
@@ -212,7 +268,7 @@ export default function UserAuthenticationService() {
         throw new BadRequestError('Please use a password that has not been used previously');
       }
       // Update user's password on record
-      const hashedPassword = generateHash(newPassword);
+      const hashedPassword = generateHash(sanitizedPassword);
 
       await userRepository.updateUser({
         username: username,

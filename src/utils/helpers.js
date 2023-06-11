@@ -188,25 +188,33 @@ export function getBearerToken(authorizationHeader) {
 }
 
 export function generateAccessToken(username) {
-  const payload = {};
-  const options = {
-    expiresIn: config.oAuth.accessTokenExpiration,
-    issuer: config.server.host,
-    audience: username,
-  };
-  const jwtAccessToken = libraries.jwt.sign(payload, config.oAuth.accessTokenSecret, options);
-  return jwtAccessToken;
+  try {
+    const payload = {};
+    const options = {
+      expiresIn: config.oAuth.accessTokenExpiration,
+      issuer: config.server.host,
+      audience: username,
+    };
+    const jwtAccessToken = libraries.jwt.sign(payload, config.oAuth.accessTokenSecret, options);
+    return jwtAccessToken;
+  } catch (error) {
+    throw error;
+  }
 }
 
 export function generateRefreshToken(username) {
-  const payload = {};
-  const options = {
-    expiresIn: config.oAuth.refreshTokenExpiration,
-    issuer: config.server.host,
-    audience: username,
-  };
-  const refreshToken = libraries.jwt.sign(payload, config.oAuth.refreshTokenSecret, options);
-  return refreshToken;
+  try {
+    const payload = {};
+    const options = {
+      expiresIn: config.oAuth.refreshTokenExpiration,
+      issuer: config.server.host,
+      audience: username,
+    };
+    const refreshToken = libraries.jwt.sign(payload, config.oAuth.refreshTokenSecret, options);
+    return refreshToken;
+  } catch (error) {
+    throw error;
+  }
 }
 
 export function setCookie({ httpResponseObject, cookieName, refreshToken }) {
@@ -219,18 +227,52 @@ export function setCookie({ httpResponseObject, cookieName, refreshToken }) {
 }
 
 export function verifyRefreshToken(refreshToken) {
-  jwt.verify(refreshToken, config.oAuth.refreshTokenSecret, (error, payload) => {
-    const tokenExpiration = new Date(payload.exp * 1000);
-    const currentDateOrTime = new Date();
-    if (currentDateOrTime > tokenExpiration) {
-      throw new ForbiddenError('Request denied');
-    }
-    if (error) {
-      throw new ForbiddenError('Request denied');
-    }
-    const username = payload.aud;
-    return username;
-  });
+  try {
+    libraries.jwt.verify(refreshToken, config.oAuth.refreshTokenSecret, (error, payload) => {
+      if (error) {
+        throw new ForbiddenError('Request denied');
+      }
+      const username = payload.aud;
+      return username;
+    });
+  } catch (error) {
+    throw error;
+  }
+}
+
+export function generatePasswordResetLink({ email, username, password }) {
+  try {
+    const secret = config.oAuth.passwordResetLinkSecret + password;
+    const payload = {};
+    const options = {
+      expiresIn: config.oAuth.accessTokenExpiration,
+      issuer: config.server.host,
+      audience: username,
+    };
+    const token = libraries.jwt.sign(payload, secret, options);
+    const passwordResetLink = `${config.server.host}/user/reset-password/${encryptedUsername}/${token}`;
+    return passwordResetLink;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export function verifyPasswordResetJwt({ userPassword, extractedToken }) {
+  try {
+    const secret = config.oAuth.passwordResetLinkSecret + userPassword;
+    // const payload = libraries.jwt.verify(extractedToken, secret);
+    // const id = payload.id;
+    // return id;
+    libraries.jwt.verify(extractedToken, secret, (error, payload) => {
+      if (error) {
+        throw new UnauthorizedError('Your password reset link has expired or is no longer valid');
+      }
+      const id = payload.aud;
+      return id;
+    });
+  } catch (error) {
+    throw error;
+  }
 }
 
 export function expressWrapper(server) {
@@ -300,7 +342,6 @@ export function replaceHtmlPlaceholdersWithDynamicValues({ html, context }) {
   if (!context || Object.keys(context).length === 0) {
     return html;
   }
-
   let result = html;
   for (const key in context) {
     const placeholder = `{{${key}}}`;
