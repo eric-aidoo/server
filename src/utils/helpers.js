@@ -230,9 +230,10 @@ export function verifyRefreshToken(refreshToken) {
   try {
     libraries.jwt.verify(refreshToken, config.oAuth.refreshTokenSecret, (error, payload) => {
       if (error) {
-        throw new ForbiddenError('Request denied');
+        throw new ForbiddenError(error.message);
       }
       const username = payload.aud;
+      console.log(username);
       return username;
     });
   } catch (error) {
@@ -243,14 +244,17 @@ export function verifyRefreshToken(refreshToken) {
 export function generatePasswordResetLink({ email, username, password }) {
   try {
     const secret = config.oAuth.passwordResetLinkSecret + password;
-    const payload = {};
+    const payload = {
+      email,
+      id: username,
+    };
     const options = {
       expiresIn: config.oAuth.accessTokenExpiration,
       issuer: config.server.host,
       audience: username,
     };
     const token = libraries.jwt.sign(payload, secret, options);
-    const passwordResetLink = `${config.server.host}/user/reset-password/${encryptedUsername}/${token}`;
+    const passwordResetLink = `${config.server.host}/user/reset-password/${username}/${token}`;
     return passwordResetLink;
   } catch (error) {
     throw error;
@@ -260,9 +264,6 @@ export function generatePasswordResetLink({ email, username, password }) {
 export function verifyPasswordResetLinkToken({ password, extractedToken }) {
   try {
     const secret = config.oAuth.passwordResetLinkSecret + password;
-    // const payload = libraries.jwt.verify(extractedToken, secret);
-    // const id = payload.id;
-    // return id;
     libraries.jwt.verify(extractedToken, secret, (error, payload) => {
       if (error) {
         throw new UnauthorizedError('Your password reset link has expired or is no longer valid');
@@ -275,14 +276,28 @@ export function verifyPasswordResetLinkToken({ password, extractedToken }) {
   }
 }
 
+// export function expressWrapper(server) {
+//   return {
+//     route: (routeObject) => {
+//       const method = routeObject.method.toLowerCase();
+//       const path = routeObject.path;
+//       const middleware = routeObject.middlewares || [];
+//       const controller = routeObject.controller;
+//       server[method](path, ...middleware, controller);
+//     },
+//   };
+// }
+
 export function expressWrapper(server) {
   return {
-    route: (routeObject) => {
-      const method = routeObject.method.toLowerCase();
-      const path = routeObject.path;
-      const middleware = routeObject.middlewares || [];
-      const controller = routeObject.controller;
-      server[method](path, ...middleware, controller);
+    route: (routeObjects) => {
+      routeObjects.forEach((routeObject) => {
+        const method = routeObject.method.toLowerCase();
+        const path = routeObject.path;
+        const middleware = routeObject.middlewares || [];
+        const controller = routeObject.controller;
+        server[method](path, ...middleware, controller);
+      });
     },
   };
 }

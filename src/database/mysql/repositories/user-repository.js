@@ -7,25 +7,23 @@ import {
 import { loadSqlQueries } from '../../../utils/helpers';
 import client from '../connection';
 
-// Find user
 const findUser = async (usernameOrEmail) => {
   const database = await client.connectToMySqlDb();
   const queries = await loadSqlQueries({ sqlFolder: 'api/v1/user/queries' });
   try {
-    if (!usernameOrEmail) {
-      return null;
-    }
-    const reformattedUsername = usernameOrEmail.charAt(0) !== '@' ? `@${usernameOrEmail}` : usernameOrEmail;
-    const requestInput = [reformattedUsername, reformattedUsername];
+    const requestInput = [usernameOrEmail, usernameOrEmail];
     const [queryResponse] = await database.query(queries.findUser, requestInput);
     const userDoesNotExist = !queryResponse.length || queryResponse.length === 0;
-    return userDoesNotExist ? null : Object.freeze(queryResponse[0]);
+    const user = queryResponse[0];
+    // Converting sql boolean formats (i.e. 0s & 1s to true and false)
+    return userDoesNotExist
+      ? null
+      : Object.freeze({ ...user, is_email_verified: Boolean(user.is_email_verified) });
   } catch (error) {
     throw error;
   }
 };
 
-// Check if user exists
 const checkIfUserExists = async (usernameOrEmail) => {
   try {
     const user = await findUser(usernameOrEmail);
@@ -38,14 +36,13 @@ const checkIfUserExists = async (usernameOrEmail) => {
   }
 };
 
-// Create or save new user
 const createUser = async (user) => {
   const database = await client.connectToMySqlDb();
   const queries = await loadSqlQueries({ sqlFolder: 'api/v1/user/queries' });
   try {
     const [usernameAlreadyExists, emailAlreadyExists] = await Promise.all([
-      findUser(user.username),
-      findUser(user.email),
+      checkIfUserExists(user.username),
+      checkIfUserExists(user.email),
     ]);
     if (usernameAlreadyExists) {
       throw new AlreadyExistsError('Username already taken');
@@ -66,24 +63,16 @@ const createUser = async (user) => {
   }
 };
 
-//  if (usernameAlreadyExists) {
-//    throw new AlreadyExistsError('Username already taken');
-//  }
-//  if (emailAlreadyExists) {
-//    throw new AlreadyExistsError('Email already registered with an account. Log into your account.');
-//  }
-
-// Update user's info (i.e. updatable fields)
 const updateUser = async ({ username, fieldToUpdate, data }) => {
   const database = await client.connectToMySqlDb();
   const queries = await loadSqlQueries({ sqlFolder: 'api/v1/user/queries' });
   try {
-    username = username.charAt(0) !== '@' ? `@${username}` : username;
     const updatableFields = [
       'phone_number',
       'authorization_pin',
       'date_of_birth',
-      'is_verified',
+      'status',
+      'is_email_verified',
       'refresh_token',
       'email',
       'avatar',
@@ -152,8 +141,8 @@ const updateUser = async ({ username, fieldToUpdate, data }) => {
     }
 
     // Update account verification status
-    if (fieldToUpdate === 'is_verified') {
-      const [request] = await database.query(queries.updateVerificationStatus, requestInput);
+    if (fieldToUpdate === 'is_email_verified') {
+      const [request] = await database.query(queries.updateEmailVerificationStatus, requestInput);
       const requestWasSuccessful = request.affectedRows > 0;
       if (!requestWasSuccessful) {
         throw new InternalServerError('Request could not be processed due to an unexpected error');
@@ -161,7 +150,7 @@ const updateUser = async ({ username, fieldToUpdate, data }) => {
       const updatedUser = await findUser(username);
       return Object.freeze({
         username,
-        is_verified: updatedUser.is_verified,
+        is_email_verified: updatedUser.is_email_verified,
       });
     }
 
@@ -267,7 +256,6 @@ const updateUser = async ({ username, fieldToUpdate, data }) => {
   }
 };
 
-// Delete user
 const deleteUser = async (username) => {
   const database = await client.connectToMySqlDb();
   const queries = await loadSqlQueries({ sqlFolder: 'api/v1/user/queries' });
@@ -285,7 +273,6 @@ const deleteUser = async (username) => {
   }
 };
 
-// Search user (default record size is 15 documents, if not specified)
 const searchUser = async ({ usernameOrEmailOrPhoneNumber, page = 1, sizeOfRecordsToRetrieve = 15 }) => {
   const database = await client.connectToMySqlDb();
   const queries = await loadSqlQueries({ sqlFolder: 'api/v1/user/queries' });

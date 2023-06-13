@@ -32,7 +32,7 @@ const config = {
     accessTokenSecret: process.env.JWT_ACCESS_TOKEN_SECRET,
     passwordResetLinkSecret: process.env.JWT_PASSWORD_RESET_SECRET,
     accessTokenExpiration: '30s', // 15m
-    refreshTokenExpiration: '1m', // 90d or 3 months
+    refreshTokenExpiration: '5m', // 90d or 3 months
     cookieMaxAge: ONE_DAY,
   },
   encryption: {
@@ -45,6 +45,9 @@ const config = {
   emailAuthentication: {
     user: process.env.EMAIL_AUTHENTICATION_USER,
     password: process.env.EMAIL_AUTHENTICATION_PASSWORD,
+  },
+  api: {
+    version: process.env.CURRENT_API_VERSION,
   },
 };
 

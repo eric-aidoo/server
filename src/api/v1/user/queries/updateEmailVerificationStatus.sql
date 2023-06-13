@@ -1,4 +1,4 @@
 UPDATE users
-    SET is_verified = ?,
+    SET is_email_verified = ?,
         updated_at = ?
 WHERE username = ?

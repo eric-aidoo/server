@@ -31,10 +31,11 @@ export default class UserEntity {
     const sanitizedPassword = sanitize(password);
 
     return Object.freeze({
-      type: 'person',
+      id: `user_${generateToken({ lengthOfToken: 22 })}`,
+      type: 'individual',
       role: 'basic',
       status: 'active',
-      is_verified: false,
+      is_email_verified: false,
       first_name: capitalize(first_name.trim()),
       middle_name: capitalize(middle_name) ?? null,
       last_name: capitalize(last_name.trim()),

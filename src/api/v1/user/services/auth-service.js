@@ -27,30 +27,25 @@ const signup = async (user) => {
     await UserRepository.createUser(newUser);
 
     const emailVerificationCode = generateOtpCode();
+    const fifteenMinutesExpiration = Date.now() + 15 * 60 * 1000;
 
-    // Save the email verification code
-    const currentDateAndTime = new Date();
-    const FIFTEEN_MINUTES = new Date().setMinutes(currentDateAndTime + 15).toString();
     await UserRepository.updateUser({
       username: newUser.username,
       fieldToUpdate: 'email_verification_code',
       data: {
         verificationCode: emailVerificationCode,
-        codeExpiration: FIFTEEN_MINUTES,
+        codeExpiration: fifteenMinutesExpiration,
       },
     });
 
-    // Send the email verification code to the user
     await EmailService.sendEmailVerificationEmail({
       emailAddress: newUser.email,
       firstName: newUser.first_name,
       verificationCode: emailVerificationCode,
     });
-
     const encryptedUsername = encrypt(newUser.username);
     const refreshToken = generateRefreshToken(encryptedUsername);
 
-    // Save refresh token
     await UserRepository.updateUser({
       username: newUser.username,
       fieldToUpdate: 'refresh_token',
@@ -70,10 +65,12 @@ const verifyEmailVerificationCode = async ({ email, verificationCode }) => {
       throw new MissingFieldError('Email or verification code is required');
     }
     const user = await UserRepository.findUser(email);
+    if (!user) {
+      throw new UnauthorizedError('Invalid verification code');
+    }
     const encryptedUsername = encrypt(user.username);
-
-    const currentTime = new Date();
-    const verificationCodeHasExpired = currentTime >= new Date(user.email_verification_code_expiration);
+    const currentTime = Date.now();
+    const verificationCodeHasExpired = currentTime >= user.email_verification_code_expiration;
     if (verificationCodeHasExpired) {
       throw new UnauthorizedError('Your verification code has expired or is no longer valid');
     }
@@ -81,6 +78,11 @@ const verifyEmailVerificationCode = async ({ email, verificationCode }) => {
     if (!verificationCodeIsValid) {
       throw new BadRequestError('Invalid verification code');
     }
+    await UserRepository.updateUser({
+      username: user.username,
+      fieldToUpdate: 'is_email_verified',
+      data: true,
+    });
     const accessToken = generateAccessToken(encryptedUsername);
     const refreshToken = user.refresh_token;
     return { accessToken, refreshToken };
@@ -94,21 +96,28 @@ const requestEmailVerificationCode = async (username) => {
     if (!username) {
       throw new MissingFieldError('Username is required');
     }
+    const user = await UserRepository.findUser(username);
+    if (!user) {
+      throw new NotFoundError(`Hm. We couldn't find an account with that identity`);
+    }
     const verificationCode = generateOtpCode();
-
-    const currentDateAndTime = new Date();
-    const FIFTEEN_MINUTES = new Date().setMinutes(currentDateAndTime + 15).toString();
+    const fifteenMinutesExpiration = Date.now() + 15 * 60 * 1000;
     await UserRepository.updateUser({
       username: username,
       fieldToUpdate: 'email_verification_code',
       data: {
         verificationCode: verificationCode,
-        codeExpiration: FIFTEEN_MINUTES,
+        codeExpiration: fifteenMinutesExpiration,
       },
     });
-    const user = await UserRepository.findUser(username);
+    // Set (invalidate) the is_email_verified property to "false" every
+    // time email verification code is requested
+    await UserRepository.updateUser({
+      username: user.username,
+      fieldToUpdate: 'is_email_verified',
+      data: false,
+    });
 
-    // Send the email verification code to the user
     await EmailService.sendEmailVerificationEmail({
       emailAddress: user.email,
       firstName: user.first_name,
@@ -179,7 +188,7 @@ const logout = async (refreshToken) => {
     if (!refreshToken) {
       throw new MissingFieldError('Refresh token is required');
     }
-    // Delete refresh token
+    // Delete refresh token from the database
     const username = verifyRefreshToken(refreshToken);
     await UserRepository.updateUser({
       username: username,
@@ -202,9 +211,10 @@ const requestPasswordResetLink = async (username) => {
     if (!user) {
       throw new NotFoundError(`Hm. We couldn't find an account with that identity`);
     }
+    const encryptedUsername = encrypt(username);
     const passwordResetLink = generatePasswordResetLink({
       email: user.email,
-      username,
+      username: encryptedUsername,
       password: user.password,
     });
     await EmailService.sendPasswordResetInstructionsEmail({
@@ -220,13 +230,13 @@ const requestPasswordResetLink = async (username) => {
   }
 };
 
-const verifyPasswordResetLink = async (passwordResetLink) => {
+const verifyPasswordResetLink = async (passwordResetUrl) => {
   try {
-    if (!passwordResetLink) {
+    if (!passwordResetUrl) {
       throw new MissingFieldError('Password reset link is required');
     }
-    const id = passwordResetLink.split('/')[2];
-    const token = passwordResetLink.split('/')[3];
+    const id = passwordResetUrl.split('/')[5];
+    const token = passwordResetUrl.split('/')[6];
     const decryptedUsername = decrypt(id);
     const user = await UserRepository.findUser(decryptedUsername);
     if (!user) {

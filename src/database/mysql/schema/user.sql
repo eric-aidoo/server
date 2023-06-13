@@ -1,14 +1,15 @@
 CREATE TABLE users (
+    id VARCHAR(30) NOT NULL PRIMARY KEY,
     type VARCHAR(50) NOT NULL,
     role VARCHAR(100) NOT NULL,
     status VARCHAR(50) NOT NULL,
-    is_verified BOOLEAN NOT NULL,
+    is_email_verified BOOLEAN NOT NULL,
     first_name VARCHAR(150) NOT NULL,
     middle_name VARCHAR(150), 
     last_name VARCHAR(150) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    username VARCHAR(16) NOT NULL PRIMARY KEY UNIQUE,
+    username VARCHAR(16) NOT NULL UNIQUE,
     country_of_residence VARCHAR(2) NOT NULL,
     date_of_birth VARCHAR(11),
     authorization_pin VARCHAR(255),
@@ -26,5 +27,5 @@ CREATE TABLE users (
     created_at VARCHAR(50) NOT NULL,
     updated_at VARCHAR(50) NOT NULL,
     tos_acceptance JSON NOT NULL,
-    INDEX idx_users_table (username, email)
+    INDEX idx_users_table (id, username, email)
 );

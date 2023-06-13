@@ -1,10 +1,12 @@
-import { UserAuthenticationService } from '../services/authentication-service';
+import config from '../../../../config';
+import { UserAuthenticationService } from '../services/auth-service';
 
 const signup = async (req, res) => {
   const user = req.body;
   const feedback = await UserAuthenticationService.signup(user);
-  res.status(201).json({
+  return res.status(201).json({
     success: true,
+    api_version: config.api.version,
     data: {
       message: feedback.signupSuccessMessage,
     },
@@ -12,13 +14,14 @@ const signup = async (req, res) => {
 };
 
 const verifyEmail = async (req, res) => {
-  const { email, email_verification_code } = req.body;
+  const { email, verification_code } = req.body;
   const feedback = await UserAuthenticationService.verifyEmailVerificationCode({
     email,
-    verificationCode: email_verification_code,
+    verificationCode: verification_code,
   });
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
+    api_version: config.api.version,
     data: {
       access_token: feedback.accessToken,
       refresh_token: feedback.refreshToken,
@@ -29,8 +32,9 @@ const verifyEmail = async (req, res) => {
 const login = async (req, res) => {
   const { username, email, password } = req.body;
   const feedback = await UserAuthenticationService.login({ username: username || email, password });
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
+    api_version: config.api.version,
     data: {
       access_token: feedback.accessToken,
       refresh_token: feedback.refreshToken,
@@ -38,22 +42,36 @@ const login = async (req, res) => {
   });
 };
 
+const requestEmailVerificationCode = async (req, res) => {
+  const { username } = req.body;
+  const feedback = await UserAuthenticationService.requestEmailVerificationCode(username);
+  return res.status(200).json({
+    success: true,
+    api_version: config.api.version,
+    data: {
+      message: feedback.successMessage,
+    },
+  });
+};
+
 const renewAccessToken = async (req, res) => {
   const { refresh_token } = req.body;
   const feedback = await UserAuthenticationService.renewAccessToken(refresh_token);
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
+    api_version: config.api.version,
     data: {
       access_token: feedback.accessToken,
     },
   });
 };
 
-const requestPasswordReset = async (req, res) => {
+const requestPasswordResetLink = async (req, res) => {
   const { username } = req.body;
   const feedback = await UserAuthenticationService.requestPasswordResetLink(username);
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
+    api_version: config.api.version,
     data: {
       message: feedback.successMessage,
     },
@@ -61,16 +79,17 @@ const requestPasswordReset = async (req, res) => {
 };
 
 const getPasswordResetPage = async (req, res) => {
-  const passwordResetUrl = req.url;
+  const passwordResetUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
   const { email } = await UserAuthenticationService.verifyPasswordResetLink(passwordResetUrl);
-  res.status(200).render('reset-password.ejs', { email });
+  return res.status(200).render('reset-password.ejs', { email: email });
 };
 
 const resetPassword = async (req, res) => {
   const { email, password } = req.body;
   const { accessToken, refreshToken } = await UserAuthenticationService.resetPassword({ email, password });
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
+    api_version: config.api.version,
     data: {
       access_token: accessToken,
       refresh_token: refreshToken,
@@ -80,9 +99,10 @@ const resetPassword = async (req, res) => {
 
 const logout = async (req, res) => {
   const { refresh_token } = req.body;
-  const feedback = await UserAuthenticationService.logout(refresh_token);
-  res.status(200).json({
+  const feedback = await UserAuthenticationService.logout({ refresh_token });
+  return res.status(200).json({
     success: true,
+    api_version: config.api.version,
     data: {
       logout_message: feedback.successMessage,
     },
@@ -94,8 +114,9 @@ export const authController = {
   verifyEmail,
   login,
   renewAccessToken,
-  requestPasswordReset,
+  requestPasswordResetLink,
   getPasswordResetPage,
+  requestEmailVerificationCode,
   resetPassword,
   logout,
 };
