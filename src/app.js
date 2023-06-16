@@ -6,23 +6,19 @@ import {
   xFrameOptionMiddleware,
 } from './middleware/security-headers';
 import errorHandler from './middleware/global-error-handler';
-import initializeRedisClient from './utils/redis-client';
-import { deactivateDebuggingInProductionMode, decrypt, generateOtpCode } from './utils/helpers';
+import { deactivateDebuggingInProductionMode } from './utils/helpers';
 import initializeDatabaseTables from './database/mysql/tables';
 import libraries from './utils/libraries';
 import asyncHandler from './middleware/async-handler';
-import EmailService from './integrations/email/email-service';
 import userAuthenticationRoutes from './api/v1/user/routes/auth-route';
 import UserRepository from './database/mysql/repositories/user-repository';
 import { MissingFieldError } from './utils/error-responses';
+import SmsService from './integrations/sms/sms-service';
 
 export default async function createExpressApp() {
   const app = libraries.expressFramework();
 
   deactivateDebuggingInProductionMode();
-
-  // Initialize redis client
-  // const redis = initializeRedisClient();
 
   // Initialize database tables
   await initializeDatabaseTables();
@@ -66,23 +62,6 @@ export default async function createExpressApp() {
   });
 
   app.get(
-    '/send-email',
-    asyncHandler(async (req, res) => {
-      const emailService = EmailService();
-      const email = 'lifeoferic1@gmail.com'; // obuobijnr45@hotmail.com
-      const sentEmail = await emailService.sendPasswordResetInstructionsEmail({
-        emailAddress: email,
-        firstName: 'Elon',
-        passwordResetLink: 'https://example.com',
-      });
-      res.status(200).json({
-        success: true,
-        message: 'Email sent successfully',
-      });
-    }),
-  );
-
-  app.get(
     '/get-user',
     asyncHandler(async (req, res) => {
       const { email } = req.query;
@@ -93,6 +72,22 @@ export default async function createExpressApp() {
       res.status(200).json({
         success: true,
         data: user,
+      });
+    }),
+  );
+
+  app.get(
+    '/send-otp-sms',
+    asyncHandler(async (req, res) => {
+      await SmsService.sendVerificationCodeTextMessage({
+        phoneNumber: '+17173152307',
+        verificationCode: 'C-1482',
+      });
+      res.status(200).json({
+        success: true,
+        data: {
+          message: 'Verify your phone number by entering the verification code we just texted you',
+        },
       });
     }),
   );

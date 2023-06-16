@@ -28,7 +28,7 @@ export class NotFoundError extends Error {
 export class UnauthorizedError extends Error {
   constructor(message) {
     super(message);
-    this.errorCode = 'authorization_required';
+    this.errorCode = 'unauthorized_request';
     this.name = 'UnauthorizedError';
     this.statusCode = 401;
   }
@@ -82,7 +82,7 @@ export class PayloadTooLargeError extends Error {
 export class ForbiddenError extends Error {
   constructor(message) {
     super(message);
-    this.errorCode = 'request_denied';
+    this.errorCode = 'request_forbidden';
     this.name = 'ForbiddenError';
     this.statusCode = 403;
   }
@@ -91,7 +91,7 @@ export class ForbiddenError extends Error {
 export class ValidationError extends Error {
   constructor(message) {
     super(message);
-    this.errorCode = 'unprocessable_entity';
+    this.errorCode = 'invalid_request_body';
     this.name = 'ValidationError';
     this.statusCode = 422;
   }

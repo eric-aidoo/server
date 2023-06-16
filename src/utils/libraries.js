@@ -14,6 +14,7 @@ import redis from 'redis';
 import fetch from 'node-fetch';
 import ejs from 'ejs';
 import fs from 'fs';
+import twilio from 'twilio';
 
 const libraries = {
   dotenv,
@@ -32,6 +33,7 @@ const libraries = {
   fetch,
   ejs,
   fs,
+  twilio,
 };
 
 export default libraries;

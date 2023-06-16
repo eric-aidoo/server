@@ -217,28 +217,35 @@ export function generateRefreshToken(username) {
   }
 }
 
-export function setCookie({ httpResponseObject, cookieName, refreshToken }) {
-  httpResponseObject.cookie(cookieName, refreshToken, {
+export function setCookie({ responseObject, cookieName, refreshToken }) {
+  responseObject.cookie(cookieName, refreshToken, {
     httpOnly: true,
     secure: true,
-    sameSite: 'none',
+    sameSite: 'None',
     maxAge: config.oAuth.cookieMaxAge,
+    path: '/',
+  });
+}
+
+export function deleteCookie({ responseObject, cookieName }) {
+  responseObject.clearCookie(cookieName, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'None',
   });
 }
 
 export function verifyRefreshToken(refreshToken) {
-  try {
+  return new Promise((resolve, reject) => {
     libraries.jwt.verify(refreshToken, config.oAuth.refreshTokenSecret, (error, payload) => {
       if (error) {
-        throw new ForbiddenError(error.message);
+        reject(new ForbiddenError('Your request was denied'));
+      } else {
+        const username = payload.aud;
+        resolve(username);
       }
-      const username = payload.aud;
-      console.log(username);
-      return username;
     });
-  } catch (error) {
-    throw error;
-  }
+  });
 }
 
 export function generatePasswordResetLink({ email, username, password }) {
@@ -276,25 +283,13 @@ export function verifyPasswordResetLinkToken({ password, extractedToken }) {
   }
 }
 
-// export function expressWrapper(server) {
-//   return {
-//     route: (routeObject) => {
-//       const method = routeObject.method.toLowerCase();
-//       const path = routeObject.path;
-//       const middleware = routeObject.middlewares || [];
-//       const controller = routeObject.controller;
-//       server[method](path, ...middleware, controller);
-//     },
-//   };
-// }
-
 export function expressWrapper(server) {
   return {
     route: (routeObjects) => {
       routeObjects.forEach((routeObject) => {
         const method = routeObject.method.toLowerCase();
         const path = routeObject.path;
-        const middleware = routeObject.middlewares || [];
+        const middleware = routeObject.middleware || [];
         const controller = routeObject.controller;
         server[method](path, ...middleware, controller);
       });

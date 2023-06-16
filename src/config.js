@@ -1,8 +1,14 @@
 import libraries from './utils/libraries';
 libraries.dotenv.config();
 
+/**
+ * Constants
+ */
 const ONE_DAY = 24 * 60 * 60 * 1000;
+const THIRTY_SECONDS = 30 * 1000;
+const TEN_SECONDS = 10;
 const THREE_MINUTES = 180 * 1000;
+const FIFTEEN_MINUTES = Date.now() + 15 * 60 * 1000;
 
 const config = {
   mysql: {
@@ -19,7 +25,7 @@ const config = {
     host: process.env.REDIS_HOST,
     port: process.env.REDIS_PORT,
     password: process.env.REDIS_PASSWORD,
-    maxAge: 60, // 1min for now, but will change to 3 months (7776000) in production
+    maxAge: 10, // 10sec for now, but will change to 3 months (7776000) in production
   },
   server: {
     host: process.env.SERVER_HOST,
@@ -33,7 +39,8 @@ const config = {
     passwordResetLinkSecret: process.env.JWT_PASSWORD_RESET_SECRET,
     accessTokenExpiration: '30s', // 15m
     refreshTokenExpiration: '5m', // 90d or 3 months
-    cookieMaxAge: ONE_DAY,
+    cookieMaxAge: TEN_SECONDS,
+    sessionMaxAge: ONE_DAY, // one day
   },
   encryption: {
     secret: process.env.DATA_ENCRYPTION_SECRET,
@@ -41,10 +48,18 @@ const config = {
   authentication: {
     loginRetryWindow: THREE_MINUTES,
     loginAttemptsPerWindow: 5,
+    verificationCodeExpiration: FIFTEEN_MINUTES,
   },
   emailAuthentication: {
     user: process.env.EMAIL_AUTHENTICATION_USER,
     password: process.env.EMAIL_AUTHENTICATION_PASSWORD,
+  },
+  smsAuthentication: {
+    twilio: {
+      accountSid: process.env.TWILIO_ACCOUNT_SID,
+      authToken: process.env.TWILIO_AUTHENTICATION_TOKEN,
+      sender: process.env.TWILIO_SENDING_PHONE_NUMBER,
+    },
   },
   api: {
     version: process.env.CURRENT_API_VERSION,

@@ -7,6 +7,9 @@ import {
 import { loadSqlQueries } from '../../../utils/helpers';
 import client from '../connection';
 
+/**
+ * Find user method
+ */
 const findUser = async (usernameOrEmail) => {
   const database = await client.connectToMySqlDb();
   const queries = await loadSqlQueries({ sqlFolder: 'api/v1/user/queries' });
@@ -15,15 +18,22 @@ const findUser = async (usernameOrEmail) => {
     const [queryResponse] = await database.query(queries.findUser, requestInput);
     const userDoesNotExist = !queryResponse.length || queryResponse.length === 0;
     const user = queryResponse[0];
-    // Converting sql boolean formats (i.e. 0s & 1s to true and false)
+    // Converting sql boolean formats (i.e. 0s & 1s into true and false)
     return userDoesNotExist
       ? null
-      : Object.freeze({ ...user, is_email_verified: Boolean(user.is_email_verified) });
+      : Object.freeze({
+          ...user,
+          is_email_verified: Boolean(user.is_email_verified),
+          is_phone_verified: Boolean(user.is_phone_verified),
+        });
   } catch (error) {
     throw error;
   }
 };
 
+/**
+ * This method checks if user exists and returns a boolean
+ */
 const checkIfUserExists = async (usernameOrEmail) => {
   try {
     const user = await findUser(usernameOrEmail);
@@ -36,6 +46,9 @@ const checkIfUserExists = async (usernameOrEmail) => {
   }
 };
 
+/**
+ * Create or save user entry method
+ */
 const createUser = async (user) => {
   const database = await client.connectToMySqlDb();
   const queries = await loadSqlQueries({ sqlFolder: 'api/v1/user/queries' });
@@ -63,6 +76,9 @@ const createUser = async (user) => {
   }
 };
 
+/**
+ * Update user method- takes in username, the filed being updated and the data
+ */
 const updateUser = async ({ username, fieldToUpdate, data }) => {
   const database = await client.connectToMySqlDb();
   const queries = await loadSqlQueries({ sqlFolder: 'api/v1/user/queries' });
@@ -77,6 +93,7 @@ const updateUser = async ({ username, fieldToUpdate, data }) => {
       'email',
       'avatar',
       'identification_number',
+      'is_phone_verified',
       'email_verification_code',
       'password',
     ];
@@ -106,7 +123,31 @@ const updateUser = async ({ username, fieldToUpdate, data }) => {
     }
 
     // Update phone number
+    // if (fieldToUpdate === 'phone_number') {
+    //   const [request] = await database.query(queries.updatePhoneNumber, requestInput);
+    //   const requestWasSuccessful = request.affectedRows > 0;
+    //   if (!requestWasSuccessful) {
+    //     throw new InternalServerError('Request could not be processed due to an unexpected error');
+    //   }
+    //   const updatedUser = await findUser(username);
+    //   return Object.freeze({
+    //     username,
+    //     phone_number: updatedUser.phone_number,
+    //   });
+    // }
+
+    // Update phone number
     if (fieldToUpdate === 'phone_number') {
+      if (typeof data !== 'object') {
+        throw new InternalServerError('Data must be an object');
+      }
+      const requestInput = [
+        data.phoneNumber,
+        data.verificationCode,
+        data.verificationCodeExpiration,
+        timeOfUpdate,
+        username,
+      ];
       const [request] = await database.query(queries.updatePhoneNumber, requestInput);
       const requestWasSuccessful = request.affectedRows > 0;
       if (!requestWasSuccessful) {
@@ -116,6 +157,22 @@ const updateUser = async ({ username, fieldToUpdate, data }) => {
       return Object.freeze({
         username,
         phone_number: updatedUser.phone_number,
+        phone_verification_code: updatedUser.phone_verification_code,
+        phone_verification_code_expiration: updatedUser.phone_verification_code_expiration,
+      });
+    }
+
+    // Update phone number verification status
+    if (fieldToUpdate === 'is_phone_verified') {
+      const [request] = await database.query(queries.updatePhoneNumberVerificationStatus, requestInput);
+      const requestWasSuccessful = request.affectedRows > 0;
+      if (!requestWasSuccessful) {
+        throw new InternalServerError('Request could not be processed due to an unexpected error');
+      }
+      const updatedUser = await findUser(username);
+      return Object.freeze({
+        username,
+        is_email_verified: updatedUser.is_phone_verified,
       });
     }
 
@@ -140,7 +197,7 @@ const updateUser = async ({ username, fieldToUpdate, data }) => {
       });
     }
 
-    // Update account verification status
+    // Update email verification status
     if (fieldToUpdate === 'is_email_verified') {
       const [request] = await database.query(queries.updateEmailVerificationStatus, requestInput);
       const requestWasSuccessful = request.affectedRows > 0;
@@ -197,34 +254,34 @@ const updateUser = async ({ username, fieldToUpdate, data }) => {
     }
 
     // Update identification number
-    if (fieldToUpdate === 'identification_number') {
-      if (typeof data !== 'object') {
-        throw new InternalServerError('Data must be an object');
-      }
-      const requestInput = [...Object.values(data), timeOfUpdate, username];
-      const [request] = await database.query(queries.updateIdentificationNumber, requestInput);
-      const requestWasSuccessful = request.affectedRows > 0;
-      if (!requestWasSuccessful) {
-        throw new InternalServerError('Request could not be processed due to an unexpected error');
-      }
-      const updatedUser = await findUser(username);
-      return Object.freeze({
-        username,
-        identification_number: updatedUser.identification_number,
-        identification_document: updatedUser.identification_document,
-        identification_document_issuer: updatedUser.identification_document_issuer,
-        front_image_of_document: updatedUser.front_image_of_document,
-        back_image_of_document: updatedUser.back_image_of_document,
-        selfie: updatedUser.selfie,
-      });
-    }
+    // if (fieldToUpdate === 'identification_number') {
+    //   if (typeof data !== 'object') {
+    //     throw new InternalServerError('Data must be an object');
+    //   }
+    //   const requestInput = [...Object.values(data), timeOfUpdate, username];
+    //   const [request] = await database.query(queries.updateIdentificationNumber, requestInput);
+    //   const requestWasSuccessful = request.affectedRows > 0;
+    //   if (!requestWasSuccessful) {
+    //     throw new InternalServerError('Request could not be processed due to an unexpected error');
+    //   }
+    //   const updatedUser = await findUser(username);
+    //   return Object.freeze({
+    //     username,
+    //     identification_number: updatedUser.identification_number,
+    //     identification_document: updatedUser.identification_document,
+    //     identification_document_issuer: updatedUser.identification_document_issuer,
+    //     front_image_of_document: updatedUser.front_image_of_document,
+    //     back_image_of_document: updatedUser.back_image_of_document,
+    //     selfie: updatedUser.selfie,
+    //   });
+    // }
 
     // Create/update email verificatiion code
     if (fieldToUpdate === 'email_verification_code') {
       if (typeof data !== 'object') {
         throw new InternalServerError('Data must be an object');
       }
-      const requestInput = [...Object.values(data), timeOfUpdate, username];
+      const requestInput = [data.verificationCode, data.verificationCodeExpiration, timeOfUpdate, username];
       const [request] = await database.query(queries.updateEmailVerificationCode, requestInput);
       const requestWasSuccessful = request.affectedRows > 0;
       if (!requestWasSuccessful) {
@@ -256,6 +313,9 @@ const updateUser = async ({ username, fieldToUpdate, data }) => {
   }
 };
 
+/**
+ * Delete user method
+ */
 const deleteUser = async (username) => {
   const database = await client.connectToMySqlDb();
   const queries = await loadSqlQueries({ sqlFolder: 'api/v1/user/queries' });
@@ -273,6 +333,9 @@ const deleteUser = async (username) => {
   }
 };
 
+/**
+ * Search user method
+ */
 const searchUser = async ({ usernameOrEmailOrPhoneNumber, page = 1, sizeOfRecordsToRetrieve = 15 }) => {
   const database = await client.connectToMySqlDb();
   const queries = await loadSqlQueries({ sqlFolder: 'api/v1/user/queries' });
@@ -300,7 +363,9 @@ const searchUser = async ({ usernameOrEmailOrPhoneNumber, page = 1, sizeOfRecord
   }
 };
 
-// List all users
+/**
+ * List all users method
+ */
 const listAllUsers = async ({ page = 1, sizeOfRecordsToRetrieve = 10 }) => {
   const database = await client.connectToMySqlDb();
   const queries = await loadSqlQueries({ sqlFolder: 'api/v1/user/queries' });

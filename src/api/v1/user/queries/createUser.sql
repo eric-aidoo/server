@@ -4,6 +4,7 @@ INSERT INTO users (
     role,
     status,
     is_email_verified,
+    is_phone_verified,
     first_name,
     middle_name,
     last_name,
@@ -15,5 +16,5 @@ INSERT INTO users (
     updated_at,
     tos_acceptance
 )
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 

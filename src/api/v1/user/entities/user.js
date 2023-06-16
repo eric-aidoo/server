@@ -36,6 +36,7 @@ export default class UserEntity {
       role: 'basic',
       status: 'active',
       is_email_verified: false,
+      is_phone_verified: false,
       first_name: capitalize(first_name.trim()),
       middle_name: capitalize(middle_name) ?? null,
       last_name: capitalize(last_name.trim()),
