@@ -6,7 +6,7 @@ import {
   xFrameOptionMiddleware,
 } from './middleware/security-headers';
 import errorHandler from './middleware/global-error-handler';
-import { deactivateDebuggingInProductionMode } from './utils/helpers';
+import { deactivateDebuggingInProductionMode, reformatResponse } from './utils/helpers';
 import initializeDatabaseTables from './database/mysql/tables';
 import libraries from './utils/libraries';
 import asyncHandler from './middleware/async-handler';
@@ -14,6 +14,8 @@ import userAuthenticationRoutes from './api/v1/user/routes/auth-route';
 import UserRepository from './database/mysql/repositories/user-repository';
 import { MissingFieldError } from './utils/error-responses';
 import SmsService from './integrations/sms/sms-service';
+import userEarlyAccessProgramRoutes from './api/v1/user/routes/waitlist-route';
+import Waitlist from './api/v1/user/entities/waitlist';
 
 export default async function createExpressApp() {
   const app = libraries.expressFramework();
@@ -92,7 +94,49 @@ export default async function createExpressApp() {
     }),
   );
 
+  /**
+   * API routes registry
+   */
+  await userEarlyAccessProgramRoutes.register(app);
   await userAuthenticationRoutes.register(app);
+
+  const originalResponse = {
+    id: 1,
+    name: 'John Doe',
+    age: 30,
+    address: {
+      street: '123 Main St',
+      city: 'Anytown',
+      state: 'California',
+    },
+  };
+
+  const unwantedProperties = ['age'];
+
+  const propertiesToModify = {
+    name: 'Elon Musk',
+    'address.street': '201 Market Blvd',
+    'address.city': 'San Francisco',
+    'address.zipCode': '16803',
+  };
+
+  const newUser = Waitlist.addUser({ email: 'lifeoferic1@gmail.com', country_of_residence: 'US' });
+  // console.log(Object.values(newUser));
+
+  // const modifiedResponse = reformatResponse({ originalResponse, unwantedProperties, propertiesToModify });
+  // console.log(JSON.stringify(originalResponse, null, 2));
+  // console.log(JSON.stringify(modifiedResponse, null, 2));
+  // const user = {
+  //   isApprovedToTestApp: false,
+  // };
+
+  // function checkIfUserISAllowedToTryApp() {
+  //   if (user.isApprovedToTestApp) {
+  //     return 'Is allowed to try our beta';
+  //   }
+  //   return 'Is not allowed yet';
+  // }
+  // console.log(checkIfUserISAllowedToTryApp());
 
   // const url = `http://localhost:3000/user/reset-password/0e4760820ee7955a5e436bdf98b0.n6x6God5c2tv.79322ee05099494f43572a245384d5af/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxpZmVvZmVyaWMxQGdtYWlsLmNvbSIsImlkIjoiMGU0NzYwODIwZWU3OTU1YTVlNDM2YmRmOThiMC5uNng2R29kNWMydHYuNzkzMjJlZTA1MDk5NDk0ZjQzNTcyYTI0NTM4NGQ1YWYiLCJpYXQiOjE2ODY2MjE0NjMsImV4cCI6MTY4NjYyMTQ5MywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIn0.LcRQvj_FsvYJjVFmTegYyEN9IH4cgny-pv7swz2EoN8`;
   // const id = url.split('/')[5];

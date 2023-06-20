@@ -40,7 +40,6 @@ const config = {
     accessTokenExpiration: '30s', // 15m
     refreshTokenExpiration: '5m', // 90d or 3 months
     cookieMaxAge: TEN_SECONDS,
-    sessionMaxAge: ONE_DAY, // one day
   },
   encryption: {
     secret: process.env.DATA_ENCRYPTION_SECRET,
@@ -54,7 +53,7 @@ const config = {
     user: process.env.EMAIL_AUTHENTICATION_USER,
     password: process.env.EMAIL_AUTHENTICATION_PASSWORD,
   },
-  smsAuthentication: {
+  sms: {
     twilio: {
       accountSid: process.env.TWILIO_ACCOUNT_SID,
       authToken: process.env.TWILIO_AUTHENTICATION_TOKEN,

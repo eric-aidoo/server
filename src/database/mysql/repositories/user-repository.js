@@ -18,14 +18,7 @@ const findUser = async (usernameOrEmail) => {
     const [queryResponse] = await database.query(queries.findUser, requestInput);
     const userDoesNotExist = !queryResponse.length || queryResponse.length === 0;
     const user = queryResponse[0];
-    // Converting sql boolean formats (i.e. 0s & 1s into true and false)
-    return userDoesNotExist
-      ? null
-      : Object.freeze({
-          ...user,
-          is_email_verified: Boolean(user.is_email_verified),
-          is_phone_verified: Boolean(user.is_phone_verified),
-        });
+    return userDoesNotExist ? null : Object.freeze(user);
   } catch (error) {
     throw error;
   }
@@ -320,7 +313,6 @@ const deleteUser = async (username) => {
   const database = await client.connectToMySqlDb();
   const queries = await loadSqlQueries({ sqlFolder: 'api/v1/user/queries' });
   try {
-    username = username.charAt(0) !== '@' ? `@${username}` : username;
     const requestInput = [username];
     const [request] = await database.query(queries.deleteUser, requestInput);
     const requestWasSuccessful = request.affectedRows > 0;
@@ -373,14 +365,21 @@ const listAllUsers = async ({ page = 1, sizeOfRecordsToRetrieve = 10 }) => {
     const pageSize = parseInt(sizeOfRecordsToRetrieve);
     const offset = parseInt((page - 1) * sizeOfRecordsToRetrieve);
     const requestInput = [pageSize, offset];
-    const [queryResponse] = await database.query(queries.listAllUsers, requestInput);
+    const [queryResponse] = await database.query(queries.listUsers, requestInput);
     const noRecordOfUsers = !queryResponse.length || queryResponse.length === 0;
+
+    // Reformatting is_email_verified and is_phone_verified properties
+    const reformattedUsers = queryResponse.map((user) => ({
+      ...user,
+      is_email_verified: Boolean(user.is_email_verified),
+      is_phone_verified: Boolean(user.is_phone_verified),
+    }));
     return noRecordOfUsers
       ? null
       : Object.freeze({
           page: page.toString(),
           page_size: sizeOfRecordsToRetrieve.toString(),
-          data: queryResponse,
+          users: reformattedUsers,
         });
   } catch (error) {
     throw error;

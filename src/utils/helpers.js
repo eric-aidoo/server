@@ -348,7 +348,6 @@ export function determineIdentityDocumentType(country) {
 }
 
 export function replaceHtmlPlaceholdersWithDynamicValues({ html, context }) {
-  // If there are no dynamic values to replace, return the original HTML
   if (!context || Object.keys(context).length === 0) {
     return html;
   }
@@ -361,7 +360,7 @@ export function replaceHtmlPlaceholdersWithDynamicValues({ html, context }) {
   return result;
 }
 
-export async function sendEmail({ emailAddress, template, subject, dynamicValues }) {
+export async function sendEmail({ recipient, template, subject, dynamicValues }) {
   try {
     const emailTransporter = libraries.nodemailer.createTransport({
       service: 'gmail',
@@ -370,15 +369,13 @@ export async function sendEmail({ emailAddress, template, subject, dynamicValues
         pass: config.emailAuthentication.password,
       },
     });
-
     const emailTemplate = replaceHtmlPlaceholdersWithDynamicValues({
       html: template,
       context: dynamicValues,
     });
-
     const mail = {
       from: config.emailAuthentication.user,
-      to: emailAddress,
+      to: recipient,
       subject: subject,
       html: emailTemplate,
     };
@@ -386,4 +383,40 @@ export async function sendEmail({ emailAddress, template, subject, dynamicValues
   } catch (error) {
     throw error;
   }
+}
+
+export function reformatResponse({ originalResponse, unwantedProperties = [], propertiesToModify = {} }) {
+  const removeProperty = (obj, property) => {
+    const parts = property.split('.');
+    const lastPart = parts.pop();
+    const nestedObject = parts.reduce((nested, part) => nested[part], obj);
+    if (nestedObject && nestedObject.hasOwnProperty(lastPart)) {
+      delete nestedObject[lastPart];
+    }
+  };
+  const modifyProperty = (obj, property, newValue) => {
+    const parts = property.split('.');
+    const lastPart = parts.pop();
+    const nestedObject = parts.reduce((nested, part) => nested[part], obj);
+    if (nestedObject && nestedObject.hasOwnProperty(lastPart)) {
+      nestedObject[lastPart] = newValue;
+    } else {
+      // Add the property to the nested object if it doesn't exist
+      const parentObject = parts.reduce((nested, part) => {
+        if (!nested.hasOwnProperty(part)) {
+          nested[part] = {};
+        }
+        return nested[part];
+      }, obj);
+      parentObject[lastPart] = newValue;
+    }
+  };
+  const modifiedResponse = { ...originalResponse };
+  unwantedProperties.forEach((property) => {
+    removeProperty(modifiedResponse, property);
+  });
+  Object.entries(propertiesToModify).forEach(([property, newValue]) => {
+    modifyProperty(modifiedResponse, property, newValue);
+  });
+  return modifiedResponse;
 }

@@ -1,11 +1,11 @@
 import { loadEmailTemplates, sendEmail } from '../../utils/helpers';
 
-const sendEmailVerificationEmail = async ({ emailAddress, firstName, verificationCode }) => {
+const sendEmailVerificationEmail = async ({ recipient, firstName, verificationCode }) => {
   try {
     const folderPath = 'integrations/email/templates';
     const emailTemplates = await loadEmailTemplates({ templatesFolder: folderPath });
     await sendEmail({
-      emailAddress,
+      recipient,
       template: emailTemplates.verifyEmail,
       subject: `Confirm it's you`,
       dynamicValues: { firstName, verificationCode },
@@ -15,12 +15,12 @@ const sendEmailVerificationEmail = async ({ emailAddress, firstName, verificatio
   }
 };
 
-const sendWelcomeEmail = async ({ emailAddress, firstName, passwordResetCode }) => {
+const sendWelcomeEmail = async ({ recipient, firstName, passwordResetCode }) => {
   try {
     const folderPath = 'integrations/email/templates';
     const emailTemplates = await loadEmailTemplates({ templatesFolder: folderPath });
     await sendEmail({
-      emailAddress,
+      recipient,
       template: emailTemplates.welcome,
       subject: `Your Credet account is activated`,
       dynamicValues: { firstName },
@@ -30,12 +30,27 @@ const sendWelcomeEmail = async ({ emailAddress, firstName, passwordResetCode }) 
   }
 };
 
-const sendPasswordResetInstructionsEmail = async ({ emailAddress, firstName, passwordResetLink }) => {
+const sendWaitlistConfirmationEmail = async ({ recipient }) => {
   try {
     const folderPath = 'integrations/email/templates';
     const emailTemplates = await loadEmailTemplates({ templatesFolder: folderPath });
     await sendEmail({
-      emailAddress,
+      recipient,
+      template: emailTemplates.waitlistConfirmation,
+      subject: `You're on the waitlist!`,
+      dynamicValues: {},
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+const sendPasswordResetInstructionsEmail = async ({ recipient, firstName, passwordResetLink }) => {
+  try {
+    const folderPath = 'integrations/email/templates';
+    const emailTemplates = await loadEmailTemplates({ templatesFolder: folderPath });
+    await sendEmail({
+      recipient,
       template: emailTemplates.resetPassword,
       subject: 'Reset your Credet password',
       dynamicValues: { firstName, passwordResetLink },
@@ -46,8 +61,9 @@ const sendPasswordResetInstructionsEmail = async ({ emailAddress, firstName, pas
 };
 
 const EmailService = {
-  sendEmailVerificationEmail,
   sendWelcomeEmail,
+  sendEmailVerificationEmail,
+  sendWaitlistConfirmationEmail,
   sendPasswordResetInstructionsEmail,
 };
 

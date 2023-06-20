@@ -4,17 +4,14 @@ import libraries from '../../utils/libraries';
 /**
  * Initialize SMS client
  */
-const smsClient = libraries.twilio(
-  config.smsAuthentication.twilio.accountSid,
-  config.smsAuthentication.twilio.authToken,
-);
+const smsClient = libraries.twilio(config.sms.twilio.accountSid, config.sms.twilio.authToken);
 
-const sendVerificationCodeTextMessage = async ({ phoneNumber, verificationCode }) => {
+const sendTextMessage = ({ destination, message }) => {
   try {
-    await smsClient.messages.create({
-      body: `Your Credet verification code is: ${verificationCode}. Don't share it with anyone.`,
-      from: config.smsAuthentication.twilio.sender,
-      to: phoneNumber,
+    smsClient.messages.create({
+      body: message,
+      from: config.sms.twilio.sender,
+      to: destination,
     });
   } catch (error) {
     throw error;
@@ -22,7 +19,7 @@ const sendVerificationCodeTextMessage = async ({ phoneNumber, verificationCode }
 };
 
 const SmsService = {
-  sendVerificationCodeTextMessage,
+  sendTextMessage,
 };
 
 export default SmsService;

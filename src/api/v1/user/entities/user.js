@@ -16,7 +16,6 @@ import { validatePhoneNumber } from '../validations/phone-number-validation';
 import { validateSignupDetails } from '../validations/signup-validation';
 
 export default class UserEntity {
-  // Create a new user entity
   static create(user) {
     const {
       email,

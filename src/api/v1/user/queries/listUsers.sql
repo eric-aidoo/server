@@ -2,8 +2,8 @@ SELECT u.id,
        u.type,
        u.role, 
        u.status,
-       u.is_email_verified,
-       u.is_phone_verified,
+       IF (u.is_email_verified = 1, TRUE, FALSE) AS is_email_verified,
+       IF (u.is_phone_verified = 1, TRUE, FALSE) AS is_phone_verified,
        u.first_name,
        u.middle_name,
        u.last_name,
@@ -39,7 +39,5 @@ SELECT u.id,
        u.tos_acceptance,
        u.created_at, 
        u.updated_at
-FROM users AS u 
-  LEFT JOIN users_address AS a ON u.username = a.username
-WHERE 
-    u.username = ? OR u.email = ? 
+FROM users AS u
+JOIN users_address AS a ON u.username = a.username

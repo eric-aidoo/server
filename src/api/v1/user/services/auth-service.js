@@ -1,5 +1,6 @@
 import config from '../../../../config';
 import UserRepository from '../../../../database/mysql/repositories/user-repository';
+import WaitlistRepository from '../../../../database/mysql/repositories/waitlist-repository';
 import EmailService from '../../../../integrations/email/email-service';
 import SmsService from '../../../../integrations/sms/sms-service';
 import {
@@ -25,6 +26,33 @@ import {
 import UserEntity from '../entities/user';
 
 /**
+ * Sign up step 1 (POST /user/signup/verify-invite-code)
+ */
+const verifyInviteCode = async (inviteCode) => {
+  try {
+    if (!inviteCode) {
+      throw new MissingFieldError('Invite code is required');
+    }
+    const waitlistUser = await WaitlistRepository.findUser(inviteCode);
+    if (!waitlistUser) {
+      throw new NotFoundError(
+        'Your invite code is invalid. Try entering the right code or join our waitlist to request a new one.',
+      );
+    }
+    const userIsApprovedToTestApp = waitlistUser.is_approved_to_test;
+    if (!userIsApprovedToTestApp) {
+      throw new UnauthorizedError(
+        `Credet is not available for you yet. We will notify you when it's your turn. Keep an eye on your inbox.`,
+      );
+    }
+    const userIsGoForTesting = true;
+    return { userIsGoForTesting };
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
  * Sign up step 1 (POST /user/signup)
  */
 const signup = async (user) => {
@@ -44,7 +72,7 @@ const signup = async (user) => {
     });
 
     await EmailService.sendEmailVerificationEmail({
-      emailAddress: newUser.email,
+      recipient: newUser.email,
       firstName: newUser.first_name,
       verificationCode: emailVerificationCode,
     });
@@ -108,19 +136,21 @@ const registerPhoneNumber = async ({ username, countryOfResidence, phoneNumber }
       country_of_residence: countryOfResidence,
       phone_number: phoneNumber,
     });
-    const phoneVerificationCode = generateOtpCode();
+
+    const otpCode = generateOtpCode();
+
     await UserRepository.updateUser({
       username: username,
       fieldToUpdate: 'phone_number',
       data: {
         phoneNumber: user.phone_number,
-        verificationCode: phoneVerificationCode,
+        verificationCode: otpCode,
         verificationCodeExpiration: config.authentication.verificationCodeExpiration,
       },
     });
-    await SmsService.sendVerificationCodeTextMessage({
-      phoneNumber: user.phone_number,
-      otpCode: phoneVerificationCode,
+    SmsService.sendTextMessage({
+      destination: user.phone_number,
+      message: `Your Credet verification code is: ${otpCode}. Don't share it with anyone.`,
     });
     const successMessage = 'Verify your phone number by entering the verification code we just texted you';
     return { successMessage };
@@ -130,7 +160,7 @@ const registerPhoneNumber = async ({ username, countryOfResidence, phoneNumber }
 };
 
 /**
- * Verify one-time phone verification code (POST /user/signup/verify-phone-number)
+ * Signup step 4- Verify phone verification code (POST /user/signup/verify-phone-number)
  */
 const verifyPhoneNumber = async ({ username, verificationCode }) => {
   try {
@@ -189,7 +219,7 @@ const requestEmailVerificationCode = async (username) => {
       },
     });
     await EmailService.sendEmailVerificationEmail({
-      emailAddress: user.email,
+      recipient: user.email,
       firstName: user.first_name,
       verificationCode: verificationCode,
     });
@@ -279,7 +309,7 @@ const requestPasswordResetLink = async (username) => {
       password: user.password,
     });
     await EmailService.sendPasswordResetInstructionsEmail({
-      emailAddress: user.email,
+      recipient: user.email,
       firstName: user.first_name,
       passwordResetLink,
     });
@@ -371,6 +401,7 @@ const logout = async (cookies) => {
 };
 
 export const UserAuthenticationService = {
+  verifyInviteCode,
   signup,
   registerPhoneNumber,
   verifyPhoneNumber,
