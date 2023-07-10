@@ -12,7 +12,7 @@ export const expectCTMiddleware = (req, res, next) => {
 };
 
 export const contentSecurityPolicyMiddleware = (req, res, next) => {
-  const nonce = generateToken({ lengthOfToken: 126 });
+  const nonce = generateToken({ lengthOfToken: 130 });
   res.setHeader('Content-Security-Policy', `script-src 'self' 'nonce-${nonce}'`);
   res.locals.nonce = nonce;
   next();

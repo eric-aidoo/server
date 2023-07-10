@@ -1,7 +1,7 @@
 export class BadRequestError extends Error {
   constructor(message) {
     super(message);
-    this.errorCode = 'bad_request';
+    this.code = 'BAD_REQUEST';
     this.name = 'BadRequestError';
     this.statusCode = 400;
   }
@@ -10,7 +10,7 @@ export class BadRequestError extends Error {
 export class AlreadyExistsError extends Error {
   constructor(message) {
     super(message);
-    this.errorCode = 'already_exists';
+    this.code = 'ALREADY_EXISTS';
     this.name = 'AlreadyExistsError';
     this.statusCode = 409;
   }
@@ -19,7 +19,7 @@ export class AlreadyExistsError extends Error {
 export class NotFoundError extends Error {
   constructor(message) {
     super(message);
-    this.errorCode = 'not_found';
+    this.code = 'NOT_FOUND';
     this.name = 'NotFoundError';
     this.statusCode = 404;
   }
@@ -28,7 +28,7 @@ export class NotFoundError extends Error {
 export class UnauthorizedError extends Error {
   constructor(message) {
     super(message);
-    this.errorCode = 'unauthorized_request';
+    this.code = 'UNAUTHORIZED_ACCESS';
     this.name = 'UnauthorizedError';
     this.statusCode = 401;
   }
@@ -37,7 +37,7 @@ export class UnauthorizedError extends Error {
 export class ServiceUnavailableError extends Error {
   constructor(message) {
     super(message);
-    this.errorCode = 'service_unavailable';
+    this.code = 'SERVICE_UNAVAILABLE';
     this.name = 'ServiceUnavailableError';
     this.statusCode = 451;
   }
@@ -46,7 +46,7 @@ export class ServiceUnavailableError extends Error {
 export class InternalServerError extends Error {
   constructor(message) {
     super(message);
-    this.errorCode = 'internal_server_error';
+    this.code = 'INTERNAL_SERVER_ERROR';
     this.name = 'InternalServerError';
     this.statusCode = 500;
   }
@@ -55,7 +55,7 @@ export class InternalServerError extends Error {
 export class MissingFieldError extends Error {
   constructor(message) {
     super(message);
-    this.errorCode = 'missing_field';
+    this.code = 'MISSING_PARAMETER';
     this.name = 'MissingFieldError';
     this.statusCode = 400;
   }
@@ -64,7 +64,7 @@ export class MissingFieldError extends Error {
 export class TooManyRequestsError extends Error {
   constructor(message) {
     super(message);
-    this.errorCode = 'too_many_requests';
+    this.code = 'TOO_MANY_REQUESTS';
     this.name = 'TooManyRequestsError ';
     this.statusCode = 429;
   }
@@ -73,8 +73,8 @@ export class TooManyRequestsError extends Error {
 export class PayloadTooLargeError extends Error {
   constructor(message) {
     super(message);
-    this.errorCode = 'payload_too_large';
-    this.name = 'PayloadTooLargeError';
+    this.code = 'PAYLOAD_TOO_LARGE';
+    this.name = 'HeavyPayloadError';
     this.statusCode = 413;
   }
 }
@@ -82,7 +82,7 @@ export class PayloadTooLargeError extends Error {
 export class ForbiddenError extends Error {
   constructor(message) {
     super(message);
-    this.errorCode = 'request_forbidden';
+    this.code = 'REQUEST_FORBIDDEN';
     this.name = 'ForbiddenError';
     this.statusCode = 403;
   }
@@ -91,7 +91,7 @@ export class ForbiddenError extends Error {
 export class ValidationError extends Error {
   constructor(message) {
     super(message);
-    this.errorCode = 'invalid_request_body';
+    this.code = 'INVALID_REQUEST_BODY';
     this.name = 'ValidationError';
     this.statusCode = 422;
   }

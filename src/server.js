@@ -1,14 +1,20 @@
+import config from './settings/config';
 import createExpressApp from './app';
-import config from './config';
 
-const startServer = async () => {
+const startPaymentServer = async () => {
   try {
     const application = await createExpressApp();
     const server = application.listen(config.server.port, () => {
       console.log(`Server running at ${config.server.host}`);
     });
 
-    // Perform a graceful shutdown
+    process.on('unhandledRejection', (error) => {
+      console.log(`Server error: ${error}`);
+    });
+
+    /**
+     * Perform a graceful shutdown
+     */
     const signalInterruptionOrTermination = config.server.isInDevMode ? 'SIGINT' : 'SIGTERM';
     process.on(signalInterruptionOrTermination, () => {
       console.log('SIGINT received...');
@@ -19,12 +25,12 @@ const startServer = async () => {
       });
     });
   } catch (error) {
-    console.error(`Server startup failed due to an error: ${error}`);
+    console.error(error);
     throw error;
   }
 };
 
-startServer();
+startPaymentServer();
 
 // const cluster = require('cluster');
 // const os = require('os');

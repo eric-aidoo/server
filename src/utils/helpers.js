@@ -3,10 +3,8 @@ import fs from 'fs';
 import { promises as fsPromises } from 'fs';
 import path from 'path';
 import { ForbiddenError, UnauthorizedError, ValidationError } from './error-responses';
-import config from '../config';
-import initializeRedisClient from './redis-client';
+import config from '../settings/config';
 import libraries from './libraries';
-import FileRepository from '../database/mysql/repositories/file-repository';
 
 export function generateToken({ lengthOfToken }) {
   const cryptoGeneratedString = crypto.randomBytes(22).toString('hex');
@@ -70,18 +68,6 @@ export function createAuditTrail({ event, description, affectedTables, trailedEn
 }
 
 export const serviceableCountries = /^(US)$/;
-
-export function phoneNumberValidator(country) {
-  const phoneNumberValidator = {
-    US: /^\+1([2-9][0-9]{2})([2-9][0-9]{6})$/,
-    // GH: /^\+233([2-9]\d{8})$/,
-  };
-  const countries = Object.keys(phoneNumberValidator);
-  if (!countries.includes(country)) {
-    throw new ValidationError(`Invalid or unsupported country code for the specified phone number`);
-  }
-  return phoneNumberValidator[country];
-}
 
 export function capitalize(word) {
   if (!word) return null;
@@ -301,23 +287,6 @@ export function deactivateDebuggingInProductionMode() {
   if (!config.server.isInDevMode) {
     console.log = function () {};
   }
-}
-
-export async function uploadFileToS3Bucket(file) {
-  const s3Bucket = FileRepository();
-  const fileId = generateToken({ lengthOfToken: 16 });
-  const fileObject = {
-    id: fileId,
-    encodedString: file.data,
-    fileSize: file.size,
-    fileType: file.mimetype,
-    originalName: file.name,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-  await s3Bucket.createFile(fileObject);
-  const imageUrl = `${config.server.host}/s3/file?id=${fileId}`;
-  return imageUrl;
 }
 
 export function determineIdentityDocumentIssuer(country, documentType) {

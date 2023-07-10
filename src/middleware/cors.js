@@ -1,8 +1,8 @@
-import config from '../settings';
+import config from '../settings/config';
+import { ForbiddenError } from '../utils/error-responses';
 
-export const corsMiddleware = (req, res, next) => {
-  const serverIsInDevMode = config.server.appEnvironment === 'development';
-  if (serverIsInDevMode) {
+const corsMiddleware = (req, res, next) => {
+  if (config.server.isInDevMode) {
     res.setHeader(
       'Access-Control-Allow-Headers',
       'Origin, X-Requested-With, User-Agent, Content-Type, Accept, Authorization, If-Modified-Since, Cache-Control, Referer',
@@ -12,10 +12,19 @@ export const corsMiddleware = (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     return next();
   }
-  const server = config.server;
+  const allowedOrigins = [
+    'https://www.credet.app',
+    'https://credet.app',
+    'https://www.credetpay.com',
+    'https://credetpay.com',
+    'https://auth.credet.app',
+    'https://api.credetpay.com',
+    'https://www.movecredet.com',
+    'https://movecredet.com',
+  ];
   const origin = req.headers.origin;
-  if (!server.allowedOrigins.includes(origin)) {
-    throw new ForbiddenError('Request denied');
+  if (!allowedOrigins.includes(origin)) {
+    return next(new ForbiddenError('Request denied'));
   }
   res.setHeader('Access-Control-Allow-Headers', server.allowedHeaders.join(', '));
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
@@ -23,3 +32,5 @@ export const corsMiddleware = (req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', origin);
   next();
 };
+
+export default corsMiddleware;
