@@ -5,50 +5,44 @@ import {
   expectCTMiddleware,
   featurePolicyMiddleware,
   xFrameOptionMiddleware,
-} from './middleware/security-headers';
-import errorHandler from './middleware/error-handler';
-import { deactivateDebuggingInProductionMode, encrypt, reformatResponse } from './utils/helpers';
-
-import libraries from './utils/libraries';
-import requestLimiter from './middleware/rate-limiter';
+} from './middleware/securityHeaders';
+import errorHandler from './middleware/errorHandler';
+import libraries from './helpers/libraries';
+import requestLimiter from './middleware/rateLimiter';
 import corsMiddleware from './middleware/cors';
-import handleUnspecifiedRouteRequests from './middleware/unspecified-route-handler';
+import handleUnspecifiedRouteRequests from './middleware/handleUnidentifiedRoutes';
+import { deactivateDebuggingInProductionMode, generateFingerprint } from './helpers/utilities';
+import asyncHandler from './middleware/asyncHandler';
 
-export default async function createExpressApp() {
-  const app = libraries.expressFramework();
-
-  /**
-   * These are security headers
-   */
-  app.disable('x-powered-by');
-  app.disable('server');
-  app.disable('etag');
-  app.disable('x-xss-protection');
-  app.set('trust proxy', true);
-  app.set('x-dns-prefetch-control', 'off');
-  app.use(libraries.helmet());
-  app.use(xFrameOptionMiddleware);
-  app.use(contentSecurityPolicyMiddleware);
-  app.use(expectCTMiddleware);
-  app.use(featurePolicyMiddleware);
-  app.use(corsMiddleware);
-  app.set('trust proxy', true);
-
-  /**
-   * Other express middleware
-   */
-  app.use(libraries.expressFramework.urlencoded({ extended: true }));
-  app.use(libraries.expressFramework.json({ limit: '50mb' }));
-  app.use(libraries.compression());
-  app.use(libraries.cookieParser());
-  app.use(libraries.expressFramework.static(path.join(process.cwd(), 'src', 'public')));
-  app.set('views', path.join(process.cwd(), 'src', 'views'));
-
+export default async function createApplication(webserver) {
+  // const app = libraries.expressFramework();
   deactivateDebuggingInProductionMode();
 
-  app.use(requestLimiter);
+  // These are security headers
+  webserver.disable('x-powered-by');
+  webserver.disable('server');
+  webserver.disable('etag');
+  webserver.disable('x-xss-protection');
+  webserver.set('x-dns-prefetch-control', 'off');
+  webserver.use(libraries.helmet());
+  webserver.use(xFrameOptionMiddleware);
+  webserver.use(contentSecurityPolicyMiddleware);
+  webserver.use(expectCTMiddleware);
+  webserver.use(featurePolicyMiddleware);
+  webserver.use(corsMiddleware);
+  webserver.set('trust proxy', true);
 
-  app.get('/', (req, res) => {
+  // Other express middleware
+  webserver.use(libraries.expressFramework.urlencoded({ extended: true }));
+  webserver.use(libraries.expressFramework.json({ limit: '50mb' }));
+  webserver.use(libraries.compression());
+  webserver.use(libraries.cookieParser());
+  webserver.use(libraries.expressFramework.static(path.join(process.cwd(), 'src', 'public')));
+  webserver.set('views', path.join(process.cwd(), 'src', 'views'));
+
+  webserver.use(requestLimiter);
+
+  webserver.get('/', (req, res) => {
     res.status(200).json({
       success: true,
       data: {
@@ -57,33 +51,28 @@ export default async function createExpressApp() {
     });
   });
 
-  app.get('/ip', (req, res) => {
+  webserver.get('/ip', (req, res) => {
     const ipAddress = req.ip;
     res.send(`Your IP address: ${ipAddress}`);
   });
 
-  app.get('/get-fingerprint', (req, res) => {
-    const fingerprint = crypto
-      .createHash('sha256')
-      .update(req.headers['user-agent'] + req.ip + req.acceptsLanguages().join(''))
-      .digest('hex');
-    // Use the fingerprint for further processing or identification
+  webserver.get(
+    '/get-fingerprint',
+    asyncHandler(async (req, res) => {
+      const fingerprint = await generateFingerprint(req);
+      res.json({
+        success: true,
+        data: {
+          fingerprint: fingerprint,
+        },
+      });
+    }),
+  );
 
-    // Send response or perform other operations
-    res.json({
-      success: true,
-      data: {
-        fingerprint: fingerprint,
-      },
-    });
-  });
+  // Handle requests to unspecified routes
+  webserver.all('*', handleUnspecifiedRouteRequests);
 
-  /**
-   * Handle requests to unspecified routes
-   */
-  app.all('*', handleUnspecifiedRouteRequests);
+  webserver.use(errorHandler);
 
-  app.use(errorHandler);
-
-  return app;
+  return webserver;
 }

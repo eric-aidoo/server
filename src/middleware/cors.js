@@ -1,5 +1,5 @@
-import config from '../settings/config';
-import { ForbiddenError } from '../utils/error-responses';
+import config from '../config/appConfig';
+import { ForbiddenError } from '../helpers/errors';
 
 const corsMiddleware = (req, res, next) => {
   if (config.server.isInDevMode) {

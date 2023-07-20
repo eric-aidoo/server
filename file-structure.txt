@@ -1,0 +1,86 @@
+payment-processing-api/
+├── api/
+│   ├── users/
+│   │   ├── routes/
+│   │   │   └── usersRoutes.js
+│   │   ├── controllers/
+│   │   │   └── userController.js
+│   │   ├── models/
+│   │   │   └── userModel.js
+│   │   ├── services/
+│   │   │   └── userService.js
+│   │   └── data/
+│   │       └── userDataAccess.js
+│   ├── merchants/
+│   │   ├── routes/
+│   │   │   └── merchantRoutes.js
+│   │   ├── controllers/
+│   │   │   └── merchantController.js
+│   │   ├── models/
+│   │   │   └── merchantModel.js
+│   │   ├── services/
+│   │   │   └── merchantService.js
+│   │   └── data/
+│   │       └── merchantDataAccess.js
+│   ├── wallets/
+│   │   ├── routes/
+│   │   │   └── walletRoutes.js
+│   │   ├── controllers/
+│   │   │   └── walletController.js
+│   │   ├── models/
+│   │   │   └── walletModel.js
+│   │   ├── services/
+│   │   │   └── walletService.js
+│   │   └── data/
+│   │       └── walletDataAccess.js
+│   ├── payments/
+│   │   ├── routes/
+│   │   │   └── paymentRoutes.js
+│   │   ├── controllers/
+│   │   │   └── paymentController.js
+│   │   ├── models/
+│   │   │   └── paymentModel.js
+│   │   ├── services/
+│   │   │   └── paymentService.js
+│   │   └── data/
+│   │       └── paymentDataAccess.js
+│   └── auth/
+│       ├── routes/
+│       │   └── authRoutes.js
+│       ├── controllers/
+│       │   └── authController.js
+│       ├── models/
+│       │   └── authModel.js
+│       ├── services/
+│       │   └── authService.js
+│       └── data/
+│           └── authDataAccess.js
+├── config/
+│   ├── database.js
+│   ├── env.js
+│   └── appConfig.js
+├── helpers/
+│   └── utility.js
+├── integrations/
+│   ├── twilio.js
+│   ├── emailService.js
+│   └── otherIntegrations.js
+├── database/
+│   ├── mysqlDb/
+│   │   ├── tables/
+│   │   │   ├── usersTable.js
+│   │   │   ├── merchantsTable.js
+│   │   │   ├── walletsTable.js
+│   │   │   └── paymentsTable.js
+│   │   └── initialize.js
+│   ├── mongoDb/
+│   │   ├── tables/
+│   │   │   ├── usersTable.js
+│   │   │   ├── merchantsTable.js
+│   │   │   ├── walletsTable.js
+│   │   │   └── paymentsTable.js
+│   │   └── initialize.js
+│   └── initialize.js
+├── app.js
+├── server.js
+└── package.json

@@ -1,4 +1,4 @@
-CREATE TABLE p2p_transfer_ledger (
+CREATE TABLE p2p_transfers (
     id VARCHAR(50) PRIMARY KEY NOT NULL UNIQUE,
     amount VARCHAR(50) NOT NULL,
     currency VARCHAR(3) NOT NULL,
@@ -8,6 +8,6 @@ CREATE TABLE p2p_transfer_ledger (
     transaction_id VARCHAR(50) NOT NULL UNIQUE,
     transaction_type VARCHAR(50) NOT NULL,
     created_at VARCHAR(50) NOT NULL,
-    updated_at VARHCAR(50) NOT NULL,
+    updated_at VARCHAR(50) NOT NULL,
     INDEX idx_p2p_transfer_ledger (id, transaction_id, sender, recipient)
 )

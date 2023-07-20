@@ -1,0 +1,49 @@
+Individual User:
+----------------
+V1.0.0
+[] 1. Sign up (create account)
+[] 2. Login
+[] 3. Verify identity 
+[] 4. Search recipients (other users)
+[] 5. View transaction history
+[] 6. Send money
+[] 7. Request money
+[] 8. Withdraw money
+[] 9. Deposit money into wallet
+[] 10. Withdraw money
+
+Features:
+- Access to credit for workers. These loans will be underwritten 
+by assessing borrowers' paycheck/cashflow not based on credit history.
+Here's how we will do it:
+    1. Users grant us access to their payroll provider
+    2. Credet can then see what their paycheck is
+    3. Then using that info, we underwrite loans (75% of their daily wage)
+
+
+Better credit reporting/scoring
+-------------------------------
+Our proprietary credit scoring algorithm will focus on these metrics:
+- Consistency
+- Regularity
+- Employment status
+- Source of income
+
+
+
+- The ability for users to sell their products in the app
+by simply creating a dynamic sharable link.
+- We then show the products to other users of the app in the
+dashboard
+
+Q1. What is the platonic idea of a bank?
+
+Q2. If it's a bank, what would make it better than 
+a legacy bank (from experience, finacial benefit and payment POV)?
+
+Q3. If Q2 is held true, what kind of tools need to be built to 
+empower our customers to make more money, like what Cosimo de' Medici did?
+
+
+Send money via email
+Reverse transaction

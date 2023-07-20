@@ -1,11 +1,12 @@
 {
-  "name": "credet-payament-api",
+  "name": "payment-api",
   "version": "1.0.0",
   "description": "This is Credet's payment APIs server",
-  "main": "./src/server.js",
+  "main": "dist/server.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/server.js",
-    "start": "node src/server.js"
+    "build": "parcel build src/server.js --dist-dir dist",
+    "dev": "npm run build && parcel watch 'src/**/*.js' 'src/**/*.ejs' 'src/**/*.html' 'src/**/*.sql' --target node --out-dir dist --public-url ./dist/ & nodemon --exec babel-node src/server.js",
+    "start": "node dist/server.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,8 @@
   },
   "homepage": "https://github.com/CredetHQ/payment-api#readme",
   "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.10",
+    "aws-sdk": "^2.1418.0",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "compression": "^1.7.4",
@@ -37,18 +40,26 @@
     "ioredis": "^5.3.2",
     "jsonwebtoken": "^9.0.0",
     "memory-cache": "^0.2.0",
+    "mock-aws-s3": "^4.0.2",
     "mysql2": "^3.3.0",
+    "nock": "^13.3.2",
     "node-fetch": "^2.6.1",
+    "node-ipinfo": "^3.4.2",
     "nodemailer": "^6.9.3",
     "redis": "^4.6.6",
-    "twilio": "^4.11.2",
-    "xss-clean": "^0.1.1"
+    "twilio": "^4.11.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.21.5",
     "@babel/core": "^7.21.8",
     "@babel/node": "^7.20.7",
     "@babel/preset-env": "^7.21.5",
-    "nodemon": "^2.0.22"
+    "babel-loader": "^9.1.3",
+    "html-loader": "^4.2.0",
+    "nodemon": "^3.0.1",
+    "npm-run-all": "^4.1.5",
+    "parcel": "^2.9.3",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
   }
 }
