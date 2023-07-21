@@ -11,7 +11,7 @@ const startServer = async () => {
 
     const server = application
       .listen(config.server.port, async () => {
-        await database.initializeTables({ typeOfDatabase: 'MongoDB' });
+        await database.initializeTables({ typeOfDatabase: 'SQL' });
         console.log(`Server running at ${config.server.host}`);
       })
       .on('error', (error) => {

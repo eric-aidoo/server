@@ -11,7 +11,7 @@ const findUser = async (usernameOrEmail) => {
   try {
     const database = await mysqlClient.connectToDatabase();
     const queries = await loadSqlQueries({ sqlFolder: 'api/users/queries' });
-    const requestInput = [usernameOrEmail];
+    const requestInput = [usernameOrEmail, usernameOrEmail];
     const [queryResults] = await database.query(queries.findUser, requestInput);
     const userDoesNotExist = !queryResults.length || queryResults.length === 0;
     const user = queryResults[0];
@@ -401,7 +401,7 @@ const deactivateAccount = async (username) => {
   }
 };
 
-const usersRepository = {
+const usersDb = {
   findUser,
   createUser,
   updateAuthorizationPin,
@@ -421,4 +421,4 @@ const usersRepository = {
   deactivateAccount,
 };
 
-export default usersRepository;
+export default usersDb;

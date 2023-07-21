@@ -12,10 +12,8 @@ import requestLimiter from './middleware/rateLimiter';
 import corsMiddleware from './middleware/cors';
 import handleUnspecifiedRouteRequests from './middleware/handleUnidentifiedRoutes';
 import { deactivateDebuggingInProductionMode, generateFingerprint } from './helpers/utilities';
-import asyncHandler from './middleware/asyncHandler';
 
 export default async function createApplication(webserver) {
-  // const app = libraries.expressFramework();
   deactivateDebuggingInProductionMode();
 
   // These are security headers
@@ -55,19 +53,6 @@ export default async function createApplication(webserver) {
     const ipAddress = req.ip;
     res.send(`Your IP address: ${ipAddress}`);
   });
-
-  webserver.get(
-    '/get-fingerprint',
-    asyncHandler(async (req, res) => {
-      const fingerprint = await generateFingerprint(req);
-      res.json({
-        success: true,
-        data: {
-          fingerprint: fingerprint,
-        },
-      });
-    }),
-  );
 
   // Handle requests to unspecified routes
   webserver.all('*', handleUnspecifiedRouteRequests);

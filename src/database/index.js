@@ -6,10 +6,6 @@ const initializeTables = async ({ typeOfDatabase }) => {
     if (isSQLDatabase) {
       return await initializeSQLTables();
     }
-    const isMongoDatabase = typeOfDatabase === 'MongoDB' || typeOfDatabase === 'Mongo';
-    if (isMongoDatabase) {
-      return;
-    }
     return;
   } catch (error) {
     throw error;
