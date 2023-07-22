@@ -18,6 +18,7 @@ import twilio from 'twilio';
 import { IPinfoWrapper } from 'node-ipinfo';
 import crypto from 'crypto';
 import path from 'path';
+import { promises as fsPromises } from 'fs';
 
 const libraries = {
   dotenv,
@@ -40,6 +41,7 @@ const libraries = {
   IPinfoWrapper,
   crypto,
   path,
+  fsPromises,
 };
 
 export default libraries;

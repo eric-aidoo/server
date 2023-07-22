@@ -12,6 +12,10 @@ import requestLimiter from './middleware/rateLimiter';
 import corsMiddleware from './middleware/cors';
 import handleUnspecifiedRouteRequests from './middleware/handleUnidentifiedRoutes';
 import { deactivateDebuggingInProductionMode, generateFingerprint } from './helpers/utilities';
+import userRepository from './api/users/dataAccess/userRepository';
+import UserFactory from './api/users/factories/user';
+import AddressFactory from './api/users/factories/address';
+import waitlistRepository from './api/users/dataAccess/waitlistRepository';
 
 export default async function createApplication(webserver) {
   deactivateDebuggingInProductionMode();
@@ -53,6 +57,9 @@ export default async function createApplication(webserver) {
     const ipAddress = req.ip;
     res.send(`Your IP address: ${ipAddress}`);
   });
+
+  // const betaUser = await waitlistRepository.findUser('elon@tesla.com');
+  // console.log(betaUser);
 
   // Handle requests to unspecified routes
   webserver.all('*', handleUnspecifiedRouteRequests);

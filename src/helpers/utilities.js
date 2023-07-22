@@ -1,6 +1,3 @@
-import crypto from 'crypto';
-import fs from 'fs';
-import { promises as fsPromises } from 'fs';
 import path from 'path';
 import config from '../config/appConfig';
 import libraries from './libraries';
@@ -31,23 +28,23 @@ export function generateOtpCode() {
 
 export async function loadSqlQueries({ sqlFolder }) {
   const filePath = path.join(process.cwd(), 'src', sqlFolder);
-  const files = await fsPromises.readdir(filePath, { withFileTypes: true });
+  const files = await libraries.fsPromises.readdir(filePath, { withFileTypes: true });
   const sqlFiles = files.filter((f) => f.isFile() && f.name.endsWith('.sql')).map((f) => f.name);
   const queries = {};
   for (const sqlFile of sqlFiles) {
-    const query = await fsPromises.readFile(path.join(filePath, sqlFile), { encoding: 'utf-8' });
+    const query = await libraries.fsPromises.readFile(path.join(filePath, sqlFile), { encoding: 'utf-8' });
     queries[sqlFile.replace('.sql', '')] = query;
   }
   return queries;
 }
 
-export async function loadEmailTemplates({ templatesFolder }) {
+export async function loadEmailTemplates(templatesFolder) {
   const filePath = path.join(process.cwd(), 'src', templatesFolder);
-  const files = await fsPromises.readdir(filePath, { withFileTypes: true });
+  const files = await libraries.fsPromises.readdir(filePath, { withFileTypes: true });
   const htmlFiles = files.filter((f) => f.isFile() && f.name.endsWith('.html')).map((f) => f.name);
   const templates = {};
   for (const htmlFile of htmlFiles) {
-    const query = await fsPromises.readFile(path.join(filePath, htmlFile), { encoding: 'utf-8' });
+    const query = await libraries.fsPromises.readFile(path.join(filePath, htmlFile), { encoding: 'utf-8' });
     templates[htmlFile.replace('.html', '')] = query;
   }
   return templates;
@@ -55,7 +52,7 @@ export async function loadEmailTemplates({ templatesFolder }) {
 
 export function createAuditTrail({ event, description, affectedTables, trailedEntityId, oldData, newData }) {
   const auditTrail = Object.freeze({
-    id: `trail_${generateToken({ lengthOfToken: 26 })}`,
+    id: `at_${generateToken({ lengthOfToken: 26 })}`,
     event,
     description,
     affectedTables: JSON.stringify(affectedTables),
@@ -134,7 +131,7 @@ export function encrypt(data) {
   try {
     const secretKey = config.encryption.secret;
     const iv = generateToken({ lengthOfToken: 12 });
-    const encrypter = crypto.createCipheriv(encryptionAlgorithm, secretKey, iv);
+    const encrypter = libraries.crypto.createCipheriv(encryptionAlgorithm, secretKey, iv);
     let encryptedData = encrypter.update(JSON.stringify(data), 'utf8', 'hex');
     encryptedData += encrypter.final('hex');
     const authTag = encrypter.getAuthTag().toString('hex');
@@ -151,7 +148,7 @@ export function decrypt(encryptedData) {
     const encryptedMessage = encryptedData.split('.')[0];
     const iv = encryptedData.split('.')[1];
     const tag = Buffer.from(encryptedData.split('.')[2], 'hex');
-    const decrypter = crypto.createDecipheriv(encryptionAlgorithm, secretKey, iv);
+    const decrypter = libraries.crypto.createDecipheriv(encryptionAlgorithm, secretKey, iv);
     decrypter.setAuthTag(tag);
     let decryptedData = decrypter.update(encryptedMessage, 'hex', 'utf8');
     decryptedData += decrypter.final('utf8');
@@ -327,31 +324,6 @@ export function replaceHtmlPlaceholdersWithDynamicValues({ html, context }) {
     result = result.replace(new RegExp(placeholder, 'g'), value);
   }
   return result;
-}
-
-export async function sendEmail({ recipient, template, subject, dynamicValues }) {
-  try {
-    const emailTransporter = libraries.nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: config.emailAuthentication.user,
-        pass: config.emailAuthentication.password,
-      },
-    });
-    const emailTemplate = replaceHtmlPlaceholdersWithDynamicValues({
-      html: template,
-      context: dynamicValues,
-    });
-    const mail = {
-      from: config.emailAuthentication.user,
-      to: recipient,
-      subject: subject,
-      html: emailTemplate,
-    };
-    return await emailTransporter.sendMail(mail);
-  } catch (error) {
-    throw error;
-  }
 }
 
 export function reformatResponse({ originalResponse, unwantedProperties = [], propertiesToModify = {} }) {

@@ -84,12 +84,6 @@ var $a826c173f4456cde$var$_cors = $a826c173f4456cde$var$_interopRequireDefault((
 var $a826c173f4456cde$var$_handleUnidentifiedRoutes = $a826c173f4456cde$var$_interopRequireDefault((parcelRequire("iUES8")));
 
 var $37rWr = parcelRequire("37rWr");
-
-var $a826c173f4456cde$var$_asyncHandler = $a826c173f4456cde$var$_interopRequireDefault((parcelRequire("jdqHa")));
-
-var $a826c173f4456cde$var$_usersRepository = $a826c173f4456cde$var$_interopRequireDefault((parcelRequire("clKGn")));
-
-var $a826c173f4456cde$var$_user = $a826c173f4456cde$var$_interopRequireDefault((parcelRequire("50Xtb")));
 function $a826c173f4456cde$var$_interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
         "default": obj
@@ -427,11 +421,9 @@ function $a826c173f4456cde$var$createApplication(_x) {
 }
 function $a826c173f4456cde$var$_createApplication() {
     $a826c173f4456cde$var$_createApplication = $a826c173f4456cde$var$_asyncToGenerator(/*#__PURE__*/ $a826c173f4456cde$var$_regeneratorRuntime().mark(function _callee(webserver) {
-        var dataAccessTests, getUserTest, person, user;
         return $a826c173f4456cde$var$_regeneratorRuntime().wrap(function _callee$(_context) {
             while(true)switch(_context.prev = _context.next){
                 case 0:
-                    // const app = libraries.expressFramework();
                     (0, $37rWr.deactivateDebuggingInProductionMode)();
                     // These are security headers
                     webserver.disable("x-powered-by");
@@ -470,28 +462,11 @@ function $a826c173f4456cde$var$_createApplication() {
                         var ipAddress = req.ip;
                         res.send("Your IP address: ".concat(ipAddress));
                     });
-                    dataAccessTests = $a826c173f4456cde$var$_usersRepository["default"]; // Get user test
-                    _context.next = 25;
-                    return dataAccessTests.getUser("@lifeoferic1");
-                case 25:
-                    getUserTest = _context.sent;
-                    console.log(getUserTest);
-                    // Create user test
-                    person = {
-                        email: "marc@gmail.com",
-                        password: "Testuserpassword123*",
-                        first_name: "Marc",
-                        last_name: "Andreessen",
-                        country_of_residence: "US",
-                        username: "pmarca"
-                    };
-                    user = $a826c173f4456cde$var$_user["default"].createUser(person); // const createUserTest = await dataAccessTests.createUser(user);
-                    // console.log(createUserTest);
                     // Handle requests to unspecified routes
                     webserver.all("*", $a826c173f4456cde$var$_handleUnidentifiedRoutes["default"]);
                     webserver.use($a826c173f4456cde$var$_errorHandler["default"]);
                     return _context.abrupt("return", webserver);
-                case 32:
+                case 25:
                 case "end":
                     return _context.stop();
             }
@@ -573,6 +548,7 @@ module.exports.serviceableCountries = void 0;
 module.exports.setCookie = $2457b32e9bfe73d7$var$setCookie;
 module.exports.standardizeDate = $2457b32e9bfe73d7$var$standardizeDate;
 module.exports.validateParams = $2457b32e9bfe73d7$var$validateParams;
+module.exports.validateUSStateAbbreviation = void 0;
 module.exports.verifyPasswordResetLinkToken = $2457b32e9bfe73d7$var$verifyPasswordResetLinkToken;
 module.exports.verifyRefreshToken = $2457b32e9bfe73d7$var$verifyRefreshToken;
 
@@ -1658,6 +1634,64 @@ function $2457b32e9bfe73d7$var$_generateFingerprint() {
     }));
     return $2457b32e9bfe73d7$var$_generateFingerprint.apply(this, arguments);
 }
+var $2457b32e9bfe73d7$var$validateUSStateAbbreviation = function validateUSStateAbbreviation(stateAbbreviation) {
+    var validUSStateAbbreviations = [
+        "AL",
+        "AK",
+        "AZ",
+        "AR",
+        "CA",
+        "CO",
+        "CT",
+        "DE",
+        "FL",
+        "GA",
+        "HI",
+        "ID",
+        "IL",
+        "IN",
+        "IA",
+        "KS",
+        "KY",
+        "LA",
+        "ME",
+        "MD",
+        "MA",
+        "MI",
+        "MN",
+        "MS",
+        "MO",
+        "MT",
+        "NE",
+        "NV",
+        "NH",
+        "NJ",
+        "NM",
+        "NY",
+        "NC",
+        "ND",
+        "OH",
+        "OK",
+        "OR",
+        "PA",
+        "RI",
+        "SC",
+        "SD",
+        "TN",
+        "TX",
+        "UT",
+        "VT",
+        "VA",
+        "WA",
+        "WV",
+        "WI",
+        "WY"
+    ];
+    if (!stateAbbreviation || stateAbbreviation.trim() === "") return false;
+    if (stateAbbreviation.length !== 2) return false;
+    return validUSStateAbbreviations.includes(stateAbbreviation.toUpperCase());
+};
+module.exports.validateUSStateAbbreviation = $2457b32e9bfe73d7$var$validateUSStateAbbreviation;
 
 });
 parcelRequire.register("avFDW", function(module, exports) {
@@ -2324,2625 +2358,6 @@ var $dc4d295109c687b5$var$_default = $dc4d295109c687b5$var$handleUnspecifiedRout
 module.exports["default"] = $dc4d295109c687b5$var$_default;
 
 });
-
-parcelRequire.register("jdqHa", function(module, exports) {
-"use strict";
-function $dfd3f055cffe31d4$var$_typeof(obj) {
-    "@babel/helpers - typeof";
-    return $dfd3f055cffe31d4$var$_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-        return typeof obj;
-    } : function(obj) {
-        return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    }, $dfd3f055cffe31d4$var$_typeof(obj);
-}
-Object.defineProperty(module.exports, "__esModule", {
-    value: true
-});
-module.exports["default"] = void 0;
-function $dfd3f055cffe31d4$var$_regeneratorRuntime() {
-    "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ 
-    $dfd3f055cffe31d4$var$_regeneratorRuntime = function _regeneratorRuntime() {
-        return exports1;
-    };
-    var exports1 = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function(obj, key, desc) {
-        obj[key] = desc.value;
-    }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-    function define(obj, key, value) {
-        return Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: !0,
-            configurable: !0,
-            writable: !0
-        }), obj[key];
-    }
-    try {
-        define({}, "");
-    } catch (err) {
-        define = function define(obj, key, value) {
-            return obj[key] = value;
-        };
-    }
-    function wrap(innerFn, outerFn, self, tryLocsList) {
-        var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []);
-        return defineProperty(generator, "_invoke", {
-            value: makeInvokeMethod(innerFn, self, context)
-        }), generator;
-    }
-    function tryCatch(fn, obj, arg) {
-        try {
-            return {
-                type: "normal",
-                arg: fn.call(obj, arg)
-            };
-        } catch (err) {
-            return {
-                type: "throw",
-                arg: err
-            };
-        }
-    }
-    exports1.wrap = wrap;
-    var ContinueSentinel = {};
-    function Generator() {}
-    function GeneratorFunction() {}
-    function GeneratorFunctionPrototype() {}
-    var IteratorPrototype = {};
-    define(IteratorPrototype, iteratorSymbol, function() {
-        return this;
-    });
-    var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-    NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype);
-    var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
-    function defineIteratorMethods(prototype) {
-        [
-            "next",
-            "throw",
-            "return"
-        ].forEach(function(method) {
-            define(prototype, method, function(arg) {
-                return this._invoke(method, arg);
-            });
-        });
-    }
-    function AsyncIterator(generator, PromiseImpl) {
-        function invoke(method, arg, resolve, reject) {
-            var record = tryCatch(generator[method], generator, arg);
-            if ("throw" !== record.type) {
-                var result = record.arg, value = result.value;
-                return value && "object" == $dfd3f055cffe31d4$var$_typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function(value) {
-                    invoke("next", value, resolve, reject);
-                }, function(err) {
-                    invoke("throw", err, resolve, reject);
-                }) : PromiseImpl.resolve(value).then(function(unwrapped) {
-                    result.value = unwrapped, resolve(result);
-                }, function(error) {
-                    return invoke("throw", error, resolve, reject);
-                });
-            }
-            reject(record.arg);
-        }
-        var previousPromise;
-        defineProperty(this, "_invoke", {
-            value: function value(method, arg) {
-                function callInvokeWithMethodAndArg() {
-                    return new PromiseImpl(function(resolve, reject) {
-                        invoke(method, arg, resolve, reject);
-                    });
-                }
-                return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
-            }
-        });
-    }
-    function makeInvokeMethod(innerFn, self, context) {
-        var state = "suspendedStart";
-        return function(method, arg) {
-            if ("executing" === state) throw new Error("Generator is already running");
-            if ("completed" === state) {
-                if ("throw" === method) throw arg;
-                return doneResult();
-            }
-            for(context.method = method, context.arg = arg;;){
-                var delegate = context.delegate;
-                if (delegate) {
-                    var delegateResult = maybeInvokeDelegate(delegate, context);
-                    if (delegateResult) {
-                        if (delegateResult === ContinueSentinel) continue;
-                        return delegateResult;
-                    }
-                }
-                if ("next" === context.method) context.sent = context._sent = context.arg;
-                else if ("throw" === context.method) {
-                    if ("suspendedStart" === state) throw state = "completed", context.arg;
-                    context.dispatchException(context.arg);
-                } else "return" === context.method && context.abrupt("return", context.arg);
-                state = "executing";
-                var record = tryCatch(innerFn, self, context);
-                if ("normal" === record.type) {
-                    if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
-                    return {
-                        value: record.arg,
-                        done: context.done
-                    };
-                }
-                "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
-            }
-        };
-    }
-    function maybeInvokeDelegate(delegate, context) {
-        var methodName = context.method, method = delegate.iterator[methodName];
-        if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel;
-        var record = tryCatch(method, delegate.iterator, context.arg);
-        if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel;
-        var info = record.arg;
-        return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel);
-    }
-    function pushTryEntry(locs) {
-        var entry = {
-            tryLoc: locs[0]
-        };
-        1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry);
-    }
-    function resetTryEntry(entry) {
-        var record = entry.completion || {};
-        record.type = "normal", delete record.arg, entry.completion = record;
-    }
-    function Context(tryLocsList) {
-        this.tryEntries = [
-            {
-                tryLoc: "root"
-            }
-        ], tryLocsList.forEach(pushTryEntry, this), this.reset(!0);
-    }
-    function values(iterable) {
-        if (iterable) {
-            var iteratorMethod = iterable[iteratorSymbol];
-            if (iteratorMethod) return iteratorMethod.call(iterable);
-            if ("function" == typeof iterable.next) return iterable;
-            if (!isNaN(iterable.length)) {
-                var i = -1, next = function next() {
-                    for(; ++i < iterable.length;)if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next;
-                    return next.value = undefined, next.done = !0, next;
-                };
-                return next.next = next;
-            }
-        }
-        return {
-            next: doneResult
-        };
-    }
-    function doneResult() {
-        return {
-            value: undefined,
-            done: !0
-        };
-    }
-    return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", {
-        value: GeneratorFunctionPrototype,
-        configurable: !0
-    }), defineProperty(GeneratorFunctionPrototype, "constructor", {
-        value: GeneratorFunction,
-        configurable: !0
-    }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports1.isGeneratorFunction = function(genFun) {
-        var ctor = "function" == typeof genFun && genFun.constructor;
-        return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name));
-    }, exports1.mark = function(genFun) {
-        return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun;
-    }, exports1.awrap = function(arg) {
-        return {
-            __await: arg
-        };
-    }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function() {
-        return this;
-    }), exports1.AsyncIterator = AsyncIterator, exports1.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
-        void 0 === PromiseImpl && (PromiseImpl = Promise);
-        var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl);
-        return exports1.isGeneratorFunction(outerFn) ? iter : iter.next().then(function(result) {
-            return result.done ? result.value : iter.next();
-        });
-    }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function() {
-        return this;
-    }), define(Gp, "toString", function() {
-        return "[object Generator]";
-    }), exports1.keys = function(val) {
-        var object = Object(val), keys = [];
-        for(var key in object)keys.push(key);
-        return keys.reverse(), function next() {
-            for(; keys.length;){
-                var key = keys.pop();
-                if (key in object) return next.value = key, next.done = !1, next;
-            }
-            return next.done = !0, next;
-        };
-    }, exports1.values = values, Context.prototype = {
-        constructor: Context,
-        reset: function reset(skipTempReset) {
-            if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for(var name in this)"t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined);
-        },
-        stop: function stop() {
-            this.done = !0;
-            var rootRecord = this.tryEntries[0].completion;
-            if ("throw" === rootRecord.type) throw rootRecord.arg;
-            return this.rval;
-        },
-        dispatchException: function dispatchException(exception) {
-            if (this.done) throw exception;
-            var context = this;
-            function handle(loc, caught) {
-                return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught;
-            }
-            for(var i = this.tryEntries.length - 1; i >= 0; --i){
-                var entry = this.tryEntries[i], record = entry.completion;
-                if ("root" === entry.tryLoc) return handle("end");
-                if (entry.tryLoc <= this.prev) {
-                    var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc");
-                    if (hasCatch && hasFinally) {
-                        if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
-                        if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
-                    } else if (hasCatch) {
-                        if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
-                    } else {
-                        if (!hasFinally) throw new Error("try statement without catch or finally");
-                        if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
-                    }
-                }
-            }
-        },
-        abrupt: function abrupt(type, arg) {
-            for(var i = this.tryEntries.length - 1; i >= 0; --i){
-                var entry = this.tryEntries[i];
-                if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
-                    var finallyEntry = entry;
-                    break;
-                }
-            }
-            finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null);
-            var record = finallyEntry ? finallyEntry.completion : {};
-            return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record);
-        },
-        complete: function complete(record, afterLoc) {
-            if ("throw" === record.type) throw record.arg;
-            return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel;
-        },
-        finish: function finish(finallyLoc) {
-            for(var i = this.tryEntries.length - 1; i >= 0; --i){
-                var entry = this.tryEntries[i];
-                if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel;
-            }
-        },
-        "catch": function _catch(tryLoc) {
-            for(var i = this.tryEntries.length - 1; i >= 0; --i){
-                var entry = this.tryEntries[i];
-                if (entry.tryLoc === tryLoc) {
-                    var record = entry.completion;
-                    if ("throw" === record.type) {
-                        var thrown = record.arg;
-                        resetTryEntry(entry);
-                    }
-                    return thrown;
-                }
-            }
-            throw new Error("illegal catch attempt");
-        },
-        delegateYield: function delegateYield(iterable, resultName, nextLoc) {
-            return this.delegate = {
-                iterator: values(iterable),
-                resultName: resultName,
-                nextLoc: nextLoc
-            }, "next" === this.method && (this.arg = undefined), ContinueSentinel;
-        }
-    }, exports1;
-}
-function $dfd3f055cffe31d4$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-    try {
-        var info = gen[key](arg);
-        var value = info.value;
-    } catch (error) {
-        reject(error);
-        return;
-    }
-    if (info.done) resolve(value);
-    else Promise.resolve(value).then(_next, _throw);
-}
-function $dfd3f055cffe31d4$var$_asyncToGenerator(fn) {
-    return function() {
-        var self = this, args = arguments;
-        return new Promise(function(resolve, reject) {
-            var gen = fn.apply(self, args);
-            function _next(value) {
-                $dfd3f055cffe31d4$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-            }
-            function _throw(err) {
-                $dfd3f055cffe31d4$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-            }
-            _next(undefined);
-        });
-    };
-}
-var $dfd3f055cffe31d4$var$asyncHandler = function asyncHandler(controller) {
-    return /*#__PURE__*/ function() {
-        var _ref = $dfd3f055cffe31d4$var$_asyncToGenerator(/*#__PURE__*/ $dfd3f055cffe31d4$var$_regeneratorRuntime().mark(function _callee(req, res, next) {
-            return $dfd3f055cffe31d4$var$_regeneratorRuntime().wrap(function _callee$(_context) {
-                while(true)switch(_context.prev = _context.next){
-                    case 0:
-                        _context.prev = 0;
-                        _context.next = 3;
-                        return controller(req, res, next);
-                    case 3:
-                        _context.next = 8;
-                        break;
-                    case 5:
-                        _context.prev = 5;
-                        _context.t0 = _context["catch"](0);
-                        next(_context.t0);
-                    case 8:
-                    case "end":
-                        return _context.stop();
-                }
-            }, _callee, null, [
-                [
-                    0,
-                    5
-                ]
-            ]);
-        }));
-        return function(_x, _x2, _x3) {
-            return _ref.apply(this, arguments);
-        };
-    }();
-};
-var $dfd3f055cffe31d4$var$_default = $dfd3f055cffe31d4$var$asyncHandler;
-module.exports["default"] = $dfd3f055cffe31d4$var$_default;
-
-});
-
-parcelRequire.register("clKGn", function(module, exports) {
-"use strict";
-Object.defineProperty(module.exports, "__esModule", {
-    value: true
-});
-module.exports["default"] = void 0;
-
-var $8fdba865f9baf728$var$_userRepository = $8fdba865f9baf728$var$_interopRequireDefault((parcelRequire("bcCCu")));
-function $8fdba865f9baf728$var$_interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-        "default": obj
-    };
-}
-var $8fdba865f9baf728$var$userDataAccessTest = {
-    getUser: $8fdba865f9baf728$var$_userRepository["default"].findUser,
-    createUser: $8fdba865f9baf728$var$_userRepository["default"].createUser,
-    addDateOfBirth: $8fdba865f9baf728$var$_userRepository["default"].updateDateOfBirth,
-    createOrUpdateAuthorizationPin: $8fdba865f9baf728$var$_userRepository["default"].updateAuthorizationPin
-};
-var $8fdba865f9baf728$var$_default = $8fdba865f9baf728$var$userDataAccessTest;
-module.exports["default"] = $8fdba865f9baf728$var$_default;
-
-});
-parcelRequire.register("bcCCu", function(module, exports) {
-"use strict";
-Object.defineProperty(module.exports, "__esModule", {
-    value: true
-});
-module.exports["default"] = void 0;
-
-var $827ec5cc3a8aba47$var$_databaseClient = $827ec5cc3a8aba47$var$_interopRequireDefault((parcelRequire("auN7S")));
-
-var $k70SB = parcelRequire("k70SB");
-
-var $37rWr = parcelRequire("37rWr");
-function $827ec5cc3a8aba47$var$_interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-        "default": obj
-    };
-}
-function $827ec5cc3a8aba47$var$_typeof(obj) {
-    "@babel/helpers - typeof";
-    return $827ec5cc3a8aba47$var$_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-        return typeof obj;
-    } : function(obj) {
-        return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    }, $827ec5cc3a8aba47$var$_typeof(obj);
-}
-function $827ec5cc3a8aba47$var$_regeneratorRuntime() {
-    "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ 
-    $827ec5cc3a8aba47$var$_regeneratorRuntime = function _regeneratorRuntime() {
-        return exports1;
-    };
-    var exports1 = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function(obj, key, desc) {
-        obj[key] = desc.value;
-    }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-    function define(obj, key, value) {
-        return Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: !0,
-            configurable: !0,
-            writable: !0
-        }), obj[key];
-    }
-    try {
-        define({}, "");
-    } catch (err) {
-        define = function define(obj, key, value) {
-            return obj[key] = value;
-        };
-    }
-    function wrap(innerFn, outerFn, self, tryLocsList) {
-        var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []);
-        return defineProperty(generator, "_invoke", {
-            value: makeInvokeMethod(innerFn, self, context)
-        }), generator;
-    }
-    function tryCatch(fn, obj, arg) {
-        try {
-            return {
-                type: "normal",
-                arg: fn.call(obj, arg)
-            };
-        } catch (err) {
-            return {
-                type: "throw",
-                arg: err
-            };
-        }
-    }
-    exports1.wrap = wrap;
-    var ContinueSentinel = {};
-    function Generator() {}
-    function GeneratorFunction() {}
-    function GeneratorFunctionPrototype() {}
-    var IteratorPrototype = {};
-    define(IteratorPrototype, iteratorSymbol, function() {
-        return this;
-    });
-    var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-    NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype);
-    var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
-    function defineIteratorMethods(prototype) {
-        [
-            "next",
-            "throw",
-            "return"
-        ].forEach(function(method) {
-            define(prototype, method, function(arg) {
-                return this._invoke(method, arg);
-            });
-        });
-    }
-    function AsyncIterator(generator, PromiseImpl) {
-        function invoke(method, arg, resolve, reject) {
-            var record = tryCatch(generator[method], generator, arg);
-            if ("throw" !== record.type) {
-                var result = record.arg, value = result.value;
-                return value && "object" == $827ec5cc3a8aba47$var$_typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function(value) {
-                    invoke("next", value, resolve, reject);
-                }, function(err) {
-                    invoke("throw", err, resolve, reject);
-                }) : PromiseImpl.resolve(value).then(function(unwrapped) {
-                    result.value = unwrapped, resolve(result);
-                }, function(error) {
-                    return invoke("throw", error, resolve, reject);
-                });
-            }
-            reject(record.arg);
-        }
-        var previousPromise;
-        defineProperty(this, "_invoke", {
-            value: function value(method, arg) {
-                function callInvokeWithMethodAndArg() {
-                    return new PromiseImpl(function(resolve, reject) {
-                        invoke(method, arg, resolve, reject);
-                    });
-                }
-                return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
-            }
-        });
-    }
-    function makeInvokeMethod(innerFn, self, context) {
-        var state = "suspendedStart";
-        return function(method, arg) {
-            if ("executing" === state) throw new Error("Generator is already running");
-            if ("completed" === state) {
-                if ("throw" === method) throw arg;
-                return doneResult();
-            }
-            for(context.method = method, context.arg = arg;;){
-                var delegate = context.delegate;
-                if (delegate) {
-                    var delegateResult = maybeInvokeDelegate(delegate, context);
-                    if (delegateResult) {
-                        if (delegateResult === ContinueSentinel) continue;
-                        return delegateResult;
-                    }
-                }
-                if ("next" === context.method) context.sent = context._sent = context.arg;
-                else if ("throw" === context.method) {
-                    if ("suspendedStart" === state) throw state = "completed", context.arg;
-                    context.dispatchException(context.arg);
-                } else "return" === context.method && context.abrupt("return", context.arg);
-                state = "executing";
-                var record = tryCatch(innerFn, self, context);
-                if ("normal" === record.type) {
-                    if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
-                    return {
-                        value: record.arg,
-                        done: context.done
-                    };
-                }
-                "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
-            }
-        };
-    }
-    function maybeInvokeDelegate(delegate, context) {
-        var methodName = context.method, method = delegate.iterator[methodName];
-        if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel;
-        var record = tryCatch(method, delegate.iterator, context.arg);
-        if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel;
-        var info = record.arg;
-        return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel);
-    }
-    function pushTryEntry(locs) {
-        var entry = {
-            tryLoc: locs[0]
-        };
-        1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry);
-    }
-    function resetTryEntry(entry) {
-        var record = entry.completion || {};
-        record.type = "normal", delete record.arg, entry.completion = record;
-    }
-    function Context(tryLocsList) {
-        this.tryEntries = [
-            {
-                tryLoc: "root"
-            }
-        ], tryLocsList.forEach(pushTryEntry, this), this.reset(!0);
-    }
-    function values(iterable) {
-        if (iterable) {
-            var iteratorMethod = iterable[iteratorSymbol];
-            if (iteratorMethod) return iteratorMethod.call(iterable);
-            if ("function" == typeof iterable.next) return iterable;
-            if (!isNaN(iterable.length)) {
-                var i = -1, next = function next() {
-                    for(; ++i < iterable.length;)if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next;
-                    return next.value = undefined, next.done = !0, next;
-                };
-                return next.next = next;
-            }
-        }
-        return {
-            next: doneResult
-        };
-    }
-    function doneResult() {
-        return {
-            value: undefined,
-            done: !0
-        };
-    }
-    return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", {
-        value: GeneratorFunctionPrototype,
-        configurable: !0
-    }), defineProperty(GeneratorFunctionPrototype, "constructor", {
-        value: GeneratorFunction,
-        configurable: !0
-    }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports1.isGeneratorFunction = function(genFun) {
-        var ctor = "function" == typeof genFun && genFun.constructor;
-        return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name));
-    }, exports1.mark = function(genFun) {
-        return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun;
-    }, exports1.awrap = function(arg) {
-        return {
-            __await: arg
-        };
-    }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function() {
-        return this;
-    }), exports1.AsyncIterator = AsyncIterator, exports1.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
-        void 0 === PromiseImpl && (PromiseImpl = Promise);
-        var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl);
-        return exports1.isGeneratorFunction(outerFn) ? iter : iter.next().then(function(result) {
-            return result.done ? result.value : iter.next();
-        });
-    }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function() {
-        return this;
-    }), define(Gp, "toString", function() {
-        return "[object Generator]";
-    }), exports1.keys = function(val) {
-        var object = Object(val), keys = [];
-        for(var key in object)keys.push(key);
-        return keys.reverse(), function next() {
-            for(; keys.length;){
-                var key = keys.pop();
-                if (key in object) return next.value = key, next.done = !1, next;
-            }
-            return next.done = !0, next;
-        };
-    }, exports1.values = values, Context.prototype = {
-        constructor: Context,
-        reset: function reset(skipTempReset) {
-            if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for(var name in this)"t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined);
-        },
-        stop: function stop() {
-            this.done = !0;
-            var rootRecord = this.tryEntries[0].completion;
-            if ("throw" === rootRecord.type) throw rootRecord.arg;
-            return this.rval;
-        },
-        dispatchException: function dispatchException(exception) {
-            if (this.done) throw exception;
-            var context = this;
-            function handle(loc, caught) {
-                return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught;
-            }
-            for(var i = this.tryEntries.length - 1; i >= 0; --i){
-                var entry = this.tryEntries[i], record = entry.completion;
-                if ("root" === entry.tryLoc) return handle("end");
-                if (entry.tryLoc <= this.prev) {
-                    var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc");
-                    if (hasCatch && hasFinally) {
-                        if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
-                        if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
-                    } else if (hasCatch) {
-                        if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
-                    } else {
-                        if (!hasFinally) throw new Error("try statement without catch or finally");
-                        if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
-                    }
-                }
-            }
-        },
-        abrupt: function abrupt(type, arg) {
-            for(var i = this.tryEntries.length - 1; i >= 0; --i){
-                var entry = this.tryEntries[i];
-                if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
-                    var finallyEntry = entry;
-                    break;
-                }
-            }
-            finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null);
-            var record = finallyEntry ? finallyEntry.completion : {};
-            return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record);
-        },
-        complete: function complete(record, afterLoc) {
-            if ("throw" === record.type) throw record.arg;
-            return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel;
-        },
-        finish: function finish(finallyLoc) {
-            for(var i = this.tryEntries.length - 1; i >= 0; --i){
-                var entry = this.tryEntries[i];
-                if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel;
-            }
-        },
-        "catch": function _catch(tryLoc) {
-            for(var i = this.tryEntries.length - 1; i >= 0; --i){
-                var entry = this.tryEntries[i];
-                if (entry.tryLoc === tryLoc) {
-                    var record = entry.completion;
-                    if ("throw" === record.type) {
-                        var thrown = record.arg;
-                        resetTryEntry(entry);
-                    }
-                    return thrown;
-                }
-            }
-            throw new Error("illegal catch attempt");
-        },
-        delegateYield: function delegateYield(iterable, resultName, nextLoc) {
-            return this.delegate = {
-                iterator: values(iterable),
-                resultName: resultName,
-                nextLoc: nextLoc
-            }, "next" === this.method && (this.arg = undefined), ContinueSentinel;
-        }
-    }, exports1;
-}
-function $827ec5cc3a8aba47$var$_slicedToArray(arr, i) {
-    return $827ec5cc3a8aba47$var$_arrayWithHoles(arr) || $827ec5cc3a8aba47$var$_iterableToArrayLimit(arr, i) || $827ec5cc3a8aba47$var$_unsupportedIterableToArray(arr, i) || $827ec5cc3a8aba47$var$_nonIterableRest();
-}
-function $827ec5cc3a8aba47$var$_nonIterableRest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function $827ec5cc3a8aba47$var$_unsupportedIterableToArray(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return $827ec5cc3a8aba47$var$_arrayLikeToArray(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return $827ec5cc3a8aba47$var$_arrayLikeToArray(o, minLen);
-}
-function $827ec5cc3a8aba47$var$_arrayLikeToArray(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
-    return arr2;
-}
-function $827ec5cc3a8aba47$var$_iterableToArrayLimit(arr, i) {
-    var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
-    if (null != _i) {
-        var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1;
-        try {
-            if (_x = (_i = _i.call(arr)).next, 0 === i) {
-                if (Object(_i) !== _i) return;
-                _n = !1;
-            } else for(; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0);
-        } catch (err) {
-            _d = !0, _e = err;
-        } finally{
-            try {
-                if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return;
-            } finally{
-                if (_d) throw _e;
-            }
-        }
-        return _arr;
-    }
-}
-function $827ec5cc3a8aba47$var$_arrayWithHoles(arr) {
-    if (Array.isArray(arr)) return arr;
-}
-function $827ec5cc3a8aba47$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-    try {
-        var info = gen[key](arg);
-        var value = info.value;
-    } catch (error) {
-        reject(error);
-        return;
-    }
-    if (info.done) resolve(value);
-    else Promise.resolve(value).then(_next, _throw);
-}
-function $827ec5cc3a8aba47$var$_asyncToGenerator(fn) {
-    return function() {
-        var self = this, args = arguments;
-        return new Promise(function(resolve, reject) {
-            var gen = fn.apply(self, args);
-            function _next(value) {
-                $827ec5cc3a8aba47$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-            }
-            function _throw(err) {
-                $827ec5cc3a8aba47$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-            }
-            _next(undefined);
-        });
-    };
-}
-var $827ec5cc3a8aba47$var$findUser = /*#__PURE__*/ function() {
-    var _ref = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee(usernameOrEmail) {
-        var database, queries, requestInput, _yield$database$query, _yield$database$query2, queryResults, userDoesNotExist, user;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee$(_context) {
-            while(true)switch(_context.prev = _context.next){
-                case 0:
-                    _context.prev = 0;
-                    _context.next = 3;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 3:
-                    database = _context.sent;
-                    _context.next = 6;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 6:
-                    queries = _context.sent;
-                    requestInput = [
-                        usernameOrEmail,
-                        usernameOrEmail
-                    ];
-                    _context.next = 10;
-                    return database.query(queries.findUser, requestInput);
-                case 10:
-                    _yield$database$query = _context.sent;
-                    _yield$database$query2 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query, 1);
-                    queryResults = _yield$database$query2[0];
-                    userDoesNotExist = !queryResults.length || queryResults.length === 0;
-                    user = queryResults[0];
-                    return _context.abrupt("return", userDoesNotExist ? null : Object.freeze(user));
-                case 18:
-                    _context.prev = 18;
-                    _context.t0 = _context["catch"](0);
-                    throw _context.t0;
-                case 21:
-                case "end":
-                    return _context.stop();
-            }
-        }, _callee, null, [
-            [
-                0,
-                18
-            ]
-        ]);
-    }));
-    return function findUser(_x) {
-        return _ref.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$createUser = /*#__PURE__*/ function() {
-    var _ref2 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee2(user) {
-        var database, queries, userIsNotAnObject, emailIsAlreadyRegisteredWithAnAccount, usernameIsAlreadyTaken, requestInput, _yield$database$query3, _yield$database$query4, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee2$(_context2) {
-            while(true)switch(_context2.prev = _context2.next){
-                case 0:
-                    _context2.prev = 0;
-                    _context2.next = 3;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 3:
-                    database = _context2.sent;
-                    _context2.next = 6;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 6:
-                    queries = _context2.sent;
-                    userIsNotAnObject = $827ec5cc3a8aba47$var$_typeof(user) !== "object";
-                    if (!userIsNotAnObject) {
-                        _context2.next = 10;
-                        break;
-                    }
-                    throw new $k70SB.BadRequestError("User must be an object");
-                case 10:
-                    _context2.next = 12;
-                    return $827ec5cc3a8aba47$var$findUser(user.email);
-                case 12:
-                    emailIsAlreadyRegisteredWithAnAccount = _context2.sent;
-                    if (!emailIsAlreadyRegisteredWithAnAccount) {
-                        _context2.next = 15;
-                        break;
-                    }
-                    throw new $k70SB.AlreadyExistsError("Email is already registered with an account. Try logging in instead.");
-                case 15:
-                    _context2.next = 17;
-                    return $827ec5cc3a8aba47$var$findUser(user.username);
-                case 17:
-                    usernameIsAlreadyTaken = _context2.sent;
-                    if (!usernameIsAlreadyTaken) {
-                        _context2.next = 20;
-                        break;
-                    }
-                    throw new $k70SB.AlreadyExistsError("Username already taken");
-                case 20:
-                    requestInput = Object.values(user);
-                    _context2.next = 23;
-                    return database.query(queries.createUser, requestInput);
-                case 23:
-                    _yield$database$query3 = _context2.sent;
-                    _yield$database$query4 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query3, 1);
-                    queryResults = _yield$database$query4[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context2.next = 29;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 29:
-                    return _context2.abrupt("return", {
-                        response: "User successfully created"
-                    });
-                case 32:
-                    _context2.prev = 32;
-                    _context2.t0 = _context2["catch"](0);
-                    throw _context2.t0;
-                case 35:
-                case "end":
-                    return _context2.stop();
-            }
-        }, _callee2, null, [
-            [
-                0,
-                32
-            ]
-        ]);
-    }));
-    return function createUser(_x2) {
-        return _ref2.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$updateEmail = /*#__PURE__*/ function() {
-    var _ref4 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee3(_ref3) {
-        var username, email, database, queries, user, updatedAt, requestInput, _yield$database$query5, _yield$database$query6, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee3$(_context3) {
-            while(true)switch(_context3.prev = _context3.next){
-                case 0:
-                    username = _ref3.username, email = _ref3.email;
-                    _context3.prev = 1;
-                    _context3.next = 4;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 4:
-                    database = _context3.sent;
-                    _context3.next = 7;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 7:
-                    queries = _context3.sent;
-                    _context3.next = 10;
-                    return $827ec5cc3a8aba47$var$findUser(username);
-                case 10:
-                    user = _context3.sent;
-                    if (user) {
-                        _context3.next = 13;
-                        break;
-                    }
-                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity.");
-                case 13:
-                    updatedAt = new Date().toISOString();
-                    requestInput = [
-                        email,
-                        updatedAt,
-                        username
-                    ];
-                    _context3.next = 17;
-                    return database.query(queries.updateEmailAddress, requestInput);
-                case 17:
-                    _yield$database$query5 = _context3.sent;
-                    _yield$database$query6 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query5, 1);
-                    queryResults = _yield$database$query6[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context3.next = 23;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 23:
-                    return _context3.abrupt("return", {
-                        response: "Email updated"
-                    });
-                case 26:
-                    _context3.prev = 26;
-                    _context3.t0 = _context3["catch"](1);
-                    throw _context3.t0;
-                case 29:
-                case "end":
-                    return _context3.stop();
-            }
-        }, _callee3, null, [
-            [
-                1,
-                26
-            ]
-        ]);
-    }));
-    return function updateEmail(_x3) {
-        return _ref4.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$markEmailAsVerified = /*#__PURE__*/ function() {
-    var _ref6 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee4(_ref5) {
-        var username, database, queries, user, requestInput, _yield$database$query7, _yield$database$query8, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee4$(_context4) {
-            while(true)switch(_context4.prev = _context4.next){
-                case 0:
-                    username = _ref5.username;
-                    _context4.prev = 1;
-                    _context4.next = 4;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 4:
-                    database = _context4.sent;
-                    _context4.next = 7;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 7:
-                    queries = _context4.sent;
-                    _context4.next = 10;
-                    return $827ec5cc3a8aba47$var$findUser(username);
-                case 10:
-                    user = _context4.sent;
-                    if (user) {
-                        _context4.next = 13;
-                        break;
-                    }
-                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity.");
-                case 13:
-                    requestInput = [
-                        true,
-                        username
-                    ];
-                    _context4.next = 16;
-                    return database.query(queries.makeEmailAsVerified, requestInput);
-                case 16:
-                    _yield$database$query7 = _context4.sent;
-                    _yield$database$query8 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query7, 1);
-                    queryResults = _yield$database$query8[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context4.next = 22;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 22:
-                    return _context4.abrupt("return", {
-                        response: "Email verified"
-                    });
-                case 25:
-                    _context4.prev = 25;
-                    _context4.t0 = _context4["catch"](1);
-                    throw _context4.t0;
-                case 28:
-                case "end":
-                    return _context4.stop();
-            }
-        }, _callee4, null, [
-            [
-                1,
-                25
-            ]
-        ]);
-    }));
-    return function markEmailAsVerified(_x4) {
-        return _ref6.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$updatePhoneNumber = /*#__PURE__*/ function() {
-    var _ref8 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee5(_ref7) {
-        var username, phoneNumber, database, queries, user, updatedAt, requestInput, _yield$database$query9, _yield$database$query10, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee5$(_context5) {
-            while(true)switch(_context5.prev = _context5.next){
-                case 0:
-                    username = _ref7.username, phoneNumber = _ref7.phoneNumber;
-                    _context5.prev = 1;
-                    _context5.next = 4;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 4:
-                    database = _context5.sent;
-                    _context5.next = 7;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 7:
-                    queries = _context5.sent;
-                    _context5.next = 10;
-                    return $827ec5cc3a8aba47$var$findUser(username);
-                case 10:
-                    user = _context5.sent;
-                    if (user) {
-                        _context5.next = 13;
-                        break;
-                    }
-                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity.");
-                case 13:
-                    updatedAt = new Date().toISOString();
-                    requestInput = [
-                        phoneNumber,
-                        true,
-                        updatedAt,
-                        username
-                    ];
-                    _context5.next = 17;
-                    return database.query(queries.updatePhoneNumber, requestInput);
-                case 17:
-                    _yield$database$query9 = _context5.sent;
-                    _yield$database$query10 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query9, 1);
-                    queryResults = _yield$database$query10[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context5.next = 23;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 23:
-                    return _context5.abrupt("return", {
-                        response: "Phone number updated"
-                    });
-                case 26:
-                    _context5.prev = 26;
-                    _context5.t0 = _context5["catch"](1);
-                    throw _context5.t0;
-                case 29:
-                case "end":
-                    return _context5.stop();
-            }
-        }, _callee5, null, [
-            [
-                1,
-                26
-            ]
-        ]);
-    }));
-    return function updatePhoneNumber(_x5) {
-        return _ref8.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$markPhoneAsVerified = /*#__PURE__*/ function() {
-    var _ref9 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee6(username) {
-        var database, queries, user, updatedAt, requestInput, _yield$database$query11, _yield$database$query12, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee6$(_context6) {
-            while(true)switch(_context6.prev = _context6.next){
-                case 0:
-                    _context6.prev = 0;
-                    _context6.next = 3;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 3:
-                    database = _context6.sent;
-                    _context6.next = 6;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 6:
-                    queries = _context6.sent;
-                    _context6.next = 9;
-                    return $827ec5cc3a8aba47$var$findUser(username);
-                case 9:
-                    user = _context6.sent;
-                    if (user) {
-                        _context6.next = 12;
-                        break;
-                    }
-                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity.");
-                case 12:
-                    updatedAt = new Date().toISOString();
-                    requestInput = [
-                        true,
-                        updatedAt,
-                        username
-                    ];
-                    _context6.next = 16;
-                    return database.query(queries.markPhoneAsVerified, requestInput);
-                case 16:
-                    _yield$database$query11 = _context6.sent;
-                    _yield$database$query12 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query11, 1);
-                    queryResults = _yield$database$query12[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context6.next = 22;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 22:
-                    return _context6.abrupt("return", {
-                        response: "Phone number verified"
-                    });
-                case 25:
-                    _context6.prev = 25;
-                    _context6.t0 = _context6["catch"](0);
-                    throw _context6.t0;
-                case 28:
-                case "end":
-                    return _context6.stop();
-            }
-        }, _callee6, null, [
-            [
-                0,
-                25
-            ]
-        ]);
-    }));
-    return function markPhoneAsVerified(_x6) {
-        return _ref9.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$updateAuthorizationPin = /*#__PURE__*/ function() {
-    var _ref11 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee7(_ref10) {
-        var username, authorizationPin, database, queries, user, updatedAt, requestInput, _yield$database$query13, _yield$database$query14, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee7$(_context7) {
-            while(true)switch(_context7.prev = _context7.next){
-                case 0:
-                    username = _ref10.username, authorizationPin = _ref10.authorizationPin;
-                    _context7.prev = 1;
-                    _context7.next = 4;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 4:
-                    database = _context7.sent;
-                    _context7.next = 7;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 7:
-                    queries = _context7.sent;
-                    _context7.next = 10;
-                    return $827ec5cc3a8aba47$var$findUser(username);
-                case 10:
-                    user = _context7.sent;
-                    if (user) {
-                        _context7.next = 13;
-                        break;
-                    }
-                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity.");
-                case 13:
-                    updatedAt = new Date().toISOString();
-                    requestInput = [
-                        authorizationPin,
-                        updatedAt,
-                        username
-                    ];
-                    _context7.next = 17;
-                    return database.query(queries.updateAuthorizationPin, requestInput);
-                case 17:
-                    _yield$database$query13 = _context7.sent;
-                    _yield$database$query14 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query13, 1);
-                    queryResults = _yield$database$query14[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context7.next = 23;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 23:
-                    return _context7.abrupt("return", {
-                        response: "Authorization pin updated"
-                    });
-                case 26:
-                    _context7.prev = 26;
-                    _context7.t0 = _context7["catch"](1);
-                    throw _context7.t0;
-                case 29:
-                case "end":
-                    return _context7.stop();
-            }
-        }, _callee7, null, [
-            [
-                1,
-                26
-            ]
-        ]);
-    }));
-    return function updateAuthorizationPin(_x7) {
-        return _ref11.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$uploadFrontImageOfIdCard = /*#__PURE__*/ function() {
-    var _ref13 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee8(_ref12) {
-        var username, imageUrl, database, queries, user, updatedAt, requestInput, _yield$database$query15, _yield$database$query16, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee8$(_context8) {
-            while(true)switch(_context8.prev = _context8.next){
-                case 0:
-                    username = _ref12.username, imageUrl = _ref12.imageUrl;
-                    _context8.prev = 1;
-                    _context8.next = 4;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 4:
-                    database = _context8.sent;
-                    _context8.next = 7;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 7:
-                    queries = _context8.sent;
-                    _context8.next = 10;
-                    return $827ec5cc3a8aba47$var$findUser(username);
-                case 10:
-                    user = _context8.sent;
-                    if (user) {
-                        _context8.next = 13;
-                        break;
-                    }
-                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity.");
-                case 13:
-                    updatedAt = new Date().toISOString();
-                    requestInput = [
-                        imageUrl,
-                        updatedAt,
-                        username
-                    ];
-                    _context8.next = 17;
-                    return database.query(queries.uploadFrontImageOfIdCard, requestInput);
-                case 17:
-                    _yield$database$query15 = _context8.sent;
-                    _yield$database$query16 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query15, 1);
-                    queryResults = _yield$database$query16[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context8.next = 23;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 23:
-                    return _context8.abrupt("return", {
-                        response: "Front image successfully uploaded"
-                    });
-                case 26:
-                    _context8.prev = 26;
-                    _context8.t0 = _context8["catch"](1);
-                    throw _context8.t0;
-                case 29:
-                case "end":
-                    return _context8.stop();
-            }
-        }, _callee8, null, [
-            [
-                1,
-                26
-            ]
-        ]);
-    }));
-    return function uploadFrontImageOfIdCard(_x8) {
-        return _ref13.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$uploadBackImageOfIdCard = /*#__PURE__*/ function() {
-    var _ref15 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee9(_ref14) {
-        var username, imageUrl, database, queries, user, updatedAt, requestInput, _yield$database$query17, _yield$database$query18, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee9$(_context9) {
-            while(true)switch(_context9.prev = _context9.next){
-                case 0:
-                    username = _ref14.username, imageUrl = _ref14.imageUrl;
-                    _context9.prev = 1;
-                    _context9.next = 4;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 4:
-                    database = _context9.sent;
-                    _context9.next = 7;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 7:
-                    queries = _context9.sent;
-                    _context9.next = 10;
-                    return $827ec5cc3a8aba47$var$findUser(username);
-                case 10:
-                    user = _context9.sent;
-                    if (user) {
-                        _context9.next = 13;
-                        break;
-                    }
-                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity.");
-                case 13:
-                    updatedAt = new Date().toISOString();
-                    requestInput = [
-                        imageUrl,
-                        updatedAt,
-                        username
-                    ];
-                    _context9.next = 17;
-                    return database.query(queries.uploadBackImageOfIdCard, requestInput);
-                case 17:
-                    _yield$database$query17 = _context9.sent;
-                    _yield$database$query18 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query17, 1);
-                    queryResults = _yield$database$query18[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context9.next = 23;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 23:
-                    return _context9.abrupt("return", {
-                        response: "Back image successfully uploaded"
-                    });
-                case 26:
-                    _context9.prev = 26;
-                    _context9.t0 = _context9["catch"](1);
-                    throw _context9.t0;
-                case 29:
-                case "end":
-                    return _context9.stop();
-            }
-        }, _callee9, null, [
-            [
-                1,
-                26
-            ]
-        ]);
-    }));
-    return function uploadBackImageOfIdCard(_x9) {
-        return _ref15.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$uploadSelfie = /*#__PURE__*/ function() {
-    var _ref17 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee10(_ref16) {
-        var username, imageUrl, database, queries, user, updatedAt, requestInput, _yield$database$query19, _yield$database$query20, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee10$(_context10) {
-            while(true)switch(_context10.prev = _context10.next){
-                case 0:
-                    username = _ref16.username, imageUrl = _ref16.imageUrl;
-                    _context10.prev = 1;
-                    _context10.next = 4;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 4:
-                    database = _context10.sent;
-                    _context10.next = 7;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 7:
-                    queries = _context10.sent;
-                    _context10.next = 10;
-                    return $827ec5cc3a8aba47$var$findUser(username);
-                case 10:
-                    user = _context10.sent;
-                    if (user) {
-                        _context10.next = 13;
-                        break;
-                    }
-                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity.");
-                case 13:
-                    updatedAt = new Date().toISOString();
-                    requestInput = [
-                        imageUrl,
-                        updatedAt,
-                        username
-                    ];
-                    _context10.next = 17;
-                    return database.query(queries.uploadSelfie, requestInput);
-                case 17:
-                    _yield$database$query19 = _context10.sent;
-                    _yield$database$query20 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query19, 1);
-                    queryResults = _yield$database$query20[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context10.next = 23;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 23:
-                    return _context10.abrupt("return", {
-                        response: "Selfie successfully uploaded"
-                    });
-                case 26:
-                    _context10.prev = 26;
-                    _context10.t0 = _context10["catch"](1);
-                    throw _context10.t0;
-                case 29:
-                case "end":
-                    return _context10.stop();
-            }
-        }, _callee10, null, [
-            [
-                1,
-                26
-            ]
-        ]);
-    }));
-    return function uploadSelfie(_x10) {
-        return _ref17.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$markIdentityAsVerified = /*#__PURE__*/ function() {
-    var _ref18 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee11(username) {
-        var database, queries, user, updatedAt, requestInput, _yield$database$query21, _yield$database$query22, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee11$(_context11) {
-            while(true)switch(_context11.prev = _context11.next){
-                case 0:
-                    _context11.prev = 0;
-                    _context11.next = 3;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 3:
-                    database = _context11.sent;
-                    _context11.next = 6;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 6:
-                    queries = _context11.sent;
-                    _context11.next = 9;
-                    return $827ec5cc3a8aba47$var$findUser(username);
-                case 9:
-                    user = _context11.sent;
-                    if (user) {
-                        _context11.next = 12;
-                        break;
-                    }
-                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity.");
-                case 12:
-                    updatedAt = new Date().toISOString();
-                    requestInput = [
-                        true,
-                        updatedAt,
-                        username
-                    ];
-                    _context11.next = 16;
-                    return database.query(queries.markIdentityAsVerified, requestInput);
-                case 16:
-                    _yield$database$query21 = _context11.sent;
-                    _yield$database$query22 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query21, 1);
-                    queryResults = _yield$database$query22[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context11.next = 22;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 22:
-                    return _context11.abrupt("return", {
-                        response: "Identity verified"
-                    });
-                case 25:
-                    _context11.prev = 25;
-                    _context11.t0 = _context11["catch"](0);
-                    throw _context11.t0;
-                case 28:
-                case "end":
-                    return _context11.stop();
-            }
-        }, _callee11, null, [
-            [
-                0,
-                25
-            ]
-        ]);
-    }));
-    return function markIdentityAsVerified(_x11) {
-        return _ref18.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$updateRefreshToken = /*#__PURE__*/ function() {
-    var _ref20 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee12(_ref19) {
-        var username, refreshToken, database, queries, user, updatedAt, requestInput, _yield$database$query23, _yield$database$query24, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee12$(_context12) {
-            while(true)switch(_context12.prev = _context12.next){
-                case 0:
-                    username = _ref19.username, refreshToken = _ref19.refreshToken;
-                    _context12.prev = 1;
-                    _context12.next = 4;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 4:
-                    database = _context12.sent;
-                    _context12.next = 7;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 7:
-                    queries = _context12.sent;
-                    _context12.next = 10;
-                    return $827ec5cc3a8aba47$var$findUser(username);
-                case 10:
-                    user = _context12.sent;
-                    if (user) {
-                        _context12.next = 13;
-                        break;
-                    }
-                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity.");
-                case 13:
-                    updatedAt = new Date().toISOString();
-                    requestInput = [
-                        refreshToken,
-                        updatedAt,
-                        username
-                    ];
-                    _context12.next = 17;
-                    return database.query(queries.updateRefreshToken, requestInput);
-                case 17:
-                    _yield$database$query23 = _context12.sent;
-                    _yield$database$query24 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query23, 1);
-                    queryResults = _yield$database$query24[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context12.next = 23;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 23:
-                    return _context12.abrupt("return", {
-                        response: "Refresh token updated"
-                    });
-                case 26:
-                    _context12.prev = 26;
-                    _context12.t0 = _context12["catch"](1);
-                    throw _context12.t0;
-                case 29:
-                case "end":
-                    return _context12.stop();
-            }
-        }, _callee12, null, [
-            [
-                1,
-                26
-            ]
-        ]);
-    }));
-    return function updateRefreshToken(_x12) {
-        return _ref20.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$updateDateOfBirth = /*#__PURE__*/ function() {
-    var _ref22 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee13(_ref21) {
-        var username, dateOfBirth, database, queries, user, dateOfBirthHasAlreadyBeenProvided, updatedAt, requestInput, _yield$database$query25, _yield$database$query26, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee13$(_context13) {
-            while(true)switch(_context13.prev = _context13.next){
-                case 0:
-                    username = _ref21.username, dateOfBirth = _ref21.dateOfBirth;
-                    _context13.prev = 1;
-                    _context13.next = 4;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 4:
-                    database = _context13.sent;
-                    _context13.next = 7;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 7:
-                    queries = _context13.sent;
-                    _context13.next = 10;
-                    return $827ec5cc3a8aba47$var$findUser(username);
-                case 10:
-                    user = _context13.sent;
-                    if (user) {
-                        _context13.next = 13;
-                        break;
-                    }
-                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity.");
-                case 13:
-                    dateOfBirthHasAlreadyBeenProvided = user.date_of_birth !== null;
-                    if (!dateOfBirthHasAlreadyBeenProvided) {
-                        _context13.next = 16;
-                        break;
-                    }
-                    throw new $k70SB.BadRequestError("Hey ".concat(user.first_name, ", for security reasons, we do not allow changes to your date of birth. If you believe that you made an error during sign-up, please contact our support team for assistance. Thank you for your understanding."));
-                case 16:
-                    updatedAt = new Date().toISOString();
-                    requestInput = [
-                        dateOfBirth,
-                        updatedAt,
-                        username
-                    ];
-                    _context13.next = 20;
-                    return database.query(queries.updateDateOfBirth, requestInput);
-                case 20:
-                    _yield$database$query25 = _context13.sent;
-                    _yield$database$query26 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query25, 1);
-                    queryResults = _yield$database$query26[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context13.next = 26;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 26:
-                    return _context13.abrupt("return", {
-                        response: "Date of birth updated"
-                    });
-                case 29:
-                    _context13.prev = 29;
-                    _context13.t0 = _context13["catch"](1);
-                    throw _context13.t0;
-                case 32:
-                case "end":
-                    return _context13.stop();
-            }
-        }, _callee13, null, [
-            [
-                1,
-                29
-            ]
-        ]);
-    }));
-    return function updateDateOfBirth(_x13) {
-        return _ref22.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$updatePassword = /*#__PURE__*/ function() {
-    var _ref24 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee14(_ref23) {
-        var username, password, database, queries, user, updatedAt, requestInput, _yield$database$query27, _yield$database$query28, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee14$(_context14) {
-            while(true)switch(_context14.prev = _context14.next){
-                case 0:
-                    username = _ref23.username, password = _ref23.password;
-                    _context14.prev = 1;
-                    _context14.next = 4;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 4:
-                    database = _context14.sent;
-                    _context14.next = 7;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 7:
-                    queries = _context14.sent;
-                    _context14.next = 10;
-                    return $827ec5cc3a8aba47$var$findUser(username);
-                case 10:
-                    user = _context14.sent;
-                    if (user) {
-                        _context14.next = 13;
-                        break;
-                    }
-                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity.");
-                case 13:
-                    updatedAt = new Date().toISOString();
-                    requestInput = [
-                        password,
-                        updatedAt,
-                        username
-                    ];
-                    _context14.next = 17;
-                    return database.query(queries.updatePassword, requestInput);
-                case 17:
-                    _yield$database$query27 = _context14.sent;
-                    _yield$database$query28 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query27, 1);
-                    queryResults = _yield$database$query28[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context14.next = 23;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 23:
-                    return _context14.abrupt("return", {
-                        response: "Password updated"
-                    });
-                case 26:
-                    _context14.prev = 26;
-                    _context14.t0 = _context14["catch"](1);
-                    throw _context14.t0;
-                case 29:
-                case "end":
-                    return _context14.stop();
-            }
-        }, _callee14, null, [
-            [
-                1,
-                26
-            ]
-        ]);
-    }));
-    return function updatePassword(_x14) {
-        return _ref24.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$updateOtpCode = /*#__PURE__*/ function() {
-    var _ref26 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee15(_ref25) {
-        var username, otpCode, otpCodeExpiration, database, queries, user, updatedAt, requestInput, _yield$database$query29, _yield$database$query30, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee15$(_context15) {
-            while(true)switch(_context15.prev = _context15.next){
-                case 0:
-                    username = _ref25.username, otpCode = _ref25.otpCode, otpCodeExpiration = _ref25.otpCodeExpiration;
-                    _context15.prev = 1;
-                    _context15.next = 4;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 4:
-                    database = _context15.sent;
-                    _context15.next = 7;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 7:
-                    queries = _context15.sent;
-                    _context15.next = 10;
-                    return $827ec5cc3a8aba47$var$findUser(username);
-                case 10:
-                    user = _context15.sent;
-                    if (user) {
-                        _context15.next = 13;
-                        break;
-                    }
-                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity.");
-                case 13:
-                    updatedAt = new Date().toISOString();
-                    requestInput = [
-                        otpCode,
-                        otpCodeExpiration,
-                        updatedAt,
-                        username
-                    ];
-                    _context15.next = 17;
-                    return database.query(queries.updateOtpCode, requestInput);
-                case 17:
-                    _yield$database$query29 = _context15.sent;
-                    _yield$database$query30 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query29, 1);
-                    queryResults = _yield$database$query30[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context15.next = 23;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 23:
-                    return _context15.abrupt("return", {
-                        response: "Otp code updated"
-                    });
-                case 26:
-                    _context15.prev = 26;
-                    _context15.t0 = _context15["catch"](1);
-                    throw _context15.t0;
-                case 29:
-                case "end":
-                    return _context15.stop();
-            }
-        }, _callee15, null, [
-            [
-                1,
-                26
-            ]
-        ]);
-    }));
-    return function updateOtpCode(_x15) {
-        return _ref26.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$updateUserAvatar = /*#__PURE__*/ function() {
-    var _ref28 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee16(_ref27) {
-        var username, imageUrl, database, queries, user, updatedAt, requestInput, _yield$database$query31, _yield$database$query32, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee16$(_context16) {
-            while(true)switch(_context16.prev = _context16.next){
-                case 0:
-                    username = _ref27.username, imageUrl = _ref27.imageUrl;
-                    _context16.prev = 1;
-                    _context16.next = 4;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 4:
-                    database = _context16.sent;
-                    _context16.next = 7;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 7:
-                    queries = _context16.sent;
-                    _context16.next = 10;
-                    return $827ec5cc3a8aba47$var$findUser(username);
-                case 10:
-                    user = _context16.sent;
-                    if (user) {
-                        _context16.next = 13;
-                        break;
-                    }
-                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity.");
-                case 13:
-                    updatedAt = new Date().toISOString();
-                    requestInput = [
-                        imageUrl,
-                        updatedAt,
-                        username
-                    ];
-                    _context16.next = 17;
-                    return database.query(queries.updateUserAvatar, requestInput);
-                case 17:
-                    _yield$database$query31 = _context16.sent;
-                    _yield$database$query32 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query31, 1);
-                    queryResults = _yield$database$query32[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context16.next = 23;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 23:
-                    return _context16.abrupt("return", {
-                        response: "Profile image updated"
-                    });
-                case 26:
-                    _context16.prev = 26;
-                    _context16.t0 = _context16["catch"](1);
-                    throw _context16.t0;
-                case 29:
-                case "end":
-                    return _context16.stop();
-            }
-        }, _callee16, null, [
-            [
-                1,
-                26
-            ]
-        ]);
-    }));
-    return function updateUserAvatar(_x16) {
-        return _ref28.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$deactivateAccount = /*#__PURE__*/ function() {
-    var _ref29 = $827ec5cc3a8aba47$var$_asyncToGenerator(/*#__PURE__*/ $827ec5cc3a8aba47$var$_regeneratorRuntime().mark(function _callee17(username) {
-        var database, queries, user, updatedAt, requestInput, _yield$database$query33, _yield$database$query34, queryResults, requestWasSuccessful;
-        return $827ec5cc3a8aba47$var$_regeneratorRuntime().wrap(function _callee17$(_context17) {
-            while(true)switch(_context17.prev = _context17.next){
-                case 0:
-                    _context17.prev = 0;
-                    _context17.next = 3;
-                    return $827ec5cc3a8aba47$var$_databaseClient["default"].connectToDatabase();
-                case 3:
-                    database = _context17.sent;
-                    _context17.next = 6;
-                    return (0, $37rWr.loadSqlQueries)({
-                        sqlFolder: "api/users/queries"
-                    });
-                case 6:
-                    queries = _context17.sent;
-                    _context17.next = 9;
-                    return $827ec5cc3a8aba47$var$findUser(username);
-                case 9:
-                    user = _context17.sent;
-                    if (user) {
-                        _context17.next = 12;
-                        break;
-                    }
-                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity.");
-                case 12:
-                    updatedAt = new Date().toISOString();
-                    requestInput = [
-                        "inactive",
-                        updatedAt,
-                        username
-                    ];
-                    _context17.next = 16;
-                    return database.query(queries.closeAccount, requestInput);
-                case 16:
-                    _yield$database$query33 = _context17.sent;
-                    _yield$database$query34 = $827ec5cc3a8aba47$var$_slicedToArray(_yield$database$query33, 1);
-                    queryResults = _yield$database$query34[0];
-                    requestWasSuccessful = queryResults.affectedRows > 0;
-                    if (requestWasSuccessful) {
-                        _context17.next = 22;
-                        break;
-                    }
-                    throw new $k70SB.InternalServerError("Request could not be processed due to an unexpected error");
-                case 22:
-                    return _context17.abrupt("return", {
-                        response: "Your account is now closed"
-                    });
-                case 25:
-                    _context17.prev = 25;
-                    _context17.t0 = _context17["catch"](0);
-                    throw _context17.t0;
-                case 28:
-                case "end":
-                    return _context17.stop();
-            }
-        }, _callee17, null, [
-            [
-                0,
-                25
-            ]
-        ]);
-    }));
-    return function deactivateAccount(_x17) {
-        return _ref29.apply(this, arguments);
-    };
-}();
-var $827ec5cc3a8aba47$var$usersDb = {
-    findUser: $827ec5cc3a8aba47$var$findUser,
-    createUser: $827ec5cc3a8aba47$var$createUser,
-    updateAuthorizationPin: $827ec5cc3a8aba47$var$updateAuthorizationPin,
-    updateDateOfBirth: $827ec5cc3a8aba47$var$updateDateOfBirth,
-    updateEmail: $827ec5cc3a8aba47$var$updateEmail,
-    updateOtpCode: $827ec5cc3a8aba47$var$updateOtpCode,
-    updatePassword: $827ec5cc3a8aba47$var$updatePassword,
-    updatePhoneNumber: $827ec5cc3a8aba47$var$updatePhoneNumber,
-    updateRefreshToken: $827ec5cc3a8aba47$var$updateRefreshToken,
-    updateUserAvatar: $827ec5cc3a8aba47$var$updateUserAvatar,
-    markIdentityAsVerified: $827ec5cc3a8aba47$var$markIdentityAsVerified,
-    markPhoneAsVerified: $827ec5cc3a8aba47$var$markPhoneAsVerified,
-    markEmailAsVerified: $827ec5cc3a8aba47$var$markEmailAsVerified,
-    uploadFrontImageOfIdCard: $827ec5cc3a8aba47$var$uploadFrontImageOfIdCard,
-    uploadBackImageOfIdCard: $827ec5cc3a8aba47$var$uploadBackImageOfIdCard,
-    uploadSelfie: $827ec5cc3a8aba47$var$uploadSelfie,
-    deactivateAccount: $827ec5cc3a8aba47$var$deactivateAccount
-};
-var $827ec5cc3a8aba47$var$_default = $827ec5cc3a8aba47$var$usersDb;
-module.exports["default"] = $827ec5cc3a8aba47$var$_default;
-
-});
-parcelRequire.register("auN7S", function(module, exports) {
-"use strict";
-function $7a42d01e7ac19948$var$_typeof(obj) {
-    "@babel/helpers - typeof";
-    return $7a42d01e7ac19948$var$_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
-        return typeof obj;
-    } : function(obj) {
-        return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    }, $7a42d01e7ac19948$var$_typeof(obj);
-}
-Object.defineProperty(module.exports, "__esModule", {
-    value: true
-});
-module.exports["default"] = void 0;
-
-var $7a42d01e7ac19948$var$_libraries = $7a42d01e7ac19948$var$_interopRequireDefault((parcelRequire("jf6CP")));
-
-var $7a42d01e7ac19948$var$_appConfig = $7a42d01e7ac19948$var$_interopRequireDefault((parcelRequire("avFDW")));
-function $7a42d01e7ac19948$var$_interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-        "default": obj
-    };
-}
-function $7a42d01e7ac19948$var$_slicedToArray(arr, i) {
-    return $7a42d01e7ac19948$var$_arrayWithHoles(arr) || $7a42d01e7ac19948$var$_iterableToArrayLimit(arr, i) || $7a42d01e7ac19948$var$_unsupportedIterableToArray(arr, i) || $7a42d01e7ac19948$var$_nonIterableRest();
-}
-function $7a42d01e7ac19948$var$_nonIterableRest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function $7a42d01e7ac19948$var$_unsupportedIterableToArray(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return $7a42d01e7ac19948$var$_arrayLikeToArray(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return $7a42d01e7ac19948$var$_arrayLikeToArray(o, minLen);
-}
-function $7a42d01e7ac19948$var$_arrayLikeToArray(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
-    return arr2;
-}
-function $7a42d01e7ac19948$var$_iterableToArrayLimit(arr, i) {
-    var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
-    if (null != _i) {
-        var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1;
-        try {
-            if (_x = (_i = _i.call(arr)).next, 0 === i) {
-                if (Object(_i) !== _i) return;
-                _n = !1;
-            } else for(; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0);
-        } catch (err) {
-            _d = !0, _e = err;
-        } finally{
-            try {
-                if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return;
-            } finally{
-                if (_d) throw _e;
-            }
-        }
-        return _arr;
-    }
-}
-function $7a42d01e7ac19948$var$_arrayWithHoles(arr) {
-    if (Array.isArray(arr)) return arr;
-}
-function $7a42d01e7ac19948$var$_regeneratorRuntime() {
-    "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ 
-    $7a42d01e7ac19948$var$_regeneratorRuntime = function _regeneratorRuntime() {
-        return exports1;
-    };
-    var exports1 = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function(obj, key, desc) {
-        obj[key] = desc.value;
-    }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-    function define(obj, key, value) {
-        return Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: !0,
-            configurable: !0,
-            writable: !0
-        }), obj[key];
-    }
-    try {
-        define({}, "");
-    } catch (err) {
-        define = function define(obj, key, value) {
-            return obj[key] = value;
-        };
-    }
-    function wrap(innerFn, outerFn, self, tryLocsList) {
-        var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []);
-        return defineProperty(generator, "_invoke", {
-            value: makeInvokeMethod(innerFn, self, context)
-        }), generator;
-    }
-    function tryCatch(fn, obj, arg) {
-        try {
-            return {
-                type: "normal",
-                arg: fn.call(obj, arg)
-            };
-        } catch (err) {
-            return {
-                type: "throw",
-                arg: err
-            };
-        }
-    }
-    exports1.wrap = wrap;
-    var ContinueSentinel = {};
-    function Generator() {}
-    function GeneratorFunction() {}
-    function GeneratorFunctionPrototype() {}
-    var IteratorPrototype = {};
-    define(IteratorPrototype, iteratorSymbol, function() {
-        return this;
-    });
-    var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-    NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype);
-    var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
-    function defineIteratorMethods(prototype) {
-        [
-            "next",
-            "throw",
-            "return"
-        ].forEach(function(method) {
-            define(prototype, method, function(arg) {
-                return this._invoke(method, arg);
-            });
-        });
-    }
-    function AsyncIterator(generator, PromiseImpl) {
-        function invoke(method, arg, resolve, reject) {
-            var record = tryCatch(generator[method], generator, arg);
-            if ("throw" !== record.type) {
-                var result = record.arg, value = result.value;
-                return value && "object" == $7a42d01e7ac19948$var$_typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function(value) {
-                    invoke("next", value, resolve, reject);
-                }, function(err) {
-                    invoke("throw", err, resolve, reject);
-                }) : PromiseImpl.resolve(value).then(function(unwrapped) {
-                    result.value = unwrapped, resolve(result);
-                }, function(error) {
-                    return invoke("throw", error, resolve, reject);
-                });
-            }
-            reject(record.arg);
-        }
-        var previousPromise;
-        defineProperty(this, "_invoke", {
-            value: function value(method, arg) {
-                function callInvokeWithMethodAndArg() {
-                    return new PromiseImpl(function(resolve, reject) {
-                        invoke(method, arg, resolve, reject);
-                    });
-                }
-                return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
-            }
-        });
-    }
-    function makeInvokeMethod(innerFn, self, context) {
-        var state = "suspendedStart";
-        return function(method, arg) {
-            if ("executing" === state) throw new Error("Generator is already running");
-            if ("completed" === state) {
-                if ("throw" === method) throw arg;
-                return doneResult();
-            }
-            for(context.method = method, context.arg = arg;;){
-                var delegate = context.delegate;
-                if (delegate) {
-                    var delegateResult = maybeInvokeDelegate(delegate, context);
-                    if (delegateResult) {
-                        if (delegateResult === ContinueSentinel) continue;
-                        return delegateResult;
-                    }
-                }
-                if ("next" === context.method) context.sent = context._sent = context.arg;
-                else if ("throw" === context.method) {
-                    if ("suspendedStart" === state) throw state = "completed", context.arg;
-                    context.dispatchException(context.arg);
-                } else "return" === context.method && context.abrupt("return", context.arg);
-                state = "executing";
-                var record = tryCatch(innerFn, self, context);
-                if ("normal" === record.type) {
-                    if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
-                    return {
-                        value: record.arg,
-                        done: context.done
-                    };
-                }
-                "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
-            }
-        };
-    }
-    function maybeInvokeDelegate(delegate, context) {
-        var methodName = context.method, method = delegate.iterator[methodName];
-        if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel;
-        var record = tryCatch(method, delegate.iterator, context.arg);
-        if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel;
-        var info = record.arg;
-        return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel);
-    }
-    function pushTryEntry(locs) {
-        var entry = {
-            tryLoc: locs[0]
-        };
-        1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry);
-    }
-    function resetTryEntry(entry) {
-        var record = entry.completion || {};
-        record.type = "normal", delete record.arg, entry.completion = record;
-    }
-    function Context(tryLocsList) {
-        this.tryEntries = [
-            {
-                tryLoc: "root"
-            }
-        ], tryLocsList.forEach(pushTryEntry, this), this.reset(!0);
-    }
-    function values(iterable) {
-        if (iterable) {
-            var iteratorMethod = iterable[iteratorSymbol];
-            if (iteratorMethod) return iteratorMethod.call(iterable);
-            if ("function" == typeof iterable.next) return iterable;
-            if (!isNaN(iterable.length)) {
-                var i = -1, next = function next() {
-                    for(; ++i < iterable.length;)if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next;
-                    return next.value = undefined, next.done = !0, next;
-                };
-                return next.next = next;
-            }
-        }
-        return {
-            next: doneResult
-        };
-    }
-    function doneResult() {
-        return {
-            value: undefined,
-            done: !0
-        };
-    }
-    return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", {
-        value: GeneratorFunctionPrototype,
-        configurable: !0
-    }), defineProperty(GeneratorFunctionPrototype, "constructor", {
-        value: GeneratorFunction,
-        configurable: !0
-    }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports1.isGeneratorFunction = function(genFun) {
-        var ctor = "function" == typeof genFun && genFun.constructor;
-        return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name));
-    }, exports1.mark = function(genFun) {
-        return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun;
-    }, exports1.awrap = function(arg) {
-        return {
-            __await: arg
-        };
-    }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function() {
-        return this;
-    }), exports1.AsyncIterator = AsyncIterator, exports1.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
-        void 0 === PromiseImpl && (PromiseImpl = Promise);
-        var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl);
-        return exports1.isGeneratorFunction(outerFn) ? iter : iter.next().then(function(result) {
-            return result.done ? result.value : iter.next();
-        });
-    }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function() {
-        return this;
-    }), define(Gp, "toString", function() {
-        return "[object Generator]";
-    }), exports1.keys = function(val) {
-        var object = Object(val), keys = [];
-        for(var key in object)keys.push(key);
-        return keys.reverse(), function next() {
-            for(; keys.length;){
-                var key = keys.pop();
-                if (key in object) return next.value = key, next.done = !1, next;
-            }
-            return next.done = !0, next;
-        };
-    }, exports1.values = values, Context.prototype = {
-        constructor: Context,
-        reset: function reset(skipTempReset) {
-            if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for(var name in this)"t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined);
-        },
-        stop: function stop() {
-            this.done = !0;
-            var rootRecord = this.tryEntries[0].completion;
-            if ("throw" === rootRecord.type) throw rootRecord.arg;
-            return this.rval;
-        },
-        dispatchException: function dispatchException(exception) {
-            if (this.done) throw exception;
-            var context = this;
-            function handle(loc, caught) {
-                return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught;
-            }
-            for(var i = this.tryEntries.length - 1; i >= 0; --i){
-                var entry = this.tryEntries[i], record = entry.completion;
-                if ("root" === entry.tryLoc) return handle("end");
-                if (entry.tryLoc <= this.prev) {
-                    var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc");
-                    if (hasCatch && hasFinally) {
-                        if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
-                        if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
-                    } else if (hasCatch) {
-                        if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
-                    } else {
-                        if (!hasFinally) throw new Error("try statement without catch or finally");
-                        if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
-                    }
-                }
-            }
-        },
-        abrupt: function abrupt(type, arg) {
-            for(var i = this.tryEntries.length - 1; i >= 0; --i){
-                var entry = this.tryEntries[i];
-                if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
-                    var finallyEntry = entry;
-                    break;
-                }
-            }
-            finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null);
-            var record = finallyEntry ? finallyEntry.completion : {};
-            return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record);
-        },
-        complete: function complete(record, afterLoc) {
-            if ("throw" === record.type) throw record.arg;
-            return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel;
-        },
-        finish: function finish(finallyLoc) {
-            for(var i = this.tryEntries.length - 1; i >= 0; --i){
-                var entry = this.tryEntries[i];
-                if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel;
-            }
-        },
-        "catch": function _catch(tryLoc) {
-            for(var i = this.tryEntries.length - 1; i >= 0; --i){
-                var entry = this.tryEntries[i];
-                if (entry.tryLoc === tryLoc) {
-                    var record = entry.completion;
-                    if ("throw" === record.type) {
-                        var thrown = record.arg;
-                        resetTryEntry(entry);
-                    }
-                    return thrown;
-                }
-            }
-            throw new Error("illegal catch attempt");
-        },
-        delegateYield: function delegateYield(iterable, resultName, nextLoc) {
-            return this.delegate = {
-                iterator: values(iterable),
-                resultName: resultName,
-                nextLoc: nextLoc
-            }, "next" === this.method && (this.arg = undefined), ContinueSentinel;
-        }
-    }, exports1;
-}
-function $7a42d01e7ac19948$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-    try {
-        var info = gen[key](arg);
-        var value = info.value;
-    } catch (error) {
-        reject(error);
-        return;
-    }
-    if (info.done) resolve(value);
-    else Promise.resolve(value).then(_next, _throw);
-}
-function $7a42d01e7ac19948$var$_asyncToGenerator(fn) {
-    return function() {
-        var self = this, args = arguments;
-        return new Promise(function(resolve, reject) {
-            var gen = fn.apply(self, args);
-            function _next(value) {
-                $7a42d01e7ac19948$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-            }
-            function _throw(err) {
-                $7a42d01e7ac19948$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-            }
-            _next(undefined);
-        });
-    };
-}
-var $7a42d01e7ac19948$var$databaseConnection = /*#__PURE__*/ function() {
-    var _ref = $7a42d01e7ac19948$var$_asyncToGenerator(/*#__PURE__*/ $7a42d01e7ac19948$var$_regeneratorRuntime().mark(function _callee5() {
-        var pool, closePool, getConnection, query;
-        return $7a42d01e7ac19948$var$_regeneratorRuntime().wrap(function _callee5$(_context5) {
-            while(true)switch(_context5.prev = _context5.next){
-                case 0:
-                    pool = null; // Close database connection pool
-                    closePool = /*#__PURE__*/ function() {
-                        var _ref2 = $7a42d01e7ac19948$var$_asyncToGenerator(/*#__PURE__*/ $7a42d01e7ac19948$var$_regeneratorRuntime().mark(function _callee() {
-                            return $7a42d01e7ac19948$var$_regeneratorRuntime().wrap(function _callee$(_context) {
-                                while(true)switch(_context.prev = _context.next){
-                                    case 0:
-                                        _context.prev = 0;
-                                        _context.next = 3;
-                                        return pool.end();
-                                    case 3:
-                                        pool = null;
-                                        _context.next = 10;
-                                        break;
-                                    case 6:
-                                        _context.prev = 6;
-                                        _context.t0 = _context["catch"](0);
-                                        console.error(_context.t0.message);
-                                        throw _context.t0;
-                                    case 10:
-                                    case "end":
-                                        return _context.stop();
-                                }
-                            }, _callee, null, [
-                                [
-                                    0,
-                                    6
-                                ]
-                            ]);
-                        }));
-                        return function closePool() {
-                            return _ref2.apply(this, arguments);
-                        };
-                    }(); // Establish a new database connection
-                    getConnection = /*#__PURE__*/ function() {
-                        var _ref3 = $7a42d01e7ac19948$var$_asyncToGenerator(/*#__PURE__*/ $7a42d01e7ac19948$var$_regeneratorRuntime().mark(function _callee3() {
-                            var connection;
-                            return $7a42d01e7ac19948$var$_regeneratorRuntime().wrap(function _callee3$(_context3) {
-                                while(true)switch(_context3.prev = _context3.next){
-                                    case 0:
-                                        _context3.prev = 0;
-                                        if (!pool) {
-                                            _context3.next = 3;
-                                            break;
-                                        }
-                                        return _context3.abrupt("return", pool);
-                                    case 3:
-                                        pool = $7a42d01e7ac19948$var$_libraries["default"].mysql.createPool($7a42d01e7ac19948$var$_appConfig["default"].mysql.developmentDb);
-                                        pool.on("error", /*#__PURE__*/ function() {
-                                            var _ref4 = $7a42d01e7ac19948$var$_asyncToGenerator(/*#__PURE__*/ $7a42d01e7ac19948$var$_regeneratorRuntime().mark(function _callee2(error) {
-                                                return $7a42d01e7ac19948$var$_regeneratorRuntime().wrap(function _callee2$(_context2) {
-                                                    while(true)switch(_context2.prev = _context2.next){
-                                                        case 0:
-                                                            console.error(error.message);
-                                                            _context2.next = 3;
-                                                            return closePool();
-                                                        case 3:
-                                                            return _context2.abrupt("return");
-                                                        case 4:
-                                                        case "end":
-                                                            return _context2.stop();
-                                                    }
-                                                }, _callee2);
-                                            }));
-                                            return function(_x) {
-                                                return _ref4.apply(this, arguments);
-                                            };
-                                        }());
-                                        _context3.next = 7;
-                                        return pool.getConnection();
-                                    case 7:
-                                        connection = _context3.sent;
-                                        connection.release();
-                                        return _context3.abrupt("return", connection);
-                                    case 12:
-                                        _context3.prev = 12;
-                                        _context3.t0 = _context3["catch"](0);
-                                        pool = null;
-                                        console.error(_context3.t0.message);
-                                        throw _context3.t0;
-                                    case 17:
-                                    case "end":
-                                        return _context3.stop();
-                                }
-                            }, _callee3, null, [
-                                [
-                                    0,
-                                    12
-                                ]
-                            ]);
-                        }));
-                        return function getConnection() {
-                            return _ref3.apply(this, arguments);
-                        };
-                    }();
-                    query = /*#__PURE__*/ function() {
-                        var _ref5 = $7a42d01e7ac19948$var$_asyncToGenerator(/*#__PURE__*/ $7a42d01e7ac19948$var$_regeneratorRuntime().mark(function _callee4(sql, values) {
-                            var connection, _yield$connection$que, _yield$connection$que2, results;
-                            return $7a42d01e7ac19948$var$_regeneratorRuntime().wrap(function _callee4$(_context4) {
-                                while(true)switch(_context4.prev = _context4.next){
-                                    case 0:
-                                        _context4.next = 2;
-                                        return getConnection();
-                                    case 2:
-                                        connection = _context4.sent;
-                                        _context4.prev = 3;
-                                        _context4.next = 6;
-                                        return connection.query(sql, values);
-                                    case 6:
-                                        _yield$connection$que = _context4.sent;
-                                        _yield$connection$que2 = $7a42d01e7ac19948$var$_slicedToArray(_yield$connection$que, 1);
-                                        results = _yield$connection$que2[0];
-                                        connection.release();
-                                        return _context4.abrupt("return", [
-                                            results
-                                        ]);
-                                    case 13:
-                                        _context4.prev = 13;
-                                        _context4.t0 = _context4["catch"](3);
-                                        connection.release();
-                                        throw _context4.t0;
-                                    case 17:
-                                    case "end":
-                                        return _context4.stop();
-                                }
-                            }, _callee4, null, [
-                                [
-                                    3,
-                                    13
-                                ]
-                            ]);
-                        }));
-                        return function query(_x2, _x3) {
-                            return _ref5.apply(this, arguments);
-                        };
-                    }();
-                    return _context5.abrupt("return", {
-                        query: query
-                    });
-                case 5:
-                case "end":
-                    return _context5.stop();
-            }
-        }, _callee5);
-    }));
-    return function databaseConnection() {
-        return _ref.apply(this, arguments);
-    };
-}();
-var $7a42d01e7ac19948$var$mysqlClient = {
-    connectToDatabase: $7a42d01e7ac19948$var$databaseConnection
-};
-var $7a42d01e7ac19948$var$_default = $7a42d01e7ac19948$var$mysqlClient;
-module.exports["default"] = $7a42d01e7ac19948$var$_default;
-
-});
-
-
-
-parcelRequire.register("50Xtb", function(module, exports) {
-"use strict";
-Object.defineProperty(module.exports, "__esModule", {
-    value: true
-});
-module.exports["default"] = void 0;
-
-var $37rWr = parcelRequire("37rWr");
-
-var $3a6b154d1f922a78$var$_signupValidation = $3a6b154d1f922a78$var$_interopRequireDefault((parcelRequire("g9Ozh")));
-function $3a6b154d1f922a78$var$_interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-        "default": obj
-    };
-}
-var $3a6b154d1f922a78$var$createUser = function createUser(_ref) {
-    var _capitalize;
-    var email = _ref.email, password = _ref.password, first_name = _ref.first_name, _ref$middle_name = _ref.middle_name, middle_name = _ref$middle_name === void 0 ? null : _ref$middle_name, last_name = _ref.last_name, country_of_residence = _ref.country_of_residence, username = _ref.username;
-    (0, $3a6b154d1f922a78$var$_signupValidation["default"])(email, password, username, first_name, last_name, country_of_residence);
-    var sanitizedPassword = (0, $37rWr.sanitize)(password);
-    var hashedPassword = (0, $37rWr.generateHash)(sanitizedPassword);
-    return Object.freeze({
-        id: (0, $37rWr.generateToken)({
-            lengthOfToken: 22
-        }),
-        type: "individual",
-        role: "basic",
-        status: "active",
-        first_name: (0, $37rWr.capitalize)(first_name.trim()),
-        middle_name: (_capitalize = (0, $37rWr.capitalize)(middle_name)) !== null && _capitalize !== void 0 ? _capitalize : null,
-        last_name: (0, $37rWr.capitalize)(last_name.trim()),
-        email: email.trim().toLowerCase(),
-        password: hashedPassword,
-        username: "@".concat(username),
-        country_of_residence: country_of_residence,
-        is_email_verified: false,
-        is_phone_verified: false,
-        is_id_verified: false,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        consents: JSON.stringify({
-            privacy_policy: {
-                accepted: true,
-                accepted_at: new Date().toISOString()
-            },
-            terms_of_service: {
-                accepted: true,
-                accepted_at: new Date().toISOString()
-            }
-        })
-    });
-};
-var $3a6b154d1f922a78$var$UserFactory = {
-    createUser: $3a6b154d1f922a78$var$createUser
-};
-var $3a6b154d1f922a78$var$_default = $3a6b154d1f922a78$var$UserFactory;
-module.exports["default"] = $3a6b154d1f922a78$var$_default;
-
-});
-parcelRequire.register("g9Ozh", function(module, exports) {
-"use strict";
-Object.defineProperty(module.exports, "__esModule", {
-    value: true
-});
-module.exports["default"] = void 0;
-
-var $k70SB = parcelRequire("k70SB");
-
-var $37rWr = parcelRequire("37rWr");
-var $bc34b660312a0e41$var$validateUseSignup = function validateUseSignup(email, password, username, firstName, lastName, countryOfResidence) {
-    if (!email || email.trim() === "") throw new $k70SB.MissingFieldError("Email is required");
-    var emailValidator = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    var isValidEmail = emailValidator.test(email);
-    if (!isValidEmail) throw new $k70SB.ValidationError("Email is invalid");
-    if (!password || password.trim() === "") throw new $k70SB.MissingFieldError("Password is required");
-    var passwordValidator = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-    var isValidPassword = passwordValidator.test(password);
-    if (!isValidPassword) throw new $k70SB.ValidationError("Password must be at least 8 characters long, and include at least one number, one uppercase letter, one lowercase letter and a special character");
-    if (!username || username.trim() === "") throw new $k70SB.MissingFieldError("Username is required");
-    var usernameValidator = /^[a-zA-Z0-9_]{2,15}$/;
-    var isValidUsername = usernameValidator.test(username);
-    if (!isValidUsername) throw new $k70SB.ValidationError("Username must be between 2 and 15 characters and contain only letters, numbers, and underscores and no spaces");
-    if (!firstName || firstName.trim() === "") throw new $k70SB.MissingFieldError("First name is required");
-    if (firstName.length < 2) throw new $k70SB.ValidationError("First name must be at least 2 characters long");
-    if (!lastName || lastName.trim() === "") throw new $k70SB.MissingFieldError("Last name is required");
-    if (lastName.length < 2) throw new $k70SB.ValidationError("Last name is must be at least 2 characters long");
-    if (!countryOfResidence || countryOfResidence.trim() == "") throw new $k70SB.MissingFieldError("Country is required");
-    var isoAlpha2CodeValidator = /^[A-Z]{2}$/;
-    var isValidIsoAlpha2Code = isoAlpha2CodeValidator.test(countryOfResidence);
-    if (!isValidIsoAlpha2Code) throw new $k70SB.ValidationError("Country must be an ISO alpha-2 code and uppercased");
-    var selectedCountryIsServiceable = $37rWr.serviceableCountries.test(countryOfResidence);
-    if (!selectedCountryIsServiceable) throw new $k70SB.ValidationError("Credet is currently not available in your country or region. Tell us where to expand next.");
-};
-var $bc34b660312a0e41$var$_default = $bc34b660312a0e41$var$validateUseSignup;
-module.exports["default"] = $bc34b660312a0e41$var$_default;
-
-});
-
 
 
 parcelRequire.register("jAIIt", function(module, exports) {
@@ -6091,6 +3506,553 @@ var $4b65a2e8ed5f952f$var$_default = $4b65a2e8ed5f952f$var$usersBillingAddressTa
 module.exports["default"] = $4b65a2e8ed5f952f$var$_default;
 
 });
+parcelRequire.register("auN7S", function(module, exports) {
+"use strict";
+function $7a42d01e7ac19948$var$_typeof(obj) {
+    "@babel/helpers - typeof";
+    return $7a42d01e7ac19948$var$_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj) {
+        return typeof obj;
+    } : function(obj) {
+        return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    }, $7a42d01e7ac19948$var$_typeof(obj);
+}
+Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports["default"] = void 0;
+
+var $7a42d01e7ac19948$var$_libraries = $7a42d01e7ac19948$var$_interopRequireDefault((parcelRequire("jf6CP")));
+
+var $7a42d01e7ac19948$var$_appConfig = $7a42d01e7ac19948$var$_interopRequireDefault((parcelRequire("avFDW")));
+function $7a42d01e7ac19948$var$_interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+        "default": obj
+    };
+}
+function $7a42d01e7ac19948$var$_slicedToArray(arr, i) {
+    return $7a42d01e7ac19948$var$_arrayWithHoles(arr) || $7a42d01e7ac19948$var$_iterableToArrayLimit(arr, i) || $7a42d01e7ac19948$var$_unsupportedIterableToArray(arr, i) || $7a42d01e7ac19948$var$_nonIterableRest();
+}
+function $7a42d01e7ac19948$var$_nonIterableRest() {
+    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function $7a42d01e7ac19948$var$_unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return $7a42d01e7ac19948$var$_arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(o);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return $7a42d01e7ac19948$var$_arrayLikeToArray(o, minLen);
+}
+function $7a42d01e7ac19948$var$_arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
+    return arr2;
+}
+function $7a42d01e7ac19948$var$_iterableToArrayLimit(arr, i) {
+    var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
+    if (null != _i) {
+        var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1;
+        try {
+            if (_x = (_i = _i.call(arr)).next, 0 === i) {
+                if (Object(_i) !== _i) return;
+                _n = !1;
+            } else for(; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0);
+        } catch (err) {
+            _d = !0, _e = err;
+        } finally{
+            try {
+                if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return;
+            } finally{
+                if (_d) throw _e;
+            }
+        }
+        return _arr;
+    }
+}
+function $7a42d01e7ac19948$var$_arrayWithHoles(arr) {
+    if (Array.isArray(arr)) return arr;
+}
+function $7a42d01e7ac19948$var$_regeneratorRuntime() {
+    "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ 
+    $7a42d01e7ac19948$var$_regeneratorRuntime = function _regeneratorRuntime() {
+        return exports1;
+    };
+    var exports1 = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function(obj, key, desc) {
+        obj[key] = desc.value;
+    }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+    function define(obj, key, value) {
+        return Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: !0,
+            configurable: !0,
+            writable: !0
+        }), obj[key];
+    }
+    try {
+        define({}, "");
+    } catch (err) {
+        define = function define(obj, key, value) {
+            return obj[key] = value;
+        };
+    }
+    function wrap(innerFn, outerFn, self, tryLocsList) {
+        var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []);
+        return defineProperty(generator, "_invoke", {
+            value: makeInvokeMethod(innerFn, self, context)
+        }), generator;
+    }
+    function tryCatch(fn, obj, arg) {
+        try {
+            return {
+                type: "normal",
+                arg: fn.call(obj, arg)
+            };
+        } catch (err) {
+            return {
+                type: "throw",
+                arg: err
+            };
+        }
+    }
+    exports1.wrap = wrap;
+    var ContinueSentinel = {};
+    function Generator() {}
+    function GeneratorFunction() {}
+    function GeneratorFunctionPrototype() {}
+    var IteratorPrototype = {};
+    define(IteratorPrototype, iteratorSymbol, function() {
+        return this;
+    });
+    var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+    NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype);
+    var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
+    function defineIteratorMethods(prototype) {
+        [
+            "next",
+            "throw",
+            "return"
+        ].forEach(function(method) {
+            define(prototype, method, function(arg) {
+                return this._invoke(method, arg);
+            });
+        });
+    }
+    function AsyncIterator(generator, PromiseImpl) {
+        function invoke(method, arg, resolve, reject) {
+            var record = tryCatch(generator[method], generator, arg);
+            if ("throw" !== record.type) {
+                var result = record.arg, value = result.value;
+                return value && "object" == $7a42d01e7ac19948$var$_typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function(value) {
+                    invoke("next", value, resolve, reject);
+                }, function(err) {
+                    invoke("throw", err, resolve, reject);
+                }) : PromiseImpl.resolve(value).then(function(unwrapped) {
+                    result.value = unwrapped, resolve(result);
+                }, function(error) {
+                    return invoke("throw", error, resolve, reject);
+                });
+            }
+            reject(record.arg);
+        }
+        var previousPromise;
+        defineProperty(this, "_invoke", {
+            value: function value(method, arg) {
+                function callInvokeWithMethodAndArg() {
+                    return new PromiseImpl(function(resolve, reject) {
+                        invoke(method, arg, resolve, reject);
+                    });
+                }
+                return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
+            }
+        });
+    }
+    function makeInvokeMethod(innerFn, self, context) {
+        var state = "suspendedStart";
+        return function(method, arg) {
+            if ("executing" === state) throw new Error("Generator is already running");
+            if ("completed" === state) {
+                if ("throw" === method) throw arg;
+                return doneResult();
+            }
+            for(context.method = method, context.arg = arg;;){
+                var delegate = context.delegate;
+                if (delegate) {
+                    var delegateResult = maybeInvokeDelegate(delegate, context);
+                    if (delegateResult) {
+                        if (delegateResult === ContinueSentinel) continue;
+                        return delegateResult;
+                    }
+                }
+                if ("next" === context.method) context.sent = context._sent = context.arg;
+                else if ("throw" === context.method) {
+                    if ("suspendedStart" === state) throw state = "completed", context.arg;
+                    context.dispatchException(context.arg);
+                } else "return" === context.method && context.abrupt("return", context.arg);
+                state = "executing";
+                var record = tryCatch(innerFn, self, context);
+                if ("normal" === record.type) {
+                    if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
+                    return {
+                        value: record.arg,
+                        done: context.done
+                    };
+                }
+                "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
+            }
+        };
+    }
+    function maybeInvokeDelegate(delegate, context) {
+        var methodName = context.method, method = delegate.iterator[methodName];
+        if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel;
+        var record = tryCatch(method, delegate.iterator, context.arg);
+        if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel;
+        var info = record.arg;
+        return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel);
+    }
+    function pushTryEntry(locs) {
+        var entry = {
+            tryLoc: locs[0]
+        };
+        1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry);
+    }
+    function resetTryEntry(entry) {
+        var record = entry.completion || {};
+        record.type = "normal", delete record.arg, entry.completion = record;
+    }
+    function Context(tryLocsList) {
+        this.tryEntries = [
+            {
+                tryLoc: "root"
+            }
+        ], tryLocsList.forEach(pushTryEntry, this), this.reset(!0);
+    }
+    function values(iterable) {
+        if (iterable) {
+            var iteratorMethod = iterable[iteratorSymbol];
+            if (iteratorMethod) return iteratorMethod.call(iterable);
+            if ("function" == typeof iterable.next) return iterable;
+            if (!isNaN(iterable.length)) {
+                var i = -1, next = function next() {
+                    for(; ++i < iterable.length;)if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next;
+                    return next.value = undefined, next.done = !0, next;
+                };
+                return next.next = next;
+            }
+        }
+        return {
+            next: doneResult
+        };
+    }
+    function doneResult() {
+        return {
+            value: undefined,
+            done: !0
+        };
+    }
+    return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", {
+        value: GeneratorFunctionPrototype,
+        configurable: !0
+    }), defineProperty(GeneratorFunctionPrototype, "constructor", {
+        value: GeneratorFunction,
+        configurable: !0
+    }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports1.isGeneratorFunction = function(genFun) {
+        var ctor = "function" == typeof genFun && genFun.constructor;
+        return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name));
+    }, exports1.mark = function(genFun) {
+        return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun;
+    }, exports1.awrap = function(arg) {
+        return {
+            __await: arg
+        };
+    }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function() {
+        return this;
+    }), exports1.AsyncIterator = AsyncIterator, exports1.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+        void 0 === PromiseImpl && (PromiseImpl = Promise);
+        var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl);
+        return exports1.isGeneratorFunction(outerFn) ? iter : iter.next().then(function(result) {
+            return result.done ? result.value : iter.next();
+        });
+    }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function() {
+        return this;
+    }), define(Gp, "toString", function() {
+        return "[object Generator]";
+    }), exports1.keys = function(val) {
+        var object = Object(val), keys = [];
+        for(var key in object)keys.push(key);
+        return keys.reverse(), function next() {
+            for(; keys.length;){
+                var key = keys.pop();
+                if (key in object) return next.value = key, next.done = !1, next;
+            }
+            return next.done = !0, next;
+        };
+    }, exports1.values = values, Context.prototype = {
+        constructor: Context,
+        reset: function reset(skipTempReset) {
+            if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for(var name in this)"t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined);
+        },
+        stop: function stop() {
+            this.done = !0;
+            var rootRecord = this.tryEntries[0].completion;
+            if ("throw" === rootRecord.type) throw rootRecord.arg;
+            return this.rval;
+        },
+        dispatchException: function dispatchException(exception) {
+            if (this.done) throw exception;
+            var context = this;
+            function handle(loc, caught) {
+                return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught;
+            }
+            for(var i = this.tryEntries.length - 1; i >= 0; --i){
+                var entry = this.tryEntries[i], record = entry.completion;
+                if ("root" === entry.tryLoc) return handle("end");
+                if (entry.tryLoc <= this.prev) {
+                    var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc");
+                    if (hasCatch && hasFinally) {
+                        if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
+                        if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
+                    } else if (hasCatch) {
+                        if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
+                    } else {
+                        if (!hasFinally) throw new Error("try statement without catch or finally");
+                        if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
+                    }
+                }
+            }
+        },
+        abrupt: function abrupt(type, arg) {
+            for(var i = this.tryEntries.length - 1; i >= 0; --i){
+                var entry = this.tryEntries[i];
+                if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
+                    var finallyEntry = entry;
+                    break;
+                }
+            }
+            finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null);
+            var record = finallyEntry ? finallyEntry.completion : {};
+            return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record);
+        },
+        complete: function complete(record, afterLoc) {
+            if ("throw" === record.type) throw record.arg;
+            return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel;
+        },
+        finish: function finish(finallyLoc) {
+            for(var i = this.tryEntries.length - 1; i >= 0; --i){
+                var entry = this.tryEntries[i];
+                if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel;
+            }
+        },
+        "catch": function _catch(tryLoc) {
+            for(var i = this.tryEntries.length - 1; i >= 0; --i){
+                var entry = this.tryEntries[i];
+                if (entry.tryLoc === tryLoc) {
+                    var record = entry.completion;
+                    if ("throw" === record.type) {
+                        var thrown = record.arg;
+                        resetTryEntry(entry);
+                    }
+                    return thrown;
+                }
+            }
+            throw new Error("illegal catch attempt");
+        },
+        delegateYield: function delegateYield(iterable, resultName, nextLoc) {
+            return this.delegate = {
+                iterator: values(iterable),
+                resultName: resultName,
+                nextLoc: nextLoc
+            }, "next" === this.method && (this.arg = undefined), ContinueSentinel;
+        }
+    }, exports1;
+}
+function $7a42d01e7ac19948$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+    try {
+        var info = gen[key](arg);
+        var value = info.value;
+    } catch (error) {
+        reject(error);
+        return;
+    }
+    if (info.done) resolve(value);
+    else Promise.resolve(value).then(_next, _throw);
+}
+function $7a42d01e7ac19948$var$_asyncToGenerator(fn) {
+    return function() {
+        var self = this, args = arguments;
+        return new Promise(function(resolve, reject) {
+            var gen = fn.apply(self, args);
+            function _next(value) {
+                $7a42d01e7ac19948$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+            }
+            function _throw(err) {
+                $7a42d01e7ac19948$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+            }
+            _next(undefined);
+        });
+    };
+}
+var $7a42d01e7ac19948$var$databaseConnection = /*#__PURE__*/ function() {
+    var _ref = $7a42d01e7ac19948$var$_asyncToGenerator(/*#__PURE__*/ $7a42d01e7ac19948$var$_regeneratorRuntime().mark(function _callee5() {
+        var pool, closePool, getConnection, query;
+        return $7a42d01e7ac19948$var$_regeneratorRuntime().wrap(function _callee5$(_context5) {
+            while(true)switch(_context5.prev = _context5.next){
+                case 0:
+                    pool = null; // Close database connection pool
+                    closePool = /*#__PURE__*/ function() {
+                        var _ref2 = $7a42d01e7ac19948$var$_asyncToGenerator(/*#__PURE__*/ $7a42d01e7ac19948$var$_regeneratorRuntime().mark(function _callee() {
+                            return $7a42d01e7ac19948$var$_regeneratorRuntime().wrap(function _callee$(_context) {
+                                while(true)switch(_context.prev = _context.next){
+                                    case 0:
+                                        _context.prev = 0;
+                                        _context.next = 3;
+                                        return pool.end();
+                                    case 3:
+                                        pool = null;
+                                        _context.next = 10;
+                                        break;
+                                    case 6:
+                                        _context.prev = 6;
+                                        _context.t0 = _context["catch"](0);
+                                        console.error(_context.t0.message);
+                                        throw _context.t0;
+                                    case 10:
+                                    case "end":
+                                        return _context.stop();
+                                }
+                            }, _callee, null, [
+                                [
+                                    0,
+                                    6
+                                ]
+                            ]);
+                        }));
+                        return function closePool() {
+                            return _ref2.apply(this, arguments);
+                        };
+                    }(); // Establish a new database connection
+                    getConnection = /*#__PURE__*/ function() {
+                        var _ref3 = $7a42d01e7ac19948$var$_asyncToGenerator(/*#__PURE__*/ $7a42d01e7ac19948$var$_regeneratorRuntime().mark(function _callee3() {
+                            var connection;
+                            return $7a42d01e7ac19948$var$_regeneratorRuntime().wrap(function _callee3$(_context3) {
+                                while(true)switch(_context3.prev = _context3.next){
+                                    case 0:
+                                        _context3.prev = 0;
+                                        if (!pool) {
+                                            _context3.next = 3;
+                                            break;
+                                        }
+                                        return _context3.abrupt("return", pool);
+                                    case 3:
+                                        pool = $7a42d01e7ac19948$var$_libraries["default"].mysql.createPool($7a42d01e7ac19948$var$_appConfig["default"].mysql.developmentDb);
+                                        pool.on("error", /*#__PURE__*/ function() {
+                                            var _ref4 = $7a42d01e7ac19948$var$_asyncToGenerator(/*#__PURE__*/ $7a42d01e7ac19948$var$_regeneratorRuntime().mark(function _callee2(error) {
+                                                return $7a42d01e7ac19948$var$_regeneratorRuntime().wrap(function _callee2$(_context2) {
+                                                    while(true)switch(_context2.prev = _context2.next){
+                                                        case 0:
+                                                            console.error(error.message);
+                                                            _context2.next = 3;
+                                                            return closePool();
+                                                        case 3:
+                                                            return _context2.abrupt("return");
+                                                        case 4:
+                                                        case "end":
+                                                            return _context2.stop();
+                                                    }
+                                                }, _callee2);
+                                            }));
+                                            return function(_x) {
+                                                return _ref4.apply(this, arguments);
+                                            };
+                                        }());
+                                        _context3.next = 7;
+                                        return pool.getConnection();
+                                    case 7:
+                                        connection = _context3.sent;
+                                        connection.release();
+                                        return _context3.abrupt("return", connection);
+                                    case 12:
+                                        _context3.prev = 12;
+                                        _context3.t0 = _context3["catch"](0);
+                                        pool = null;
+                                        console.error(_context3.t0.message);
+                                        throw _context3.t0;
+                                    case 17:
+                                    case "end":
+                                        return _context3.stop();
+                                }
+                            }, _callee3, null, [
+                                [
+                                    0,
+                                    12
+                                ]
+                            ]);
+                        }));
+                        return function getConnection() {
+                            return _ref3.apply(this, arguments);
+                        };
+                    }();
+                    query = /*#__PURE__*/ function() {
+                        var _ref5 = $7a42d01e7ac19948$var$_asyncToGenerator(/*#__PURE__*/ $7a42d01e7ac19948$var$_regeneratorRuntime().mark(function _callee4(sql, values) {
+                            var connection, _yield$connection$que, _yield$connection$que2, results;
+                            return $7a42d01e7ac19948$var$_regeneratorRuntime().wrap(function _callee4$(_context4) {
+                                while(true)switch(_context4.prev = _context4.next){
+                                    case 0:
+                                        _context4.next = 2;
+                                        return getConnection();
+                                    case 2:
+                                        connection = _context4.sent;
+                                        _context4.prev = 3;
+                                        _context4.next = 6;
+                                        return connection.query(sql, values);
+                                    case 6:
+                                        _yield$connection$que = _context4.sent;
+                                        _yield$connection$que2 = $7a42d01e7ac19948$var$_slicedToArray(_yield$connection$que, 1);
+                                        results = _yield$connection$que2[0];
+                                        connection.release();
+                                        return _context4.abrupt("return", [
+                                            results
+                                        ]);
+                                    case 13:
+                                        _context4.prev = 13;
+                                        _context4.t0 = _context4["catch"](3);
+                                        connection.release();
+                                        throw _context4.t0;
+                                    case 17:
+                                    case "end":
+                                        return _context4.stop();
+                                }
+                            }, _callee4, null, [
+                                [
+                                    3,
+                                    13
+                                ]
+                            ]);
+                        }));
+                        return function query(_x2, _x3) {
+                            return _ref5.apply(this, arguments);
+                        };
+                    }();
+                    return _context5.abrupt("return", {
+                        query: query
+                    });
+                case 5:
+                case "end":
+                    return _context5.stop();
+            }
+        }, _callee5);
+    }));
+    return function databaseConnection() {
+        return _ref.apply(this, arguments);
+    };
+}();
+var $7a42d01e7ac19948$var$mysqlClient = {
+    connectToDatabase: $7a42d01e7ac19948$var$databaseConnection
+};
+var $7a42d01e7ac19948$var$_default = $7a42d01e7ac19948$var$mysqlClient;
+module.exports["default"] = $7a42d01e7ac19948$var$_default;
+
+});
+
 
 parcelRequire.register("bEnSX", function(module, exports) {
 "use strict";

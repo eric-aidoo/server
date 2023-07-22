@@ -41,5 +41,4 @@ SELECT u.id,
        u.updated_at
 FROM users AS u 
 LEFT JOIN users_billing_address AS a ON u.username = a.user
-WHERE u.username = ? OR u.email = ? 
-
+WHERE u.country_of_residence = ?;

@@ -1,20 +1,20 @@
 import { MissingFieldError, ValidationError } from '../../../helpers/errors';
-import { validateUSStateAbbreviation } from '../../../helpers/utilities';
+import { capitalize, validateUSStateAbbreviation } from '../../../helpers/utilities';
 
 const validateAddress = (line1, line2, city, state, zipCode, country) => {
   if (!line1 || line1.trim() === '') {
     throw new MissingFieldError('Street name is required');
   }
-  if (line1.length > 255) {
+  if (line1.length > 200) {
     throw new ValidationError('Street name is too long');
   }
-  if (line2.length > 255) {
+  if (line2.length > 200) {
     throw new ValidationError('Address line2 (Apt/Bldg/Suite) is too long');
   }
   if (!city || city.trim() === '') {
     throw new MissingFieldError('City is required');
   }
-  if (city.length > 255) {
+  if (city.length > 200) {
     throw new ValidationError('City name is too long');
   }
   if (!state || state.trim() === '') {
@@ -34,12 +34,12 @@ const validateAddress = (line1, line2, city, state, zipCode, country) => {
   }
 
   return {
-    line1,
-    line2,
-    city,
-    state,
-    zipCode,
-    country,
+    line1: capitalize(line1.trim()),
+    line2: capitalize(line2.trim()),
+    city: capitalize(city.trim()),
+    state: state.trim().toUpperCase(),
+    zipCode: capitalize(zipCode.trim()),
+    country: country.trim().toUpperCase(),
   };
 };
 

@@ -21,12 +21,72 @@ const findUser = async (usernameOrEmail) => {
   }
 };
 
-const createUser = async (user) => {
+const listUsers = async () => {
   try {
     const database = await mysqlClient.connectToDatabase();
     const queries = await loadSqlQueries({ sqlFolder: 'api/users/queries' });
-    const userIsNotAnObject = typeof user !== 'object';
-    if (userIsNotAnObject) {
+    const [queryResults] = await database.query(queries.listUsers);
+    const noUsers = !queryResults.length || queryResults.length === 0;
+    return noUsers ? [] : queryResults;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const findUsersByVerificationStatus = async (verificationStatus) => {
+  try {
+    const database = await mysqlClient.connectToDatabase();
+    const queries = await loadSqlQueries({ sqlFolder: 'api/users/queries' });
+    const requestInput = [verificationStatus];
+    const [queryResults] = await database.query(queries.findUsersByVerificationStatus, requestInput);
+    const noUsers = !queryResults.length || queryResults.length === 0;
+    return noUsers ? [] : queryResults;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const findUsersByCountry = async (country) => {
+  try {
+    const database = await mysqlClient.connectToDatabase();
+    const queries = await loadSqlQueries({ sqlFolder: 'api/users/queries' });
+    const requestInput = [country];
+    const [queryResults] = await database.query(queries.findUsersByCountry, requestInput);
+    const noUsers = !queryResults.length || queryResults.length === 0;
+    return noUsers ? [] : queryResults;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const deleteUser = async (username) => {
+  try {
+    const database = await mysqlClient.connectToDatabase();
+    const queries = await loadSqlQueries({ sqlFolder: 'api/users/queries' });
+    const user = await findUser(username);
+    if (!user) {
+      throw new NotFoundError(`Hm. We couldn't find an account with that identity.`);
+    }
+    const requestInput = [username];
+    const [queryResults] = await database.query(queries.deleteUser, requestInput);
+    const requestWasSuccessful = queryResults.affectedRows > 0;
+    if (!requestWasSuccessful) {
+      throw new InternalServerError('Request could not be processed due to an unexpected error');
+    }
+    return {
+      response: 'User deleted',
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+const addUser = async (user) => {
+  try {
+    const database = await mysqlClient.connectToDatabase();
+    const queries = await loadSqlQueries({ sqlFolder: 'api/users/queries' });
+    const userIsAnObject = typeof user === 'object';
+    if (!userIsAnObject) {
       throw new BadRequestError('User must be an object');
     }
     const emailIsAlreadyRegisteredWithAnAccount = await findUser(user.email);
@@ -74,7 +134,7 @@ const updateEmail = async ({ username, email }) => {
   }
 };
 
-const markEmailAsVerified = async ({ username }) => {
+const updateEmailVerificationCode = async ({ username, verificationCode, codeExpiration }) => {
   try {
     const database = await mysqlClient.connectToDatabase();
     const queries = await loadSqlQueries({ sqlFolder: 'api/users/queries' });
@@ -82,7 +142,31 @@ const markEmailAsVerified = async ({ username }) => {
     if (!user) {
       throw new NotFoundError(`Hm. We couldn't find an account with that identity.`);
     }
-    const requestInput = [true, username];
+    const updatedAt = new Date().toISOString();
+    const requestInput = [verificationCode, codeExpiration, updatedAt, username];
+    const [queryResults] = await database.query(queries.makeEmailAsVerified, requestInput);
+    const requestWasSuccessful = queryResults.affectedRows > 0;
+    if (!requestWasSuccessful) {
+      throw new InternalServerError('Request could not be processed due to an unexpected error');
+    }
+    return {
+      response: 'Email verification code updated',
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+const markEmailAsVerified = async (username) => {
+  try {
+    const database = await mysqlClient.connectToDatabase();
+    const queries = await loadSqlQueries({ sqlFolder: 'api/users/queries' });
+    const user = await findUser(username);
+    if (!user) {
+      throw new NotFoundError(`Hm. We couldn't find an account with that identity.`);
+    }
+    const updatedAt = new Date().toISOString();
+    const requestInput = [true, updatedAt, username];
     const [queryResults] = await database.query(queries.makeEmailAsVerified, requestInput);
     const requestWasSuccessful = queryResults.affectedRows > 0;
     if (!requestWasSuccessful) {
@@ -105,7 +189,7 @@ const updatePhoneNumber = async ({ username, phoneNumber }) => {
       throw new NotFoundError(`Hm. We couldn't find an account with that identity.`);
     }
     const updatedAt = new Date().toISOString();
-    const requestInput = [phoneNumber, true, updatedAt, username];
+    const requestInput = [phoneNumber, updatedAt, username];
     const [queryResults] = await database.query(queries.updatePhoneNumber, requestInput);
     const requestWasSuccessful = queryResults.affectedRows > 0;
     if (!requestWasSuccessful) {
@@ -387,26 +471,31 @@ const deactivateAccount = async (username) => {
       throw new NotFoundError(`Hm. We couldn't find an account with that identity.`);
     }
     const updatedAt = new Date().toISOString();
-    const requestInput = ['inactive', updatedAt, username];
+    const requestInput = ['deactivated', updatedAt, username];
     const [queryResults] = await database.query(queries.closeAccount, requestInput);
     const requestWasSuccessful = queryResults.affectedRows > 0;
     if (!requestWasSuccessful) {
       throw new InternalServerError('Request could not be processed due to an unexpected error');
     }
     return {
-      response: 'Your account is now closed',
+      response: 'Your account is now deactivated',
     };
   } catch (error) {
     throw error;
   }
 };
 
-const usersDb = {
+const userRepository = {
   findUser,
-  createUser,
+  findUsersByVerificationStatus,
+  findUsersByCountry,
+  listUsers,
+  addUser,
+  deleteUser,
   updateAuthorizationPin,
   updateDateOfBirth,
   updateEmail,
+  updateEmailVerificationCode,
   updateOtpCode,
   updatePassword,
   updatePhoneNumber,
@@ -421,4 +510,4 @@ const usersDb = {
   deactivateAccount,
 };
 
-export default usersDb;
+export default userRepository;
