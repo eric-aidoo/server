@@ -1,36 +1,48 @@
 import config from '../config/appConfig';
-import { ForbiddenError } from '../helpers/errors';
+import libraries from '../helpers/libraries';
 
-const corsMiddleware = (req, res, next) => {
-  if (config.server.isInDevMode) {
-    res.setHeader(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, User-Agent, Content-Type, Accept, Authorization, If-Modified-Since, Cache-Control, Referer',
-    );
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    return next();
-  }
-  const allowedOrigins = [
-    'https://www.credet.app',
-    'https://credet.app',
-    'https://www.credetpay.com',
-    'https://credetpay.com',
-    'https://auth.credet.app',
-    'https://api.credetpay.com',
-    'https://www.movecredet.com',
-    'https://movecredet.com',
-  ];
-  const origin = req.headers.origin;
-  if (!allowedOrigins.includes(origin)) {
-    return next(new ForbiddenError('Request denied'));
-  }
-  res.setHeader('Access-Control-Allow-Headers', server.allowedHeaders.join(', '));
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', origin);
-  next();
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'http://127.0.0.1:5501',
+      'http://localhost:3005',
+      'https://www.credet.app',
+      'https://credet.app',
+      'https://www.credetpay.com',
+      'https://credetpay.com',
+      'https://auth.credet.app',
+      'https://api.credetpay.com',
+      'https://www.movecredet.com',
+      'https://movecredet.com',
+      'https://2cfa-153-33-219-21.ngrok-free.app',
+    ];
+
+    if (config.server.isInDevMode) {
+      // Allow any origin in dev mode
+      callback(null, true);
+    } else if (!origin || allowedOrigins.includes(origin)) {
+      // Allow requests from the allowed origins in production mode
+      callback(null, true);
+    } else {
+      // Block requests from other origins
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  allowedHeaders: [
+    'Origin',
+    'X-Requested-With',
+    'User-Agent',
+    'Content-Type',
+    'Accept',
+    'Authorization',
+    'If-Modified-Since',
+    'Cache-Control',
+    'Referer',
+  ],
+  methods: 'GET, POST',
+  credentials: true,
 };
+
+const corsMiddleware = libraries.cors(corsOptions);
 
 export default corsMiddleware;

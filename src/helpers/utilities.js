@@ -4,7 +4,7 @@ import libraries from './libraries';
 import { ForbiddenError, UnauthorizedError } from './errors';
 
 export function generateToken({ lengthOfToken }) {
-  const cryptoGeneratedString = crypto.randomBytes(22).toString('hex');
+  const cryptoGeneratedString = libraries.crypto.randomBytes(22).toString('hex');
   const characters = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789${cryptoGeneratedString}`;
   let len = characters.length;
   var token = '';
@@ -251,7 +251,7 @@ export function generatePasswordResetLink({ email, username, password }) {
   }
 }
 
-export function verifyPasswordResetLinkToken({ password, extractedToken }) {
+export function verifyPasswordResetUrlToken({ password, extractedToken }) {
   try {
     const secret = config.oAuth.passwordResetLinkSecret + password;
     libraries.jwt.verify(extractedToken, secret, (error, payload) => {

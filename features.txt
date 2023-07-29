@@ -47,3 +47,5 @@ empower our customers to make more money, like what Cosimo de' Medici did?
 
 Send money via email
 Reverse transaction
+
+timestamp, signature, payee, payor, accountNumber, amount, description

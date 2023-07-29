@@ -1,7 +1,7 @@
 import { loadEmailTemplates } from '../../helpers/utilities';
 import sendEmail from './client';
 
-const requestAnEmailVerification = async ({ recipient, firstName, verificationCode }) => {
+const sendEmailVerificationCode = async ({ recipient, firstName, verificationCode }) => {
   try {
     const emailTemplatesFolder = 'integrations/email/templates';
     const emailTemplates = await loadEmailTemplates(emailTemplatesFolder);
@@ -17,7 +17,7 @@ const requestAnEmailVerification = async ({ recipient, firstName, verificationCo
 };
 
 const EmailService = {
-  requestAnEmailVerification,
+  sendEmailVerificationCode,
 };
 
 export default EmailService;

@@ -19,6 +19,7 @@ import { IPinfoWrapper } from 'node-ipinfo';
 import crypto from 'crypto';
 import path from 'path';
 import { promises as fsPromises } from 'fs';
+import cors from 'cors';
 
 const libraries = {
   dotenv,
@@ -42,6 +43,7 @@ const libraries = {
   crypto,
   path,
   fsPromises,
+  cors,
 };
 
 export default libraries;

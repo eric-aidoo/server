@@ -16,6 +16,9 @@ import userRepository from './api/users/dataAccess/userRepository';
 import UserFactory from './api/users/factories/user';
 import AddressFactory from './api/users/factories/address';
 import waitlistRepository from './api/users/dataAccess/waitlistRepository';
+import EmailService from './integrations/email/service';
+import userAuthenticationRoutes from './api/users/routes/authRoute';
+import UserRepository from './api/users/dataAccess/userRepository';
 
 export default async function createApplication(webserver) {
   deactivateDebuggingInProductionMode();
@@ -29,10 +32,12 @@ export default async function createApplication(webserver) {
   webserver.use(libraries.helmet());
   webserver.use(xFrameOptionMiddleware);
   webserver.use(contentSecurityPolicyMiddleware);
-  webserver.use(expectCTMiddleware);
   webserver.use(featurePolicyMiddleware);
-  webserver.use(corsMiddleware);
+  webserver.use(expectCTMiddleware);
   webserver.set('trust proxy', true);
+
+  // CORS middleware
+  webserver.use(corsMiddleware);
 
   // Other express middleware
   webserver.use(libraries.expressFramework.urlencoded({ extended: true }));
@@ -58,8 +63,32 @@ export default async function createApplication(webserver) {
     res.send(`Your IP address: ${ipAddress}`);
   });
 
-  // const betaUser = await waitlistRepository.findUser('elon@tesla.com');
-  // console.log(betaUser);
+  webserver.get('/test-email', async (req, res) => {
+    await EmailService.sendEmailVerificationCode({
+      recipient: 'lifeoferic1@gmail.com',
+      firstName: 'Eric',
+      verificationCode: 'B-3683',
+    });
+    res.status(200).json({
+      message: 'Email successfully sent',
+    });
+  });
+
+  await userAuthenticationRoutes.register(webserver);
+
+  const updatedAt = new Date().toISOString();
+
+  // const deleteUser = async () => {
+  //   try {
+  //     await UserRepository.deleteUser('@lifeoferic1');
+  //   } catch (error) {
+  //     throw error.message;
+  //   }
+  // };
+  // deleteUser();
+
+  // const user = await UserRepository.findUser('@lifeoferic1');
+  // console.log(user);
 
   // Handle requests to unspecified routes
   webserver.all('*', handleUnspecifiedRouteRequests);

@@ -14,8 +14,7 @@ const findUser = async (usernameOrEmail) => {
     const requestInput = [usernameOrEmail, usernameOrEmail];
     const [queryResults] = await database.query(queries.findUser, requestInput);
     const userDoesNotExist = !queryResults.length || queryResults.length === 0;
-    const user = queryResults[0];
-    return userDoesNotExist ? null : Object.freeze(user);
+    return userDoesNotExist ? null : queryResults[0];
   } catch (error) {
     throw error;
   }
@@ -144,7 +143,7 @@ const updateEmailVerificationCode = async ({ username, verificationCode, codeExp
     }
     const updatedAt = new Date().toISOString();
     const requestInput = [verificationCode, codeExpiration, updatedAt, username];
-    const [queryResults] = await database.query(queries.makeEmailAsVerified, requestInput);
+    const [queryResults] = await database.query(queries.updateEmailVerificationCode, requestInput);
     const requestWasSuccessful = queryResults.affectedRows > 0;
     if (!requestWasSuccessful) {
       throw new InternalServerError('Request could not be processed due to an unexpected error');
@@ -485,7 +484,7 @@ const deactivateAccount = async (username) => {
   }
 };
 
-const userRepository = {
+const UserRepository = {
   findUser,
   findUsersByVerificationStatus,
   findUsersByCountry,
@@ -510,4 +509,4 @@ const userRepository = {
   deactivateAccount,
 };
 
-export default userRepository;
+export default UserRepository;

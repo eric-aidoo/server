@@ -6,16 +6,16 @@ const validateUserSignup = (email, password, username, firstName, lastName, coun
     throw new MissingFieldError('Email is required');
   }
   const emailValidator = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const isValidEmail = emailValidator.test(email);
-  if (!isValidEmail) {
+  const emailIsValid = emailValidator.test(email);
+  if (!emailIsValid) {
     throw new ValidationError('Invalid email');
   }
   if (!password || password.trim() === '') {
     throw new MissingFieldError('Password is required');
   }
   const passwordValidator = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-  const isValidPassword = passwordValidator.test(password);
-  if (!isValidPassword) {
+  const passwordIsValid = passwordValidator.test(password);
+  if (!passwordIsValid) {
     throw new ValidationError(
       'Password must be at least 8 characters long, and include at least one number, one uppercase letter, one lowercase letter and a special character',
     );
