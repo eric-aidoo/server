@@ -21,7 +21,7 @@ const databaseConnection = async () => {
       if (pool) {
         return pool;
       }
-      pool = libraries.mysql.createPool(config.mysql.developmentDb);
+      pool = libraries.mysql.createPool(config.mysql.productionDb);
       pool.on('error', async (error) => {
         console.error(error.message);
         await closePool();

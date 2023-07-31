@@ -4,9 +4,8 @@
   "description": "This is Credet's payment APIs server",
   "main": "dist/server.js",
   "scripts": {
-    "build": "parcel build src/server.js --dist-dir dist",
-    "dev": "npm run build && parcel watch 'src/**/*.js' 'src/**/*.ejs' 'src/**/*.html' 'src/**/*.sql' --target node --out-dir dist --public-url ./dist/ & nodemon --exec babel-node src/server.js",
-    "start": "node dist/server.js"
+    "dev": "nodemon --exec babel-node src/server.js",
+    "start": "node src/server.js"
   },
   "repository": {
     "type": "git",
