@@ -62,7 +62,6 @@ const signup = async (signupDetails) => {
     // await UserRepository.addUser(userObjectWithoutInviteCode);
     await UserRepository.addUser(newlyCreatedUser);
     const emailVerificationCode = generateOtpCode();
-    console.log(emailVerificationCode);
 
     await UserRepository.updateEmailVerificationCode({
       username: newlyCreatedUser.username,
@@ -106,8 +105,9 @@ const verifyEmailVerificationCode = async ({ email, verificationCode }) => {
     if (!verificationCodeIsValid) {
       throw new UnauthorizedError('Invalid verification code');
     }
-    const encryptedUsername = encrypt(user.username);
+    await UserRepository.markEmailAsVerified(user.username);
 
+    const encryptedUsername = encrypt(user.username);
     const refreshToken = generateRefreshToken(encryptedUsername);
     const accessToken = generateAccessToken(encryptedUsername);
 
@@ -117,6 +117,34 @@ const verifyEmailVerificationCode = async ({ email, verificationCode }) => {
     });
     // await EmailService.sendWelcomeEmail();
     return { refreshToken, accessToken };
+  } catch (error) {
+    throw error;
+  }
+};
+
+const requestAnEmailVerificationCode = async (email) => {
+  try {
+    if (!email) {
+      throw new MissingFieldError('Email is required');
+    }
+    const user = await UserRepository.findUser(email);
+    if (!user) {
+      throw new NotFoundError(`Hm. We couldn't find an account with that identity`);
+    }
+    const emailVerificationCode = generateOtpCode();
+    await UserRepository.updateEmailVerificationCode({
+      username: user.username,
+      verificationCode: emailVerificationCode,
+      codeExpiration: config.authentication.verificationCodeExpiration,
+    });
+    await EmailService.sendEmailVerificationCode({
+      recipient: user.email,
+      firstName: user.first_name,
+      verificationCode: emailVerificationCode,
+    });
+    return {
+      response: 'We sent you a one-time verification code to your email. Please enter it here.',
+    };
   } catch (error) {
     throw error;
   }
@@ -301,6 +329,7 @@ const UserAuthService = {
   verifyPasswordResetUrl,
   resetPassword,
   signOut,
+  requestAnEmailVerificationCode,
 };
 
 export default UserAuthService;

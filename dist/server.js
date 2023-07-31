@@ -433,10 +433,10 @@ function $a826c173f4456cde$var$createApplication(_x) {
     return $a826c173f4456cde$var$_createApplication.apply(this, arguments);
 }
 function $a826c173f4456cde$var$_createApplication() {
-    $a826c173f4456cde$var$_createApplication = $a826c173f4456cde$var$_asyncToGenerator(/*#__PURE__*/ $a826c173f4456cde$var$_regeneratorRuntime().mark(function _callee3(webserver) {
-        var updatedAt, deleteUser;
-        return $a826c173f4456cde$var$_regeneratorRuntime().wrap(function _callee3$(_context3) {
-            while(true)switch(_context3.prev = _context3.next){
+    $a826c173f4456cde$var$_createApplication = $a826c173f4456cde$var$_asyncToGenerator(/*#__PURE__*/ $a826c173f4456cde$var$_regeneratorRuntime().mark(function _callee2(webserver) {
+        var updatedAt, user;
+        return $a826c173f4456cde$var$_regeneratorRuntime().wrap(function _callee2$(_context2) {
+            while(true)switch(_context2.prev = _context2.next){
                 case 0:
                     (0, $37rWr.deactivateDebuggingInProductionMode)();
                     // These are security headers
@@ -502,56 +502,32 @@ function $a826c173f4456cde$var$_createApplication() {
                             return _ref.apply(this, arguments);
                         };
                     }());
-                    _context3.next = 25;
+                    _context2.next = 25;
                     return $a826c173f4456cde$var$_authRoute["default"].register(webserver);
                 case 25:
-                    updatedAt = new Date().toISOString(); // await UserRepository.updateEmailVerificationCode({
-                    //   username: '@lifeoferic1',
-                    //   verificationCode: 'B-3040',
-                    //   codeExpiration: updatedAt,
-                    // });
-                    deleteUser = /*#__PURE__*/ function() {
-                        var _ref2 = $a826c173f4456cde$var$_asyncToGenerator(/*#__PURE__*/ $a826c173f4456cde$var$_regeneratorRuntime().mark(function _callee2() {
-                            return $a826c173f4456cde$var$_regeneratorRuntime().wrap(function _callee2$(_context2) {
-                                while(true)switch(_context2.prev = _context2.next){
-                                    case 0:
-                                        _context2.prev = 0;
-                                        _context2.next = 3;
-                                        return $a826c173f4456cde$var$_userRepository["default"].deleteUser("@lifeoferic1");
-                                    case 3:
-                                        _context2.next = 8;
-                                        break;
-                                    case 5:
-                                        _context2.prev = 5;
-                                        _context2.t0 = _context2["catch"](0);
-                                        throw _context2.t0.message;
-                                    case 8:
-                                    case "end":
-                                        return _context2.stop();
-                                }
-                            }, _callee2, null, [
-                                [
-                                    0,
-                                    5
-                                ]
-                            ]);
-                        }));
-                        return function deleteUser() {
-                            return _ref2.apply(this, arguments);
-                        };
-                    }();
-                    deleteUser();
-                    // const betaUser = await waitlistRepository.findUser('elon@tesla.com');
-                    // console.log(betaUser);
+                    updatedAt = new Date().toISOString(); // const deleteUser = async () => {
+                    //   try {
+                    //     await UserRepository.deleteUser('@lifeoferic1');
+                    //   } catch (error) {
+                    //     throw error.message;
+                    //   }
+                    // };
+                    // deleteUser();
+                    _context2.next = 28;
+                    return $a826c173f4456cde$var$_userRepository["default"].findUser("@lifeoferic1");
+                case 28:
+                    user = _context2.sent;
+                    console.log(user);
+                    // const deletedUser = await UserRepository.deleteUser('@lifeoferic1');
                     // Handle requests to unspecified routes
                     webserver.all("*", $a826c173f4456cde$var$_handleUnidentifiedRoutes["default"]);
                     webserver.use($a826c173f4456cde$var$_errorHandler["default"]);
-                    return _context3.abrupt("return", webserver);
-                case 31:
+                    return _context2.abrupt("return", webserver);
+                case 33:
                 case "end":
-                    return _context3.stop();
+                    return _context2.stop();
             }
-        }, _callee3);
+        }, _callee2);
     }));
     return $a826c173f4456cde$var$_createApplication.apply(this, arguments);
 }
@@ -6640,10 +6616,17 @@ function $ffd8f6c66d4dfe95$var$_asyncToGenerator(fn) {
         });
     };
 }
-var $ffd8f6c66d4dfe95$var$signupRequest = {
+// Signup step 1 of 2
+var $ffd8f6c66d4dfe95$var$signupStepOneRequest = {
     method: "POST",
     path: "/user/signup",
     controller: (0, $ffd8f6c66d4dfe95$var$_asyncHandler["default"])($ffd8f6c66d4dfe95$var$_authController["default"].signup)
+};
+// Signup step 2 of 2 (POST /user/signup/verify-email)
+var $ffd8f6c66d4dfe95$var$signupStepTwoRequest = {
+    method: "POST",
+    path: "/user/signup/verify-email",
+    controller: (0, $ffd8f6c66d4dfe95$var$_asyncHandler["default"])($ffd8f6c66d4dfe95$var$_authController["default"].verifyEmailVerificationCode)
 };
 var $ffd8f6c66d4dfe95$var$register = /*#__PURE__*/ function() {
     var _ref = $ffd8f6c66d4dfe95$var$_asyncToGenerator(/*#__PURE__*/ $ffd8f6c66d4dfe95$var$_regeneratorRuntime().mark(function _callee(server) {
@@ -6653,7 +6636,8 @@ var $ffd8f6c66d4dfe95$var$register = /*#__PURE__*/ function() {
                 case 0:
                     incomingRequests = (0, $37rWr.expressWrapper)(server);
                     incomingRequests.route([
-                        $ffd8f6c66d4dfe95$var$signupRequest
+                        $ffd8f6c66d4dfe95$var$signupStepOneRequest,
+                        $ffd8f6c66d4dfe95$var$signupStepTwoRequest
                     ]);
                 case 2:
                 case "end":
@@ -7409,8 +7393,37 @@ var $b0829aec779c9e40$var$signup = /*#__PURE__*/ function() {
         return _ref.apply(this, arguments);
     };
 }();
+var $b0829aec779c9e40$var$verifyEmailVerificationCode = /*#__PURE__*/ function() {
+    var _ref2 = $b0829aec779c9e40$var$_asyncToGenerator(/*#__PURE__*/ $b0829aec779c9e40$var$_regeneratorRuntime().mark(function _callee2(req, res) {
+        var _req$body, email, verification_code, feedback;
+        return $b0829aec779c9e40$var$_regeneratorRuntime().wrap(function _callee2$(_context2) {
+            while(true)switch(_context2.prev = _context2.next){
+                case 0:
+                    _req$body = req.body, email = _req$body.email, verification_code = _req$body.verification_code;
+                    _context2.next = 3;
+                    return $b0829aec779c9e40$var$_authenticationService["default"].verifyEmailVerificationCode({
+                        email: email,
+                        verificationCode: verification_code
+                    });
+                case 3:
+                    feedback = _context2.sent;
+                    return _context2.abrupt("return", res.status(200).json({
+                        access_token: feedback.accessToken,
+                        refresh_token: feedback.refreshToken
+                    }));
+                case 5:
+                case "end":
+                    return _context2.stop();
+            }
+        }, _callee2);
+    }));
+    return function verifyEmailVerificationCode(_x3, _x4) {
+        return _ref2.apply(this, arguments);
+    };
+}();
 var $b0829aec779c9e40$var$authController = {
-    signup: $b0829aec779c9e40$var$signup
+    signup: $b0829aec779c9e40$var$signup,
+    verifyEmailVerificationCode: $b0829aec779c9e40$var$verifyEmailVerificationCode
 };
 var $b0829aec779c9e40$var$_default = $b0829aec779c9e40$var$authController;
 module.exports["default"] = $b0829aec779c9e40$var$_default;
@@ -7904,62 +7917,71 @@ var $a94c637474379957$var$verifyEmailVerificationCode = /*#__PURE__*/ function()
                 case 0:
                     email = _ref4.email, verificationCode = _ref4.verificationCode;
                     _context3.prev = 1;
-                    if (email && verificationCode) {
+                    if (email) {
                         _context3.next = 4;
                         break;
                     }
-                    throw new $k70SB.MissingFieldError("Email or verification code is required");
+                    throw new $k70SB.MissingFieldError("Email is required");
                 case 4:
-                    user = $a94c637474379957$var$_userRepository["default"].findUser(email);
-                    if (user) {
-                        _context3.next = 7;
+                    if (verificationCode) {
+                        _context3.next = 6;
                         break;
                     }
-                    throw new $k70SB.UnauthorizedError("User is unauthorized to perform this action based on the provided credentials");
-                case 7:
-                    currentTime = Date.now();
-                    verificationCodeHasExpired = currentTime >= user.email_verification_code_expiration;
-                    if (!verificationCodeHasExpired) {
+                    throw new $k70SB.MissingFieldError("Verification code is required");
+                case 6:
+                    _context3.next = 8;
+                    return $a94c637474379957$var$_userRepository["default"].findUser(email);
+                case 8:
+                    user = _context3.sent;
+                    if (user) {
                         _context3.next = 11;
                         break;
                     }
-                    throw new $k70SB.UnauthorizedError("Your verification code is no longer valid or has expired");
+                    throw new $k70SB.UnauthorizedError("User is unauthorized to perform this action based on the provided credentials");
                 case 11:
+                    currentTime = Date.now();
+                    verificationCodeHasExpired = currentTime >= user.email_verification_code_expiration;
+                    if (!verificationCodeHasExpired) {
+                        _context3.next = 15;
+                        break;
+                    }
+                    throw new $k70SB.UnauthorizedError("Your verification code is no longer valid or has expired");
+                case 15:
                     verificationCodeIsValid = verificationCode === user.email_verification_code;
                     if (verificationCodeIsValid) {
-                        _context3.next = 14;
+                        _context3.next = 18;
                         break;
                     }
                     throw new $k70SB.UnauthorizedError("Invalid verification code");
-                case 14:
+                case 18:
+                    _context3.next = 20;
+                    return $a94c637474379957$var$_userRepository["default"].markEmailAsVerified(user.username);
+                case 20:
                     encryptedUsername = (0, $37rWr.encrypt)(user.username);
                     refreshToken = (0, $37rWr.generateRefreshToken)(encryptedUsername);
                     accessToken = (0, $37rWr.generateAccessToken)(encryptedUsername);
-                    _context3.next = 19;
+                    _context3.next = 25;
                     return $a94c637474379957$var$_userRepository["default"].updateRefreshToken({
                         username: user.username,
                         refreshToken: refreshToken
                     });
-                case 19:
-                    _context3.next = 21;
-                    return $a94c637474379957$var$_service["default"].sendWelcomeEmail();
-                case 21:
+                case 25:
                     return _context3.abrupt("return", {
                         refreshToken: refreshToken,
                         accessToken: accessToken
                     });
-                case 24:
-                    _context3.prev = 24;
+                case 28:
+                    _context3.prev = 28;
                     _context3.t0 = _context3["catch"](1);
                     throw _context3.t0;
-                case 27:
+                case 31:
                 case "end":
                     return _context3.stop();
             }
         }, _callee3, null, [
             [
                 1,
-                24
+                28
             ]
         ]);
     }));
@@ -7967,37 +7989,97 @@ var $a94c637474379957$var$verifyEmailVerificationCode = /*#__PURE__*/ function()
         return _ref5.apply(this, arguments);
     };
 }();
-var $a94c637474379957$var$login = /*#__PURE__*/ function() {
-    var _ref7 = $a94c637474379957$var$_asyncToGenerator(/*#__PURE__*/ $a94c637474379957$var$_regeneratorRuntime().mark(function _callee4(_ref6) {
-        var username, password, user, sanitizedPassword, passwordIsCorrect, encryptedUsername, accessToken, refreshToken;
+var $a94c637474379957$var$requestAnotherEmailVerificationCode = /*#__PURE__*/ function() {
+    var _ref6 = $a94c637474379957$var$_asyncToGenerator(/*#__PURE__*/ $a94c637474379957$var$_regeneratorRuntime().mark(function _callee4(email) {
+        var user, emailVerificationCode;
         return $a94c637474379957$var$_regeneratorRuntime().wrap(function _callee4$(_context4) {
             while(true)switch(_context4.prev = _context4.next){
                 case 0:
-                    username = _ref6.username, password = _ref6.password;
-                    _context4.prev = 1;
+                    _context4.prev = 0;
+                    if (email) {
+                        _context4.next = 3;
+                        break;
+                    }
+                    throw new $k70SB.MissingFieldError("Email is required");
+                case 3:
+                    _context4.next = 5;
+                    return $a94c637474379957$var$_userRepository["default"].findUser(email);
+                case 5:
+                    user = _context4.sent;
+                    if (user) {
+                        _context4.next = 8;
+                        break;
+                    }
+                    throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity");
+                case 8:
+                    emailVerificationCode = (0, $37rWr.generateOtpCode)();
+                    _context4.next = 11;
+                    return $a94c637474379957$var$_userRepository["default"].updateEmailVerificationCode({
+                        username: user.username,
+                        verificationCode: emailVerificationCode,
+                        codeExpiration: $a94c637474379957$var$_appConfig["default"].authentication.verificationCodeExpiration
+                    });
+                case 11:
+                    _context4.next = 13;
+                    return $a94c637474379957$var$_service["default"].sendEmailVerificationCode({
+                        recipient: user.email,
+                        firstName: user.first_name,
+                        verificationCode: emailVerificationCode
+                    });
+                case 13:
+                    return _context4.abrupt("return", {
+                        response: "We sent you a one-time verification code to your email. Please enter it here."
+                    });
+                case 16:
+                    _context4.prev = 16;
+                    _context4.t0 = _context4["catch"](0);
+                    throw _context4.t0;
+                case 19:
+                case "end":
+                    return _context4.stop();
+            }
+        }, _callee4, null, [
+            [
+                0,
+                16
+            ]
+        ]);
+    }));
+    return function requestAnotherEmailVerificationCode(_x4) {
+        return _ref6.apply(this, arguments);
+    };
+}();
+var $a94c637474379957$var$login = /*#__PURE__*/ function() {
+    var _ref8 = $a94c637474379957$var$_asyncToGenerator(/*#__PURE__*/ $a94c637474379957$var$_regeneratorRuntime().mark(function _callee5(_ref7) {
+        var username, password, user, sanitizedPassword, passwordIsCorrect, encryptedUsername, accessToken, refreshToken;
+        return $a94c637474379957$var$_regeneratorRuntime().wrap(function _callee5$(_context5) {
+            while(true)switch(_context5.prev = _context5.next){
+                case 0:
+                    username = _ref7.username, password = _ref7.password;
+                    _context5.prev = 1;
                     if (username && password) {
-                        _context4.next = 4;
+                        _context5.next = 4;
                         break;
                     }
                     throw new $k70SB.MissingFieldError("Username or password is required");
                 case 4:
-                    _context4.next = 6;
+                    _context5.next = 6;
                     return $a94c637474379957$var$_userRepository["default"].findUser(username);
                 case 6:
-                    user = _context4.sent;
+                    user = _context5.sent;
                     if (user) {
-                        _context4.next = 9;
+                        _context5.next = 9;
                         break;
                     }
                     throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity");
                 case 9:
                     sanitizedPassword = (0, $37rWr.sanitize)(password);
-                    _context4.next = 12;
+                    _context5.next = 12;
                     return compareHash(sanitizedPassword, user.password);
                 case 12:
-                    passwordIsCorrect = _context4.sent;
+                    passwordIsCorrect = _context5.sent;
                     if (passwordIsCorrect) {
-                        _context4.next = 15;
+                        _context5.next = 15;
                         break;
                     }
                     throw new $k70SB.UnauthorizedError("We don't recognize this sign in combination");
@@ -8005,119 +8087,119 @@ var $a94c637474379957$var$login = /*#__PURE__*/ function() {
                     encryptedUsername = (0, $37rWr.encrypt)(user.username);
                     accessToken = (0, $37rWr.generateAccessToken)(encryptedUsername);
                     refreshToken = (0, $37rWr.generateRefreshToken)(encryptedUsername);
-                    _context4.next = 20;
+                    _context5.next = 20;
                     return $a94c637474379957$var$_userRepository["default"].updateRefreshToken({
                         username: username,
                         refreshToken: refreshToken
                     });
                 case 20:
-                    _context4.next = 22;
+                    _context5.next = 22;
                     return $a94c637474379957$var$_service["default"].sendLoginActivityReport();
                 case 22:
-                    return _context4.abrupt("return", {
+                    return _context5.abrupt("return", {
                         accessToken: accessToken,
                         refreshToken: refreshToken
                     });
                 case 25:
-                    _context4.prev = 25;
-                    _context4.t0 = _context4["catch"](1);
-                    throw _context4.t0;
+                    _context5.prev = 25;
+                    _context5.t0 = _context5["catch"](1);
+                    throw _context5.t0;
                 case 28:
                 case "end":
-                    return _context4.stop();
+                    return _context5.stop();
             }
-        }, _callee4, null, [
+        }, _callee5, null, [
             [
                 1,
                 25
             ]
         ]);
     }));
-    return function login(_x4) {
-        return _ref7.apply(this, arguments);
+    return function login(_x5) {
+        return _ref8.apply(this, arguments);
     };
 }();
 var $a94c637474379957$var$renewAccessToken = /*#__PURE__*/ function() {
-    var _ref8 = $a94c637474379957$var$_asyncToGenerator(/*#__PURE__*/ $a94c637474379957$var$_regeneratorRuntime().mark(function _callee5(cookies) {
+    var _ref9 = $a94c637474379957$var$_asyncToGenerator(/*#__PURE__*/ $a94c637474379957$var$_regeneratorRuntime().mark(function _callee6(cookies) {
         var refreshToken, username, decryptedUser, user, providedTokenIsValid, encryptedUsername, accessToken;
-        return $a94c637474379957$var$_regeneratorRuntime().wrap(function _callee5$(_context5) {
-            while(true)switch(_context5.prev = _context5.next){
+        return $a94c637474379957$var$_regeneratorRuntime().wrap(function _callee6$(_context6) {
+            while(true)switch(_context6.prev = _context6.next){
                 case 0:
-                    _context5.prev = 0;
+                    _context6.prev = 0;
                     if (cookies !== null && cookies !== void 0 && cookies.jwt) {
-                        _context5.next = 3;
+                        _context6.next = 3;
                         break;
                     }
                     throw new $k70SB.UnauthorizedError("Unauthorized request");
                 case 3:
                     refreshToken = cookies.jwt;
-                    _context5.next = 6;
+                    _context6.next = 6;
                     return (0, $37rWr.verifyRefreshToken)(refreshToken);
                 case 6:
-                    username = _context5.sent;
+                    username = _context6.sent;
                     decryptedUser = (0, $37rWr.decrypt)(username);
-                    _context5.next = 10;
+                    _context6.next = 10;
                     return $a94c637474379957$var$_userRepository["default"].findUser(decryptedUser);
                 case 10:
-                    user = _context5.sent;
+                    user = _context6.sent;
                     if (user) {
-                        _context5.next = 13;
+                        _context6.next = 13;
                         break;
                     }
                     throw new $k70SB.ForbiddenError("Request denied");
                 case 13:
                     providedTokenIsValid = refreshToken === user.refresh_token;
                     if (providedTokenIsValid) {
-                        _context5.next = 16;
+                        _context6.next = 16;
                         break;
                     }
                     throw new $k70SB.ForbiddenError("Request denied");
                 case 16:
                     encryptedUsername = (0, $37rWr.encrypt)(user.username);
                     accessToken = (0, $37rWr.generateAccessToken)(encryptedUsername);
-                    return _context5.abrupt("return", {
+                    return _context6.abrupt("return", {
                         accessToken: accessToken
                     });
                 case 21:
-                    _context5.prev = 21;
-                    _context5.t0 = _context5["catch"](0);
-                    throw _context5.t0;
+                    _context6.prev = 21;
+                    _context6.t0 = _context6["catch"](0);
+                    throw _context6.t0;
                 case 24:
                 case "end":
-                    return _context5.stop();
+                    return _context6.stop();
             }
-        }, _callee5, null, [
+        }, _callee6, null, [
             [
                 0,
                 21
             ]
         ]);
     }));
-    return function renewAccessToken(_x5) {
-        return _ref8.apply(this, arguments);
+    return function renewAccessToken(_x6) {
+        return _ref9.apply(this, arguments);
     };
 }();
 /**
  * This is the first step of the password reset process.
  */ var $a94c637474379957$var$requestPasswordResetUrl = /*#__PURE__*/ function() {
-    var _ref9 = $a94c637474379957$var$_asyncToGenerator(/*#__PURE__*/ $a94c637474379957$var$_regeneratorRuntime().mark(function _callee6(username) {
+    var _ref10 = $a94c637474379957$var$_asyncToGenerator(/*#__PURE__*/ $a94c637474379957$var$_regeneratorRuntime().mark(function _callee7(username) {
         var user, encryptedUsername, passwordResetLink;
-        return $a94c637474379957$var$_regeneratorRuntime().wrap(function _callee6$(_context6) {
-            while(true)switch(_context6.prev = _context6.next){
+        return $a94c637474379957$var$_regeneratorRuntime().wrap(function _callee7$(_context7) {
+            while(true)switch(_context7.prev = _context7.next){
                 case 0:
-                    _context6.prev = 0;
+                    _context7.prev = 0;
                     if (username) {
-                        _context6.next = 3;
+                        _context7.next = 3;
                         break;
                     }
                     throw new $k70SB.MissingFieldError("Username is required");
                 case 3:
-                    _context6.next = 5;
+                    _context7.next = 5;
                     return $a94c637474379957$var$_userRepository["default"].findUser(username);
                 case 5:
-                    user = _context6.sent;
+                    user = _context7.sent;
                     if (user) {
-                        _context6.next = 8;
+                        _context7.next = 8;
                         break;
                     }
                     throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity");
@@ -8128,70 +8210,15 @@ var $a94c637474379957$var$renewAccessToken = /*#__PURE__*/ function() {
                         username: encryptedUsername,
                         password: user.password
                     });
-                    _context6.next = 12;
+                    _context7.next = 12;
                     return $a94c637474379957$var$_service["default"].sendPasswordResetInstructions({
                         recipient: user.email,
                         firstName: user.first_name,
                         passwordResetLink: passwordResetLink
                     });
                 case 12:
-                    return _context6.abrupt("return", {
-                        response: "If we find an account that matches the information you submitted, we will send password reset instructions to your email address"
-                    });
-                case 15:
-                    _context6.prev = 15;
-                    _context6.t0 = _context6["catch"](0);
-                    throw _context6.t0;
-                case 18:
-                case "end":
-                    return _context6.stop();
-            }
-        }, _callee6, null, [
-            [
-                0,
-                15
-            ]
-        ]);
-    }));
-    return function requestPasswordResetUrl(_x6) {
-        return _ref9.apply(this, arguments);
-    };
-}();
-/**
- * Step 2 of password reset process. Upon visiting password reset url,
- * we verify the reset link to make sure its valid and has the right bearer
- */ var $a94c637474379957$var$verifyPasswordResetUrl = /*#__PURE__*/ function() {
-    var _ref10 = $a94c637474379957$var$_asyncToGenerator(/*#__PURE__*/ $a94c637474379957$var$_regeneratorRuntime().mark(function _callee7(passwordResetUrl) {
-        var urlIdentifier, urlToken, decryptedUsername, user;
-        return $a94c637474379957$var$_regeneratorRuntime().wrap(function _callee7$(_context7) {
-            while(true)switch(_context7.prev = _context7.next){
-                case 0:
-                    _context7.prev = 0;
-                    if (passwordResetUrl) {
-                        _context7.next = 3;
-                        break;
-                    }
-                    throw new $k70SB.MissingFieldError("Password reset link is required");
-                case 3:
-                    urlIdentifier = passwordResetUrl.split("/")[5];
-                    urlToken = passwordResetUrl.split("/")[6];
-                    decryptedUsername = (0, $37rWr.decrypt)(urlIdentifier);
-                    _context7.next = 8;
-                    return $a94c637474379957$var$_userRepository["default"].findUser(decryptedUsername);
-                case 8:
-                    user = _context7.sent;
-                    if (user) {
-                        _context7.next = 11;
-                        break;
-                    }
-                    throw new $k70SB.UnauthorizedError("Invalid password reset link");
-                case 11:
-                    (0, $37rWr.verifyPasswordResetUrlToken)({
-                        password: user.password,
-                        extractedToken: urlToken
-                    });
                     return _context7.abrupt("return", {
-                        email: user.email
+                        response: "If we find an account that matches the information you submitted, we will send password reset instructions to your email address"
                     });
                 case 15:
                     _context7.prev = 15;
@@ -8208,33 +8235,88 @@ var $a94c637474379957$var$renewAccessToken = /*#__PURE__*/ function() {
             ]
         ]);
     }));
-    return function verifyPasswordResetUrl(_x7) {
+    return function requestPasswordResetUrl(_x7) {
         return _ref10.apply(this, arguments);
+    };
+}();
+/**
+ * Step 2 of password reset process. Upon visiting password reset url,
+ * we verify the reset link to make sure its valid and has the right bearer
+ */ var $a94c637474379957$var$verifyPasswordResetUrl = /*#__PURE__*/ function() {
+    var _ref11 = $a94c637474379957$var$_asyncToGenerator(/*#__PURE__*/ $a94c637474379957$var$_regeneratorRuntime().mark(function _callee8(passwordResetUrl) {
+        var urlIdentifier, urlToken, decryptedUsername, user;
+        return $a94c637474379957$var$_regeneratorRuntime().wrap(function _callee8$(_context8) {
+            while(true)switch(_context8.prev = _context8.next){
+                case 0:
+                    _context8.prev = 0;
+                    if (passwordResetUrl) {
+                        _context8.next = 3;
+                        break;
+                    }
+                    throw new $k70SB.MissingFieldError("Password reset link is required");
+                case 3:
+                    urlIdentifier = passwordResetUrl.split("/")[5];
+                    urlToken = passwordResetUrl.split("/")[6];
+                    decryptedUsername = (0, $37rWr.decrypt)(urlIdentifier);
+                    _context8.next = 8;
+                    return $a94c637474379957$var$_userRepository["default"].findUser(decryptedUsername);
+                case 8:
+                    user = _context8.sent;
+                    if (user) {
+                        _context8.next = 11;
+                        break;
+                    }
+                    throw new $k70SB.UnauthorizedError("Invalid password reset link");
+                case 11:
+                    (0, $37rWr.verifyPasswordResetUrlToken)({
+                        password: user.password,
+                        extractedToken: urlToken
+                    });
+                    return _context8.abrupt("return", {
+                        email: user.email
+                    });
+                case 15:
+                    _context8.prev = 15;
+                    _context8.t0 = _context8["catch"](0);
+                    throw _context8.t0;
+                case 18:
+                case "end":
+                    return _context8.stop();
+            }
+        }, _callee8, null, [
+            [
+                0,
+                15
+            ]
+        ]);
+    }));
+    return function verifyPasswordResetUrl(_x8) {
+        return _ref11.apply(this, arguments);
     };
 }();
 /**
  * Step 3 (last step) of password reset process. This is when the user
  * actually changes his/her password
  */ var $a94c637474379957$var$resetPassword = /*#__PURE__*/ function() {
-    var _ref12 = $a94c637474379957$var$_asyncToGenerator(/*#__PURE__*/ $a94c637474379957$var$_regeneratorRuntime().mark(function _callee8(_ref11) {
+    var _ref13 = $a94c637474379957$var$_asyncToGenerator(/*#__PURE__*/ $a94c637474379957$var$_regeneratorRuntime().mark(function _callee9(_ref12) {
         var username, password, user, sanitizedPassword, passwordHasBeenUsedBefore, newPassword;
-        return $a94c637474379957$var$_regeneratorRuntime().wrap(function _callee8$(_context8) {
-            while(true)switch(_context8.prev = _context8.next){
+        return $a94c637474379957$var$_regeneratorRuntime().wrap(function _callee9$(_context9) {
+            while(true)switch(_context9.prev = _context9.next){
                 case 0:
-                    username = _ref11.username, password = _ref11.password;
-                    _context8.prev = 1;
+                    username = _ref12.username, password = _ref12.password;
+                    _context9.prev = 1;
                     if (username && password) {
-                        _context8.next = 4;
+                        _context9.next = 4;
                         break;
                     }
                     throw new $k70SB.MissingFieldError("Username and password are both required");
                 case 4:
-                    _context8.next = 6;
+                    _context9.next = 6;
                     return $a94c637474379957$var$_userRepository["default"].findUser(username);
                 case 6:
-                    user = _context8.sent;
+                    user = _context9.sent;
                     if (user) {
-                        _context8.next = 9;
+                        _context9.next = 9;
                         break;
                     }
                     throw new $k70SB.NotFoundError("Hm. We couldn't find an account with that identity");
@@ -8242,91 +8324,91 @@ var $a94c637474379957$var$renewAccessToken = /*#__PURE__*/ function() {
                     sanitizedPassword = (0, $37rWr.sanitize)(password);
                     passwordHasBeenUsedBefore = compareHash(sanitizedPassword, user.password);
                     if (!passwordHasBeenUsedBefore) {
-                        _context8.next = 13;
+                        _context9.next = 13;
                         break;
                     }
                     throw new BadRequestError("Please use a password that has not been used previously");
                 case 13:
                     newPassword = (0, $37rWr.generateHash)(sanitizedPassword);
-                    _context8.next = 16;
+                    _context9.next = 16;
                     return $a94c637474379957$var$_userRepository["default"].updatePassword({
                         username: username,
                         password: newPassword
                     });
                 case 16:
-                    _context8.next = 18;
+                    _context9.next = 18;
                     return $a94c637474379957$var$login({
                         username: user.username,
                         password: newPassword
                     });
                 case 18:
-                    _context8.next = 23;
+                    _context9.next = 23;
                     break;
                 case 20:
-                    _context8.prev = 20;
-                    _context8.t0 = _context8["catch"](1);
-                    throw _context8.t0;
+                    _context9.prev = 20;
+                    _context9.t0 = _context9["catch"](1);
+                    throw _context9.t0;
                 case 23:
                 case "end":
-                    return _context8.stop();
+                    return _context9.stop();
             }
-        }, _callee8, null, [
+        }, _callee9, null, [
             [
                 1,
                 20
             ]
         ]);
     }));
-    return function resetPassword(_x8) {
-        return _ref12.apply(this, arguments);
+    return function resetPassword(_x9) {
+        return _ref13.apply(this, arguments);
     };
 }();
 var $a94c637474379957$var$signOut = /*#__PURE__*/ function() {
-    var _ref13 = $a94c637474379957$var$_asyncToGenerator(/*#__PURE__*/ $a94c637474379957$var$_regeneratorRuntime().mark(function _callee9(cookies) {
+    var _ref14 = $a94c637474379957$var$_asyncToGenerator(/*#__PURE__*/ $a94c637474379957$var$_regeneratorRuntime().mark(function _callee10(cookies) {
         var refreshToken, username, decryptedUsername;
-        return $a94c637474379957$var$_regeneratorRuntime().wrap(function _callee9$(_context9) {
-            while(true)switch(_context9.prev = _context9.next){
+        return $a94c637474379957$var$_regeneratorRuntime().wrap(function _callee10$(_context10) {
+            while(true)switch(_context10.prev = _context10.next){
                 case 0:
-                    _context9.prev = 0;
+                    _context10.prev = 0;
                     if (cookies !== null && cookies !== void 0 && cookies.jwt) {
-                        _context9.next = 3;
+                        _context10.next = 3;
                         break;
                     }
                     throw new $k70SB.UnauthorizedError("Cookies are required to perform this action. Please ensure cookies are enabled and retry request.");
                 case 3:
                     refreshToken = cookies.jwt;
-                    _context9.next = 6;
+                    _context10.next = 6;
                     return (0, $37rWr.verifyRefreshToken)(refreshToken);
                 case 6:
-                    username = _context9.sent;
+                    username = _context10.sent;
                     decryptedUsername = (0, $37rWr.decrypt)(username); // We're clearing or nullifying any refresh token upon logout requests.
                     // The client must also delete the refresh token
-                    _context9.next = 10;
+                    _context10.next = 10;
                     return $a94c637474379957$var$_userRepository["default"].updateRefreshToken({
                         username: decryptedUsername,
                         refreshToken: null
                     });
                 case 10:
-                    return _context9.abrupt("return", {
+                    return _context10.abrupt("return", {
                         response: "You're now signed out"
                     });
                 case 13:
-                    _context9.prev = 13;
-                    _context9.t0 = _context9["catch"](0);
-                    throw _context9.t0;
+                    _context10.prev = 13;
+                    _context10.t0 = _context10["catch"](0);
+                    throw _context10.t0;
                 case 16:
                 case "end":
-                    return _context9.stop();
+                    return _context10.stop();
             }
-        }, _callee9, null, [
+        }, _callee10, null, [
             [
                 0,
                 13
             ]
         ]);
     }));
-    return function signOut(_x9) {
-        return _ref13.apply(this, arguments);
+    return function signOut(_x10) {
+        return _ref14.apply(this, arguments);
     };
 }();
 var $a94c637474379957$var$UserAuthService = {

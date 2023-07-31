@@ -5,6 +5,8 @@ const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = [
       'http://127.0.0.1:5501',
+      'https://dev.credetpay.com',
+      'https://75a1-2601-98a-4181-2490-d07e-9501-fc76-5111.ngrok-free.app',
       'http://localhost:3005',
       'https://www.credet.app',
       'https://credet.app',

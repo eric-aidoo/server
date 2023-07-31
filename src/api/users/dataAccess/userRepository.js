@@ -166,7 +166,7 @@ const markEmailAsVerified = async (username) => {
     }
     const updatedAt = new Date().toISOString();
     const requestInput = [true, updatedAt, username];
-    const [queryResults] = await database.query(queries.makeEmailAsVerified, requestInput);
+    const [queryResults] = await database.query(queries.markEmailAsVerified, requestInput);
     const requestWasSuccessful = queryResults.affectedRows > 0;
     if (!requestWasSuccessful) {
       throw new InternalServerError('Request could not be processed due to an unexpected error');

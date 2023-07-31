@@ -4,10 +4,7 @@ const signup = async (req, res) => {
   const user = req.body;
   const feedback = await UserAuthService.signup(user);
   return res.status(201).json({
-    success: true,
-    data: {
-      message: feedback.response,
-    },
+    message: feedback.response,
   });
 };
 
@@ -24,9 +21,18 @@ const verifyEmailVerificationCode = async (req, res) => {
   });
 };
 
+const requestAnEmailVerificationCode = async (req, res) => {
+  const email = req.body;
+  const feedback = await UserAuthService.requestAnEmailVerificationCode(email);
+  return res.status(200).json({
+    message: feedback.response,
+  });
+};
+
 const authController = {
   signup,
   verifyEmailVerificationCode,
+  requestAnEmailVerificationCode,
 };
 
 export default authController;

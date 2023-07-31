@@ -16,9 +16,16 @@ const signupStepTwoRequest = {
   controller: asyncHandler(authController.verifyEmailVerificationCode),
 };
 
+// Request an email verification code (POST /user/email/request-verification-code)
+const requestEmailVerificationCodeRequest = {
+  method: 'POST',
+  path: '/user/email/request-verification-code',
+  controller: asyncHandler(authController.requestAnEmailVerificationCode),
+};
+
 const register = async (server) => {
   const incomingRequests = expressWrapper(server);
-  incomingRequests.route([signupStepOneRequest, signupStepTwoRequest]);
+  incomingRequests.route([signupStepOneRequest, signupStepTwoRequest, requestEmailVerificationCodeRequest]);
 };
 
 const userAuthenticationRoutes = {

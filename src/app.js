@@ -89,6 +89,7 @@ export default async function createApplication(webserver) {
 
   // const user = await UserRepository.findUser('@lifeoferic1');
   // console.log(user);
+  // const deletedUser = await UserRepository.deleteUser('@lifeoferic1');
 
   // Handle requests to unspecified routes
   webserver.all('*', handleUnspecifiedRouteRequests);
