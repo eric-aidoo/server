@@ -2,7 +2,7 @@
   "name": "payment-api",
   "version": "1.0.0",
   "description": "This is Credet's payment APIs server",
-  "main": "/src/server.js",
+  "main": "./src/server.js",
   "scripts": {
     "dev": "nodemon --exec babel-node src/server.js",
     "start": "node src/server.js"
