@@ -12,8 +12,6 @@ const initializeTables = async ({ typeOfDatabase }) => {
   }
 };
 
-// dataCollectionJurisdiction
-
 const database = {
   initializeTables,
 };

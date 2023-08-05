@@ -11,12 +11,8 @@ import libraries from './helpers/libraries';
 import requestLimiter from './middleware/rateLimiter';
 import corsMiddleware from './middleware/cors';
 import handleUnspecifiedRouteRequests from './middleware/handleUnidentifiedRoutes';
-import { deactivateDebuggingInProductionMode, generateFingerprint } from './helpers/utilities';
-import userRepository from './api/users/dataAccess/userRepository';
-import UserFactory from './api/users/factories/user';
-import AddressFactory from './api/users/factories/address';
-import waitlistRepository from './api/users/dataAccess/waitlistRepository';
-import EmailService from './integrations/email/service';
+import { deactivateDebuggingInProductionMode, generateFingerprint, getIpLocation } from './helpers/utilities';
+import EmailService from './integrations/email';
 import userAuthenticationRoutes from './api/users/routes/authRoute';
 import UserRepository from './api/users/dataAccess/userRepository';
 
@@ -47,7 +43,7 @@ export default async function createApplication(webserver) {
   webserver.use(libraries.expressFramework.static(path.join(process.cwd(), 'src', 'public')));
   webserver.set('views', path.join(process.cwd(), 'src', 'views'));
 
-  webserver.use(requestLimiter);
+  // webserver.use(requestLimiter);
 
   webserver.get('/', (req, res) => {
     res.status(200).json({
@@ -58,9 +54,16 @@ export default async function createApplication(webserver) {
     });
   });
 
-  webserver.get('/ip', (req, res) => {
+  webserver.get('/ip', async (req, res) => {
+    const location = await getIpLocation(req);
+    const deviceId = req.headers['user-agent'];
+    console.log(location);
     const ipAddress = req.ip;
-    res.send(`Your IP address: ${ipAddress}`);
+    res.status(200).json({
+      ip_address: ipAddress,
+      location: location,
+      device: deviceId,
+    });
   });
 
   webserver.get('/test-email', async (req, res) => {
@@ -77,6 +80,8 @@ export default async function createApplication(webserver) {
   await userAuthenticationRoutes.register(webserver);
 
   const updatedAt = new Date().toISOString();
+  const loginTime = new Date().toLocaleString(undefined, { timeZoneName: 'short' });
+  console.log(loginTime);
 
   // const deleteUser = async () => {
   //   try {

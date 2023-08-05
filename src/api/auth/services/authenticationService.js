@@ -12,54 +12,13 @@ import {
   verifyPasswordResetUrlToken,
   verifyRefreshToken,
 } from '../../../helpers/utilities';
-import EmailService from '../../../integrations/email/service';
+import EmailService from '../../../integrations/email';
 import UserRepository from '../dataAccess/userRepository';
-import waitlistRepository from '../dataAccess/waitlistRepository';
 import UserFactory from '../factories/user';
-
-const checkIfUserIsAllowedToTestApp = async ({ email, inviteCode }) => {
-  try {
-    if (!email) {
-      throw new MissingFieldError('Email is required');
-    }
-    const waitlistUser = await waitlistRepository.findUser(email);
-    if (!waitlistUser) {
-      throw new NotFoundError(`Hm. Looks like you're not on the waitlist.`);
-    }
-    if (!inviteCode) {
-      throw new MissingFieldError('Please provide your unique beta invite code');
-    }
-    const inviteCodeIsValid = (await waitlistUser.invite_code) === inviteCode;
-    if (!inviteCodeIsValid) {
-      throw new UnauthorizedError('Your invite code is invalid');
-    }
-    const userCanTestApp = waitlistUser.is_allowed_to_test;
-    if (!userCanTestApp) {
-      throw new UnauthorizedError(
-        `Credet is not available for you yet. We will notify you when it's your turn. Keep an eye on your inbox.`,
-      );
-    }
-    return {
-      isAllowedToTestApp: true,
-    };
-  } catch (error) {
-    throw error;
-  }
-};
 
 const signup = async (signupDetails) => {
   try {
-    // await checkIfUserIsAllowedToTestApp({
-    //   email: signupDetails.email,
-    //   inviteCode: signupDetails.invite_code,
-    // });
     const newlyCreatedUser = UserFactory.createUser(signupDetails);
-
-    // const propertiesToExclude = ['invite_code'];
-    // const userObjectWithoutInviteCode = Object.fromEntries(
-    //   Object.entries(newlyCreatedUser).filter(([property]) => !propertiesToExclude.includes(property)),
-    // );
-    // await UserRepository.addUser(userObjectWithoutInviteCode);
     await UserRepository.addUser(newlyCreatedUser);
     const emailVerificationCode = generateOtpCode();
 

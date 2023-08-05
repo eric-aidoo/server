@@ -3,6 +3,8 @@ CREATE TABLE users (
     type VARCHAR(50) NOT NULL,
     role VARCHAR(50) NOT NULL,
     status VARCHAR(50) NOT NULL,
+    lockout_duration VARCHAR(50),
+    login_attempts INTEGER,
     is_email_verified BOOLEAN NOT NULL,
     is_phone_verified BOOLEAN NOT NULL,
     is_id_verified BOOLEAN NOT NULL,

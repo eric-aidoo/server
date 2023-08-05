@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+  <head>
+    <title>Verify Your Email</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:site_name" content="Credet" />
+    <meta property="og:url" content="https://www.credet.app/" />
+    <meta http-equiv="Content-Security-Policy" content="base-uri 'self'" />
+    <style>
+      body {
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        width: 100% !important;
+        height: 100%;
+        line-height: 1.6rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f6f6f6;
+        color: #888;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        user-select: none;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .logo {
+        padding-top: 0.5rem;
+        text-align: left;
+      }
+
+      .logo img {
+        pointer-events: none;
+      }
+
+      hr {
+        background-image: linear-gradient(to right, transparent, rgb(228, 228, 228), transparent);
+        height: 1px;
+        border: none;
+        margin: 20px 0;
+      }
+
+      .email {
+        max-width: 840px;
+        margin: 1000px;
+      }
+
+      table {
+        justify-content: center;
+        margin-top: 1.5em;
+      }
+
+      table,
+      #email {
+        max-width: 660px;
+        width: 100%;
+        background-color: white;
+        border-radius: 8px;
+      }
+
+      td {
+        padding: 16px 64px 0;
+      }
+
+      .email-body-page {
+        color: black;
+        font-size: 16px;
+      }
+
+      .email-heading {
+        text-align: left;
+        font-size: 32px;
+        color: black;
+        font-weight: 600;
+        line-height: 38px;
+      }
+
+      li {
+        margin-top: 7px;
+      }
+
+      .foot {
+        background-color: #f8f8f8;
+        padding: 24px 64px;
+      }
+
+      .foot p {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #636363;
+      }
+
+      .foot a {
+        color: #888;
+      }
+
+      .footer-div {
+        line-height: 18px;
+      }
+
+      button {
+        background-color: #0052ff;
+        color: rgb(255, 255, 255);
+        border-radius: 35px;
+        text-decoration: none;
+        display: inline-block;
+        height: 30px;
+        width: 120px;
+        text-align: center;
+        border: none;
+      }
+
+      a {
+        color: white;
+        color: #0052ff;
+      }
+
+      .email-disclaimer {
+        margin: 0;
+        font-size: 13px;
+        line-height: 16px;
+        font-family: 'Overpass', sans-serif;
+      }
+
+      .copyright-info {
+        margin: 0;
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      .company-address {
+        margin: 0;
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      @media all and (max-width: 500px) {
+        td {
+          padding: 16px 40px 0;
+        }
+
+        .foot {
+          padding: 24px 35px;
+        }
+
+        .email-heading {
+          font-size: 32px;
+        }
+      }
+
+      @media all and (max-width: 475px) {
+        td {
+          padding: 16px 40px 0;
+        }
+
+        .foot {
+          padding: 24px 30px;
+        }
+
+        .email-heading {
+          font-size: 30px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <table
+      id="email"
+      border="0"
+      width="100%"
+      overflow="hidden"
+      cellpadding="0"
+      cellspacing="0"
+      align="center"
+    >
+      <tr>
+        <td>
+          <div class="logo">
+            <a href="https://www.credet.app" rel="noopener noreferrer"
+              ><img
+                src="https://www.credet.app/assets/images/logo_secondary_black.png"
+                alt="Credet"
+                height="45"
+                width="45"
+            /></a>
+          </div>
+          <hr />
+          <div class="email-body-page">
+            <span class="email-heading">New login activity</span>
+            <br /><br />
+            <p>Hi {{firstName}},</p>
+            <p>We noticed a new login to your Credet account.</p>
+            <li>Date & Time: {{timestamp}}</li>
+            <li>Device: {{device}}</li>
+            <li>Approximate location: {{location}}</li>
+            <p>
+              If this wasn't you, please <a href="{{loginUrl}}">reset your password</a> immediately and review
+              your transactions for any unauthorized activity. Credet support team is available 24/7 if you
+              need any support.
+            </p>
+            <p>
+              Sincerely, <br />
+              The Credet Team 💜
+            </p>
+            <br />
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="foot">
+          <div class="footer-div" align="left">
+            <br />
+            <p class="email-disclaimer">
+              Please do not reply to this message, as this email inbox is not monitored. To contact us, visit
+              <a href="https://www.credet.app/help-center/contact-us"> our help center.</a>
+            </p>
+            <br />
+            <p class="email-disclaimer">
+              Credet is a financial technology company, not a bank. Banking and money transmission services
+              are provided by People's Bank, N.A., Member FDIC.
+            </p>
+            <br />
+            <p class="email-disclaimer">
+              <a href="https://www.credet.app/privacy-policy">Privacy Policy</a>.
+            </p>
+            <br />
+            <p class="copyright-info">
+              Copyright &#169;
+              <span
+                ><script>
+                  document.write(new Date().getFullYear());
+                </script></span
+              >
+              Credet, Inc. All Rights Reserved.
+            </p>
+            <p class="company-address">326 Market Street, San Francisco, CA 94105</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

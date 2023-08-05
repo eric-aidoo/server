@@ -1,4 +1,4 @@
-import mysqlClient from '../../../config/databaseClient';
+import mysqlClient from '../../../database/mysqlDb/client';
 import {
   AlreadyExistsError,
   BadRequestError,
@@ -484,6 +484,123 @@ const deactivateAccount = async (username) => {
   }
 };
 
+const recordLoginAttempts = async (username) => {
+  try {
+    const database = await mysqlClient.connectToDatabase();
+    const queries = await loadSqlQueries({ sqlFolder: 'api/users/queries' });
+    const user = await findUser(username);
+    if (!user) {
+      throw new NotFoundError(`Hm. We couldn't find an account with that identity.`);
+    }
+    const totalLoginAttempts = user.login_attempts + 1;
+    const updatedAt = new Date().toISOString();
+    const requestInput = [totalLoginAttempts, updatedAt, username];
+    const [queryResults] = await database.query(queries.recordLoginAttempts, requestInput);
+    const requestWasSuccessful = queryResults.affectedRows > 0;
+    if (!requestWasSuccessful) {
+      throw new InternalServerError('Request could not be processed due to an unexpected error');
+    }
+    return {
+      response: 'Failed login attempt recorded',
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+const clearLoginAttempts = async (username) => {
+  try {
+    const database = await mysqlClient.connectToDatabase();
+    const queries = await loadSqlQueries({ sqlFolder: 'api/users/queries' });
+    const user = await findUser(username);
+    if (!user) {
+      throw new NotFoundError(`Hm. We couldn't find an account with that identity.`);
+    }
+    const totalLoginAttempts = 0;
+    const updatedAt = new Date().toISOString();
+    const requestInput = [totalLoginAttempts, updatedAt, username];
+    const [queryResults] = await database.query(queries.recordLoginAttempts, requestInput);
+    const requestWasSuccessful = queryResults.affectedRows > 0;
+    if (!requestWasSuccessful) {
+      throw new InternalServerError('Request could not be processed due to an unexpected error');
+    }
+    return {
+      response: 'Failed login attempt recorded',
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updateAccountStatus = async ({ username, status }) => {
+  try {
+    const database = await mysqlClient.connectToDatabase();
+    const queries = await loadSqlQueries({ sqlFolder: 'api/users/queries' });
+    const user = await findUser(username);
+    if (!user) {
+      throw new NotFoundError(`Hm. We couldn't find an account with that identity.`);
+    }
+    const updatedAt = new Date().toISOString();
+    const requestInput = [status, updatedAt, username];
+    const [queryResults] = await database.query(queries.updateAccountStatus, requestInput);
+    const requestWasSuccessful = queryResults.affectedRows > 0;
+    if (!requestWasSuccessful) {
+      throw new InternalServerError('Request could not be processed due to an unexpected error');
+    }
+    return {
+      response: 'Account status updated',
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+const lockAccount = async ({ username, lockoutDuration }) => {
+  try {
+    const database = await mysqlClient.connectToDatabase();
+    const queries = await loadSqlQueries({ sqlFolder: 'api/users/queries' });
+    const user = await findUser(username);
+    if (!user) {
+      throw new NotFoundError(`Hm. We couldn't find an account with that identity.`);
+    }
+    const updatedAt = new Date().toISOString();
+    const requestInput = ['locked', lockoutDuration, updatedAt, username];
+    const [queryResults] = await database.query(queries.lockAccount, requestInput);
+    const requestWasSuccessful = queryResults.affectedRows > 0;
+    if (!requestWasSuccessful) {
+      throw new InternalServerError('Request could not be processed due to an unexpected error');
+    }
+    return {
+      response: 'Account temporarily locked',
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+const unlockAccount = async (username) => {
+  try {
+    const database = await mysqlClient.connectToDatabase();
+    const queries = await loadSqlQueries({ sqlFolder: 'api/users/queries' });
+    const user = await findUser(username);
+    if (!user) {
+      throw new NotFoundError(`Hm. We couldn't find an account with that identity.`);
+    }
+    const updatedAt = new Date().toISOString();
+    const requestInput = ['active', null, updatedAt, username];
+    const [queryResults] = await database.query(queries.lockAccount, requestInput);
+    const requestWasSuccessful = queryResults.affectedRows > 0;
+    if (!requestWasSuccessful) {
+      throw new InternalServerError('Request could not be processed due to an unexpected error');
+    }
+    return {
+      response: 'Account unlocked',
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
 const UserRepository = {
   findUser,
   findUsersByVerificationStatus,
@@ -507,6 +624,11 @@ const UserRepository = {
   uploadBackImageOfIdCard,
   uploadSelfie,
   deactivateAccount,
+  recordLoginAttempts,
+  clearLoginAttempts,
+  updateAccountStatus,
+  lockAccount,
+  unlockAccount,
 };
 
 export default UserRepository;

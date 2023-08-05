@@ -1,5 +1,6 @@
 import { expressWrapper } from '../../../helpers/utilities';
 import asyncHandler from '../../../middleware/asyncHandler';
+import limitLoginAttempts from '../../../middleware/loginLimiter';
 import authController from '../controllers/authController';
 
 // Signup step 1 of 2
@@ -23,9 +24,23 @@ const requestEmailVerificationCodeRequest = {
   controller: asyncHandler(authController.requestAnEmailVerificationCode),
 };
 
+// Login route (POST /user/login)
+const loginRequest = {
+  method: 'POST',
+  path: '/user/login',
+  controller: asyncHandler(authController.login),
+};
+
+// middleware: [limitLoginAttempts],
+
 const register = async (server) => {
   const incomingRequests = expressWrapper(server);
-  incomingRequests.route([signupStepOneRequest, signupStepTwoRequest, requestEmailVerificationCodeRequest]);
+  incomingRequests.route([
+    signupStepOneRequest,
+    signupStepTwoRequest,
+    requestEmailVerificationCodeRequest,
+    loginRequest,
+  ]);
 };
 
 const userAuthenticationRoutes = {

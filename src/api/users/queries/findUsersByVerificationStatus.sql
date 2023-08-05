@@ -40,5 +40,5 @@ SELECT u.id,
        u.created_at, 
        u.updated_at
 FROM users AS u 
-LEFT JOIN users_billing_address AS a ON u.username = a.user
+LEFT JOIN billing_addresses AS a ON u.username = a.user
 WHERE u.is_id_verified = ?;

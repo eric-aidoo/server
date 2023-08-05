@@ -25,6 +25,7 @@ const config = {
   server: {
     host: process.env.SERVER_HOST,
     port: process.env.SERVER_PORT,
+    wildcardIp: process.env.WILDCARD_IP,
     environment: process.env.APP_ENV,
     isInDevMode: process.env.APP_ENV === 'development',
   },
@@ -41,7 +42,7 @@ const config = {
   },
   authentication: {
     loginRetryWindow: THREE_MINUTES,
-    loginAttemptsPerWindow: 5,
+    loginAttemptsPerWindow: 3,
     verificationCodeExpiration: FIFTEEN_MINUTES,
   },
   emailAuthentication: {

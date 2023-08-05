@@ -2,6 +2,8 @@ SELECT u.id,
        u.type,
        u.role, 
        u.status,
+       U.lockout_duration,
+       u.login_attempts,
        u.is_email_verified,
        u.is_phone_verified,
        u.is_id_verified,
@@ -40,6 +42,6 @@ SELECT u.id,
        u.created_at, 
        u.updated_at
 FROM users AS u 
-LEFT JOIN users_billing_address AS a ON u.username = a.user
+LEFT JOIN billing_addresses AS a ON u.username = a.user
 WHERE u.username = ? OR u.email = ? 
 

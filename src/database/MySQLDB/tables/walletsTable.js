@@ -1,4 +1,4 @@
-import mysqlClient from '../../../config/databaseClient';
+import mysqlClient from '../client';
 import { loadSqlQueries } from '../../../helpers/utilities';
 
 const walletsTable = async () => {

@@ -1,18 +1,20 @@
-// import createApplication from './app';
 import createApplication from './app';
 import config from './config/appConfig';
 import database from './database';
 import libraries from './helpers/libraries';
 
 const startServer = async () => {
+  const port = config.server.port;
+  const host = config.server.host;
+  const wildcardIp = config.server.wildcardIp;
   try {
     const expressFramework = libraries.expressFramework();
     const application = await createApplication(expressFramework);
 
     const server = application
-      .listen(config.server.port, async () => {
+      .listen(port, async () => {
         await database.initializeTables({ typeOfDatabase: 'SQL' });
-        console.log(`Server running at ${config.server.host}`);
+        console.log(`Server running at ${host}`);
       })
       .on('error', (error) => {
         console.error(error);

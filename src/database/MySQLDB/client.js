@@ -1,5 +1,5 @@
-import libraries from '../helpers/libraries';
-import config from './appConfig';
+import libraries from '../../helpers/libraries';
+import config from '../../config/appConfig';
 
 const databaseConnection = async () => {
   let pool = null;
@@ -21,7 +21,7 @@ const databaseConnection = async () => {
       if (pool) {
         return pool;
       }
-      pool = libraries.mysql.createPool(config.mysql.productionDb);
+      pool = libraries.mysql.createPool(config.mysql.developmentDb);
       pool.on('error', async (error) => {
         console.error(error.message);
         await closePool();

@@ -379,6 +379,22 @@ export function validateParams(requiredParams, providedParams) {
   return true;
 }
 
+export async function getIpLocation(request) {
+  const TEN_SECONDS_TIMEOUT = 10000;
+  const ipScanner = new libraries.IPinfoWrapper(config.ipInfo.accessToken, null, TEN_SECONDS_TIMEOUT);
+  const geolocation = await ipScanner.lookupIp(request.ip);
+  const locationOfIpAddress = {
+    ip: geolocation.ip,
+    hostname: geolocation.hostname ?? 'Unknown',
+    city: geolocation.city ?? 'Unknown',
+    state: geolocation.region ?? 'Unknown',
+    country: geolocation.country ?? 'Unknown',
+    zipCode: geolocation.postal ?? 'Unknown',
+    timezone: geolocation.timezone ?? 'Unknown',
+  };
+  return locationOfIpAddress;
+}
+
 export async function generateFingerprint(request) {
   const TEN_SECONDS_TIMEOUT = 10000;
   const ipScanner = new libraries.IPinfoWrapper(config.ipInfo.accessToken, null, TEN_SECONDS_TIMEOUT);
@@ -401,7 +417,7 @@ export async function generateFingerprint(request) {
   return fingerprint;
 }
 
-export const validateUSStateAbbreviation = (stateAbbreviation) => {
+export function validateUSStateAbbreviation(stateAbbreviation) {
   const validUSStateAbbreviations = [
     'AL',
     'AK',
@@ -462,4 +478,4 @@ export const validateUSStateAbbreviation = (stateAbbreviation) => {
     return false;
   }
   return validUSStateAbbreviations.includes(stateAbbreviation.toUpperCase());
-};
+}
